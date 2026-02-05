@@ -1,4 +1,10 @@
-import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  useMemo,
+} from 'react';
 import { BlossomColorPickerValue, BlossomColorPickerProps } from './types';
 import {
   OUTER_COLORS,
@@ -22,7 +28,12 @@ import { Petal, ColorBar, ArcSlider } from './components';
 
 export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
   value,
-  defaultValue = { hue: 220, saturation: 70, alpha: 50, layer: 'outer' },
+  defaultValue = {
+    hue: 220,
+    saturation: 70,
+    alpha: 50,
+    layer: 'outer',
+  },
   colors,
   innerColors: propInnerColors,
   outerColors: propOuterColors,
@@ -62,7 +73,10 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
 
   const [isExpanded, setIsExpanded] = useState(initialExpanded);
   const [isHovering, setIsHovering] = useState(false);
-  const [hoveredPetal, setHoveredPetal] = useState<{ layer: number; index: number } | null>(null);
+  const [hoveredPetal, setHoveredPetal] = useState<{
+    layer: number;
+    index: number;
+  } | null>(null);
 
   useEffect(() => {
     setIsExpanded(initialExpanded);
@@ -81,8 +95,8 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
   const barRadius = maxLayerRadius + petalSize / 2 + BAR_GAP;
 
   const containerSize = showAlphaSlider
-    ? (barRadius + SLIDER_OFFSET + 10 + 6) * 2 + 40
-    : barRadius * 2 + 30;
+    ? (barRadius + SLIDER_OFFSET + BAR_WIDTH / 2) * 2 + 12
+    : (barRadius + BAR_WIDTH / 2) * 2 + 12;
 
   const prevExpandedRef = useRef(isExpanded);
 
@@ -100,23 +114,39 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
       const selectedPetal = allColors.find(c => c.h === currentValue.hue);
       const pBaseSaturation = selectedPetal?.s ?? 70;
       // Visual saturation logic: only desaturate if very bright (slider < 10)
-      const visualSaturation = sliderValue < 10 ? (sliderValue / 10) * pBaseSaturation : pBaseSaturation;
+      const visualSaturation =
+        sliderValue < 10
+          ? (sliderValue / 10) * pBaseSaturation
+          : pBaseSaturation;
 
-      onCollapse(createColorOutput(currentValue.hue, sliderValue, visualSaturation, lightness, currentValue.alpha, currentValue.layer));
+      onCollapse(
+        createColorOutput(
+          currentValue.hue,
+          sliderValue,
+          visualSaturation,
+          lightness,
+          currentValue.alpha,
+          currentValue.layer
+        )
+      );
     }
     prevExpandedRef.current = isExpanded;
   }, [isExpanded, currentValue, onCollapse, allColors]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
         setIsExpanded(false);
       }
     };
 
     if (isExpanded) {
       document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
+      return () =>
+        document.removeEventListener('mousedown', handleClickOutside);
     }
   }, [isExpanded]);
 
@@ -164,111 +194,85 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
   }, [currentValue.hue, currentValue.originalSaturation, allColors]);
 
   // Handle arc slider change
-  const handleSliderChange = useCallback((sliderValue: number) => {
-    const lightness = sliderValueToLightness(sliderValue);
-    // Use consistent saturation logic: keep vivid unless near white
-    const visualSaturation = sliderValue < 10 ? (sliderValue / 10) * baseSaturation : baseSaturation;
-
-    const newValue = {
-      ...currentValue,
-      saturation: sliderValue,
-      lightness,
-      originalSaturation: baseSaturation
-    };
-    setInternalValue(newValue);
-
-    onChange?.(createColorOutput(currentValue.hue, sliderValue, visualSaturation, lightness, currentValue.alpha, currentValue.layer));
-  }, [currentValue, baseSaturation, onChange]);
-
-  // Handle petal click
-  const handlePetalClick = useCallback((color: { h: number, s: number, l: number }, layerIdx: number) => {
-    const sliderValue = lightnessToSliderValue(color.l);
-    const layerStr: 'inner' | 'outer' = layerIdx === 0 ? 'inner' : 'outer';
-    // When selecting a petal, we want its exact saturation initially.
-    const visualSaturation = color.s;
-
-    const newValue = {
-      ...currentValue,
-      hue: color.h,
-      saturation: sliderValue,
-      lightness: color.l,
-      originalSaturation: color.s,
-      layer: layerStr
-    };
-    setInternalValue(newValue);
-    onChange?.(createColorOutput(color.h, sliderValue, visualSaturation, color.l, currentValue.alpha, layerStr));
-  }, [currentValue, onChange]);
-
-  // Keyboard navigation
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (disabled) return;
-
-    const sortedColors = [...allColors].sort((a, b) => a.h - b.h);
-    const currentIndex = sortedColors.findIndex(c => c.h === currentValue.hue);
-    let newIndex = currentIndex === -1 ? 0 : currentIndex;
-
-    switch (e.key) {
-      case 'ArrowRight':
-      case 'ArrowDown':
-        e.preventDefault();
-        newIndex = (newIndex + 1) % sortedColors.length;
-        break;
-      case 'ArrowLeft':
-      case 'ArrowUp':
-        e.preventDefault();
-        newIndex = (newIndex - 1 + sortedColors.length) % sortedColors.length;
-        break;
-      case 'Enter':
-      case ' ':
-        e.preventDefault();
-        setIsExpanded(prev => !prev);
-        return;
-      case 'Escape':
-        e.preventDefault();
-        setIsExpanded(false);
-        return;
-      default:
-        return;
-    }
-
-    if (isExpanded) {
-      const newColor = sortedColors[newIndex];
-      let layerIdx = 0;
-      for (let i = 0; i < layers.length; i++) {
-        if (layers[i].includes(newColor)) {
-          layerIdx = i;
-          break;
-        }
-      }
-      const layerStr: 'inner' | 'outer' = layerIdx === 0 ? 'inner' : 'outer';
-
-      const sliderValue = lightnessToSliderValue(newColor.l);
-      // Visual saturation logic: only desaturate if very bright (slider < 10)
-      const visualSaturation = sliderValue < 10 ? (sliderValue / 10) * newColor.s : newColor.s;
+  const handleSliderChange = useCallback(
+    (sliderValue: number) => {
+      const lightness = sliderValueToLightness(sliderValue);
+      // Use consistent saturation logic: keep vivid unless near white
+      const visualSaturation =
+        sliderValue < 10 ? (sliderValue / 10) * baseSaturation : baseSaturation;
 
       const newValue = {
         ...currentValue,
-        hue: newColor.h,
         saturation: sliderValue,
-        lightness: newColor.l,
-        originalSaturation: newColor.s,
-        layer: layerStr
+        lightness,
+        originalSaturation: baseSaturation,
       };
       setInternalValue(newValue);
-      onChange?.(createColorOutput(newColor.h, sliderValue, visualSaturation, newColor.l, currentValue.alpha, layerStr));
-    }
-  }, [disabled, currentValue, isExpanded, onChange, allColors, layers]);
+
+      onChange?.(
+        createColorOutput(
+          currentValue.hue,
+          sliderValue,
+          visualSaturation,
+          lightness,
+          currentValue.alpha,
+          currentValue.layer
+        )
+      );
+    },
+    [currentValue, baseSaturation, onChange]
+  );
+
+  // Handle petal click
+  const handlePetalClick = useCallback(
+    (color: { h: number; s: number; l: number }, layerIdx: number) => {
+      const sliderValue = lightnessToSliderValue(color.l);
+      const layerStr: 'inner' | 'outer' = layerIdx === 0 ? 'inner' : 'outer';
+      // When selecting a petal, we want its exact saturation initially.
+      const visualSaturation = color.s;
+
+      const newValue = {
+        ...currentValue,
+        hue: color.h,
+        saturation: sliderValue,
+        lightness: color.l,
+        originalSaturation: color.s,
+        layer: layerStr,
+      };
+      setInternalValue(newValue);
+      onChange?.(
+        createColorOutput(
+          color.h,
+          sliderValue,
+          visualSaturation,
+          color.l,
+          currentValue.alpha,
+          layerStr
+        )
+      );
+    },
+    [currentValue, onChange]
+  );
 
   // Current lightness
-  const currentLightness = currentValue.lightness ?? (currentValue.layer === 'inner' ? 85 : 65);
+  const currentLightness =
+    currentValue.lightness ?? (currentValue.layer === 'inner' ? 85 : 65);
 
   // Core circle color - White when expanded, selected color when collapsed
   const coreColor = useMemo(() => {
     if (isExpanded) return '#FFFFFF';
-    const lightness = currentValue.lightness ?? sliderValueToLightness(currentValue.saturation);
+    const lightness =
+      currentValue.lightness ?? sliderValueToLightness(currentValue.saturation);
     const saturation = currentValue.originalSaturation ?? baseSaturation;
     return hslToHex(currentValue.hue, saturation, lightness);
-  }, [isExpanded, currentValue.hue, currentValue.lightness, currentValue.originalSaturation, currentValue.saturation, baseSaturation]);
+  }, [
+    isExpanded,
+    currentValue.hue,
+    currentValue.lightness,
+    currentValue.originalSaturation,
+    currentValue.saturation,
+    baseSaturation,
+  ]);
 
   return (
     <div
@@ -294,7 +298,6 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
         }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        onKeyDown={handleKeyDown}
       >
         {/* Background fill */}
         <div
@@ -311,7 +314,12 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
           <div
             className="absolute inset-0 rounded-full"
             style={{
-              backgroundColor: hslaToString(currentValue.hue, currentValue.saturation, currentLightness, 15),
+              backgroundColor: hslaToString(
+                currentValue.hue,
+                currentValue.saturation,
+                currentLightness,
+                15
+              ),
               transition: 'background-color 300ms ease',
             }}
           />
@@ -320,7 +328,11 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
         {/* Color Bar */}
         <ColorBar
           hue={currentValue.hue}
-          saturation={currentValue.saturation < 10 ? (currentValue.saturation / 10) * baseSaturation : baseSaturation}
+          saturation={
+            currentValue.saturation < 10
+              ? (currentValue.saturation / 10) * baseSaturation
+              : baseSaturation
+          }
           lightness={currentLightness}
           alpha={currentValue.alpha}
           radius={barRadius}
@@ -343,7 +355,11 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
           // Helper to get Z-Index for the "Fan" loop trick
           // Goal: Continuous overlap (N covers N+1)
           // Sequence: BottomRight(Top) -> Next -> ... -> BottomLeft(Bottom)
-          const getZIndex = (index: number, isBottomLeft: boolean = false, isBottomRight: boolean = false) => {
+          const getZIndex = (
+            index: number,
+            isBottomLeft: boolean = false,
+            isBottomRight: boolean = false
+          ) => {
             const baseZ = (layers.length - layerIdx) * 100; // Base layer Z
             const maxLocalZ = totalPetals + 10;
 
@@ -362,365 +378,117 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
           };
 
           return layerColors.map((color, index) => {
-
             const isSelected = currentValue.hue === color.h;
 
-            const isHovered = hoveredPetal?.layer === layerIdx && hoveredPetal?.index === index;
+            const isHovered =
+              hoveredPetal?.layer === layerIdx && hoveredPetal?.index === index;
 
             const baseZ = (layers.length - layerIdx) * 100;
 
-
-
-                        // Special handling for the bottom petal to create the loop trick
-
-
-
-                        if (index === bottomIndex) {
-
-
-
-                          return (
-
-
-
-                            <React.Fragment key={`layer-${layerIdx}-${color.h}-split`}>
-
-
-
-                              {/* Visual Left Half (Lowest Z) */}
-
-
-
-                              <Petal
-
-
-
-                                hue={color.h}
-
-
-
-                                saturation={color.s}
-
-
-
-                                lightness={color.l}
-
-
-
-                                index={index}
-
-
-
-                                totalPetals={totalPetals}
-
-
-
-                                isExpanded={isExpanded}
-
-
-
-                                petalSize={petalSize}
-
-
-
-                                radius={radius}
-
-
-
-                                animationDuration={animationDuration}
-
-
-
-                                staggerDelay={previousItemsCount * PETAL_STAGGER + index * PETAL_STAGGER}
-
-
-
-                                zIndex={getZIndex(index, true, false)}
-
-
-
-                                clip="left"
-
-
-
-                                isExternalHover={isHovered}
-
-
-
-                                pointerEvents="none"
-
-
-
-                                hasShadow={false}
-
-
-
-                                alpha={1}
-
-
-
-                                onClick={() => {}}
-
-
-
-                              />
-
-
-
-                              {/* Visual Right Half (Highest Z) */}
-
-
-
-                              <Petal
-
-
-
-                                hue={color.h}
-
-
-
-                                saturation={color.s}
-
-
-
-                                lightness={color.l}
-
-
-
-                                index={index}
-
-
-
-                                totalPetals={totalPetals}
-
-
-
-                                isExpanded={isExpanded}
-
-
-
-                                petalSize={petalSize}
-
-
-
-                                radius={radius}
-
-
-
-                                animationDuration={animationDuration}
-
-
-
-                                staggerDelay={previousItemsCount * PETAL_STAGGER + index * PETAL_STAGGER}
-
-
-
-                                zIndex={getZIndex(index, false, true)}
-
-
-
-                                clip="right"
-
-
-
-                                isExternalHover={isHovered}
-
-
-
-                                pointerEvents="none"
-
-
-
-                                hasShadow={false}
-
-
-
-                                alpha={1}
-
-
-
-                                onClick={() => {}}
-
-
-
-                              />
-
-
-
-                              {/* Interaction Layer (Top of this petal's stack, Transparent) */}
-
-
-
-                              <Petal
-
-
-
-                                hue={color.h}
-
-
-
-                                saturation={color.s}
-
-
-
-                                lightness={color.l}
-
-
-
-                                index={index}
-
-
-
-                                totalPetals={totalPetals}
-
-
-
-                                isExpanded={isExpanded}
-
-
-
-                                petalSize={petalSize}
-
-
-
-                                radius={radius}
-
-
-
-                                animationDuration={animationDuration}
-
-
-
-                                staggerDelay={previousItemsCount * PETAL_STAGGER + index * PETAL_STAGGER}
-
-
-
-                                zIndex={baseZ + totalPetals + 20} // Interaction needs to be on top of the local stack
-
-
-
-                                alpha={0} // Invisible but interactive
-
-
-
-                                hasShadow={false}
-
-
-
-                                onClick={() => handlePetalClick(color, layerIdx)}
-
-
-
-                                onMouseEnter={() => setHoveredPetal({ layer: layerIdx, index })}
-
-
-
-                                onMouseLeave={() => setHoveredPetal(null)}
-
-
-
-                              />
-
-
-
-                            </React.Fragment>
-
-
-
-                          );
-
-
-
-                        }
-
-
-
-                        // Normal rendering (Full petal)
-
-
-
-                        return (
-
-
-
-                          <Petal
-
-
-
-                            key={`layer-${layerIdx}-${color.h}-${index}`}
-
-
-
-                            hue={color.h}
-
-
-
-                            saturation={color.s}
-
-
-
-                            lightness={color.l}
-
-
-
-                            index={index}
-
-
-
-                            totalPetals={totalPetals}
-
-
-
-                            isExpanded={isExpanded}
-
-
-
-                            petalSize={petalSize}
-
-
-
-                            radius={radius}
-
-
-
-                            animationDuration={animationDuration}
-
-
-
-                            staggerDelay={previousItemsCount * PETAL_STAGGER + index * PETAL_STAGGER}
-
-
-
-                            zIndex={getZIndex(index)} 
-
-
-
-                            isExternalHover={isHovered}
-
-
-
-                            hasShadow={false}
-
-
-
-                            onClick={() => handlePetalClick(color, layerIdx)}
-
-
-
-                            onMouseEnter={() => setHoveredPetal({ layer: layerIdx, index })}
-
-
-
-                            onMouseLeave={() => setHoveredPetal(null)}
-
-
-
-                          />
-
-
-
-                        );
-
+            // Special handling for the bottom petal to create the loop trick
+            if (index === bottomIndex) {
+              return (
+                <React.Fragment key={`layer-${layerIdx}-${color.h}-split`}>
+                  {/* Visual Left Half (Lowest Z) */}
+                  <Petal
+                    hue={color.h}
+                    saturation={color.s}
+                    lightness={color.l}
+                    index={index}
+                    totalPetals={totalPetals}
+                    isExpanded={isExpanded}
+                    petalSize={petalSize}
+                    radius={radius}
+                    animationDuration={animationDuration}
+                    staggerDelay={
+                      previousItemsCount * PETAL_STAGGER + index * PETAL_STAGGER
+                    }
+                    zIndex={getZIndex(index, true, false)}
+                    clip="left"
+                    isExternalHover={isHovered}
+                    pointerEvents="none"
+                    hasShadow={false}
+                    alpha={1}
+                    onClick={() => { }}
+                  />
+
+                  {/* Visual Right Half (Highest Z) */}
+
+                  <Petal
+                    hue={color.h}
+                    saturation={color.s}
+                    lightness={color.l}
+                    index={index}
+                    totalPetals={totalPetals}
+                    isExpanded={isExpanded}
+                    petalSize={petalSize}
+                    radius={radius}
+                    animationDuration={animationDuration}
+                    staggerDelay={
+                      previousItemsCount * PETAL_STAGGER + index * PETAL_STAGGER
+                    }
+                    zIndex={getZIndex(index, false, true)}
+                    clip="right"
+                    isExternalHover={isHovered}
+                    pointerEvents="none"
+                    hasShadow={false}
+                    alpha={1}
+                    onClick={() => { }}
+                  />
+
+                  {/* Interaction Layer (Top of this petal's stack, Transparent) */}
+
+                  <Petal
+                    hue={color.h}
+                    saturation={color.s}
+                    lightness={color.l}
+                    index={index}
+                    totalPetals={totalPetals}
+                    isExpanded={isExpanded}
+                    petalSize={petalSize}
+                    radius={radius}
+                    animationDuration={animationDuration}
+                    staggerDelay={
+                      previousItemsCount * PETAL_STAGGER + index * PETAL_STAGGER
+                    }
+                    zIndex={baseZ + totalPetals + 20} // Interaction needs to be on top of the local stack
+                    alpha={0} // Invisible but interactive
+                    hasShadow={false}
+                    onClick={() => handlePetalClick(color, layerIdx)}
+                    onMouseEnter={() =>
+                      setHoveredPetal({ layer: layerIdx, index })
+                    }
+                    onMouseLeave={() => setHoveredPetal(null)}
+                  />
+                </React.Fragment>
+              );
+            }
+
+            // Normal rendering (Full petal)
+
+            return (
+              <Petal
+                key={`layer-${layerIdx}-${color.h}-${index}`}
+                hue={color.h}
+                saturation={color.s}
+                lightness={color.l}
+                index={index}
+                totalPetals={totalPetals}
+                isExpanded={isExpanded}
+                petalSize={petalSize}
+                radius={radius}
+                animationDuration={animationDuration}
+                staggerDelay={
+                  previousItemsCount * PETAL_STAGGER + index * PETAL_STAGGER
+                }
+                zIndex={getZIndex(index)}
+                isExternalHover={isHovered}
+                hasShadow={false}
+                onClick={() => handlePetalClick(color, layerIdx)}
+                onMouseEnter={() => setHoveredPetal({ layer: layerIdx, index })}
+                onMouseLeave={() => setHoveredPetal(null)}
+              />
+            );
           });
         })}
 
@@ -749,7 +517,11 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
             width: coreSize,
             height: coreSize,
             backgroundColor: coreColor,
-            transform: isExpanded ? 'scale(1)' : isHovering ? 'scale(1.05)' : 'scale(1)',
+            transform: isExpanded
+              ? 'scale(1)'
+              : isHovering
+                ? 'scale(1.05)'
+                : 'scale(1)',
             boxShadow: isExpanded
               ? '0 0 0 2px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.15)'
               : '0 2px 8px rgba(0,0,0,0.15)',
@@ -766,4 +538,3 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
 };
 
 export default BlossomColorPicker;
-

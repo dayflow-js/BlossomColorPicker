@@ -1,0 +1,18 @@
+# Source files
+src/
+examples/
+
+# Configuration files
+vite.config.ts
+tsconfig.json
+.eslintrc.json
+.gitignore
+.npmignore
+
+# Assets and documentation
+yarn.lock
+package-lock.json
+
+# Development tools
+.github/
+.vscode/

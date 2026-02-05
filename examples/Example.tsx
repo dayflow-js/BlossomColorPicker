@@ -40,11 +40,11 @@ const Example = () => {
         <div className="flex items-center justify-between">
           <div className="flex flex-col">
             <span className="text-lg font-semibold text-gray-800 tracking-tight">
-              Standard
+              Color
             </span>
-            <span className="text-xs text-gray-400">Default 2-layer set</span>
+            {/* <span className="text-xs text-gray-400">Default 2-layer set</span> */}
           </div>
-          <BlossomColorPicker 
+          <BlossomColorPicker
             value={color}
             onChange={(newColor) => setColor(newColor)}
             coreSize={36}
@@ -62,7 +62,7 @@ const Example = () => {
             </span>
             <span className="text-xs text-gray-400">30 colors auto-distributed</span>
           </div>
-          <BlossomColorPicker 
+          <BlossomColorPicker
             value={multiLayerColor}
             colors={manyColors}
             onChange={(newColor) => setMultiLayerColor(newColor)}
