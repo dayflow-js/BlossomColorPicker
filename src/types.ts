@@ -13,6 +13,9 @@ export interface BlossomColorPickerColor extends BlossomColorPickerValue {
   hsla: string;
 }
 
+/** Accepts HSL object, hex string, rgb()/rgba() string, or hsl()/hsla() string. */
+export type ColorInput = string | { h: number; s: number; l: number };
+
 export interface BlossomColorPickerProps {
   value?: BlossomColorPickerValue;
   defaultValue?: BlossomColorPickerValue;
@@ -20,11 +23,7 @@ export interface BlossomColorPickerProps {
    * Unified color list. If provided, colors will be automatically sorted (dark to light)
    * and distributed into layers.
    */
-  colors?: { h: number; s: number; l: number }[];
-  /** @deprecated Use `colors` for automatic layering */
-  innerColors?: { h: number; s: number; l: number }[];
-  /** @deprecated Use `colors` for automatic layering */
-  outerColors?: { h: number; s: number; l: number }[];
+  colors?: ColorInput[];
   onChange?: (color: BlossomColorPickerColor) => void;
   onCollapse?: (color: BlossomColorPickerColor) => void;
   disabled?: boolean;
@@ -34,5 +33,7 @@ export interface BlossomColorPickerProps {
   showAlphaSlider?: boolean;
   coreSize?: number;
   petalSize?: number;
+  /** When true, the core circle displays the selected color even while expanded. Defaults to true. */
+  showCoreColor?: boolean;
   className?: string;
 }

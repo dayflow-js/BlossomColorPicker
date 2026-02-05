@@ -1,4 +1,4 @@
-import { BlossomColorPickerColor } from './types';
+import { BlossomColorPickerColor, ColorInput } from './types';
 
 // Convert lightness to slider value (0-100)
 // Slider: 0=white/bright (l=100), 100=dark (l~20)
@@ -44,6 +44,56 @@ export function hexToHsl(hex: string): { h: number; s: number; l: number } {
   return { h: Math.round(h_val * 360), s: Math.round(s_val * 100), l: Math.round(l * 100) };
 }
 
+export function rgbToHsl(r: number, g: number, b: number): { h: number; s: number; l: number } {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const l = (max + min) / 2;
+
+  if (max === min) return { h: 0, s: 0, l: Math.round(l * 100) };
+
+  const d = max - min;
+  const s_val = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+  let h_val = 0;
+  switch (max) {
+    case r: h_val = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+    case g: h_val = ((b - r) / d + 2) / 6; break;
+    case b: h_val = ((r - g) / d + 4) / 6; break;
+  }
+  return { h: Math.round(h_val * 360), s: Math.round(s_val * 100), l: Math.round(l * 100) };
+}
+
+export function parseColor(input: ColorInput): { h: number; s: number; l: number } {
+  if (typeof input === 'object') return input;
+
+  const str = input.trim().toLowerCase();
+
+  // Hex (#RGB, #RRGGBB)
+  if (str.startsWith('#')) return hexToHsl(str);
+
+  // hsl(h, s%, l%) / hsla(h, s%, l%, a) — comma or space separated
+  const hslMatch = str.match(/^hsla?\(\s*([\d.]+)[\s,]+([\d.]+)%?[\s,]+([\d.]+)%?/);
+  if (hslMatch) {
+    return {
+      h: Math.round(parseFloat(hslMatch[1])),
+      s: Math.round(parseFloat(hslMatch[2])),
+      l: Math.round(parseFloat(hslMatch[3])),
+    };
+  }
+
+  // rgb(r, g, b) / rgba(r, g, b, a) — comma or space separated
+  const rgbMatch = str.match(/^rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)/);
+  if (rgbMatch) {
+    return rgbToHsl(
+      parseFloat(rgbMatch[1]),
+      parseFloat(rgbMatch[2]),
+      parseFloat(rgbMatch[3]),
+    );
+  }
+
+  return { h: 0, s: 0, l: 50 };
+}
+
 export function hslToHex(h: number, s: number, l: number): string {
   const sNorm = s / 100;
   const lNorm = l / 100;
@@ -65,6 +115,11 @@ export function hslToHex(h: number, s: number, l: number): string {
   };
 
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
+
+// Compute visual saturation: desaturate only when slider value is near white (< 10)
+export function getVisualSaturation(sliderValue: number, baseSaturation: number): number {
+  return sliderValue < 10 ? (sliderValue / 10) * baseSaturation : baseSaturation;
 }
 
 export function hslToString(h: number, s: number, l: number): string {
@@ -107,10 +162,7 @@ export function createColorOutput(
  * 3. Local sort: Sort each layer by Hue for a rainbow effect.
  */
 export function organizeColorsIntoLayers(
-  colors: { h: number; s: number; l: number }[],
-  coreSize: number, // unused in this algo but kept for signature compat
-  petalSize: number, // unused in this algo
-  gap: number // unused in this algo
+  colors: { h: number; s: number; l: number }[]
 ): { h: number; s: number; l: number }[][] {
   if (!colors || colors.length === 0) return [];
 
@@ -160,11 +212,6 @@ export function organizeColorsIntoLayers(
 
   for (let i = 0; i < numLayers; i++) {
     const count = layerCounts[i];
-    // If for some edge case count is 0 (e.g. total=1), just put it in first layer
-    if (count === 0 && i === 0 && total > 0) {
-       // Should be handled by remainder logic usually, but safety check
-    }
-    
     const itemsForThisLayer = sortedByLightness.slice(currentIndex, currentIndex + count);
     
     // Sort by Hue for rainbow effect

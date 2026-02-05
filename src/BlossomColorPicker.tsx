@@ -7,9 +7,8 @@ import React, {
 } from 'react';
 import { BlossomColorPickerValue, BlossomColorPickerProps } from './types';
 import {
-  OUTER_COLORS,
-  INNER_COLORS,
-  BLOOM_CUBIC_BEZIER,
+  DEFAULT_COLORS,
+  BLOOM_EASING,
   HOVER_DELAY,
   PETAL_STAGGER,
   BAR_GAP,
@@ -23,6 +22,8 @@ import {
   hslaToString,
   createColorOutput,
   organizeColorsIntoLayers,
+  getVisualSaturation,
+  parseColor,
 } from './utils';
 import { Petal, ColorBar, ArcSlider } from './components';
 
@@ -35,8 +36,6 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
     layer: 'outer',
   },
   colors,
-  innerColors: propInnerColors,
-  outerColors: propOuterColors,
   onChange,
   onCollapse,
   disabled = false,
@@ -46,24 +45,32 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
   showAlphaSlider = true,
   coreSize = 28,
   petalSize = 32,
+  showCoreColor = true,
   className = '',
 }) => {
+  // Normalize user input (hex/rgb/hsl strings or HSL objects) → { h, s, l }[]
+  const normalizedColors = useMemo(
+    () => colors && colors.length > 0 ? colors.map(parseColor) : DEFAULT_COLORS,
+    [colors]
+  );
+
   // Determine layers
-  const layers = useMemo(() => {
-    if (colors && colors.length > 0) {
-      // Automatic layering
-      return organizeColorsIntoLayers(colors, coreSize, petalSize, BAR_GAP);
-    } else {
-      // Legacy or Default 2-layer mode
-      // Layer 0 is Inner (closest to core), Layer 1 is Outer
-      const inner = propInnerColors || INNER_COLORS;
-      const outer = propOuterColors || OUTER_COLORS;
-      return [inner, outer];
-    }
-  }, [colors, propInnerColors, propOuterColors, coreSize, petalSize]);
+  const layers = useMemo(
+    () => organizeColorsIntoLayers(normalizedColors),
+    [normalizedColors]
+  );
 
   // Flatten colors for search/indexing
   const allColors = useMemo(() => layers.flat(), [layers]);
+
+  // Pre-compute prefix sums for petal stagger offsets
+  const layerPrefixCounts = useMemo(() => {
+    const counts: number[] = [0];
+    for (let i = 1; i < layers.length; i++) {
+      counts.push(counts[i - 1] + layers[i - 1].length);
+    }
+    return counts;
+  }, [layers]);
 
   const [internalValue, setInternalValue] = useState<BlossomColorPickerValue>(
     value ?? defaultValue
@@ -87,8 +94,11 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Calculate max container size based on the outermost layer
-  const baseLayoutRadius = coreSize / 2 + petalSize * 0.38 - 2;
-  const layoutStep = petalSize * 0.55;
+  // Compress layout when there are 3+ layers so petals stay closer to core
+  const baseCoeff = layers.length <= 2 ? 0.38 : 0.28;
+  const stepCoeff = layers.length <= 2 ? 0.55 : 0.42;
+  const baseLayoutRadius = coreSize / 2 + petalSize * baseCoeff - 2;
+  const layoutStep = petalSize * stepCoeff;
   const maxLayerRadius = baseLayoutRadius + (layers.length - 1) * layoutStep;
 
   // The bar is drawn outside the last layer
@@ -113,11 +123,7 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
       const lightness = sliderValueToLightness(sliderValue);
       const selectedPetal = allColors.find(c => c.h === currentValue.hue);
       const pBaseSaturation = selectedPetal?.s ?? 70;
-      // Visual saturation logic: only desaturate if very bright (slider < 10)
-      const visualSaturation =
-        sliderValue < 10
-          ? (sliderValue / 10) * pBaseSaturation
-          : pBaseSaturation;
+      const visualSaturation = getVisualSaturation(sliderValue, pBaseSaturation);
 
       onCollapse(
         createColorOutput(
@@ -197,9 +203,7 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
   const handleSliderChange = useCallback(
     (sliderValue: number) => {
       const lightness = sliderValueToLightness(sliderValue);
-      // Use consistent saturation logic: keep vivid unless near white
-      const visualSaturation =
-        sliderValue < 10 ? (sliderValue / 10) * baseSaturation : baseSaturation;
+      const visualSaturation = getVisualSaturation(sliderValue, baseSaturation);
 
       const newValue = {
         ...currentValue,
@@ -260,13 +264,14 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
 
   // Core circle color - White when expanded, selected color when collapsed
   const coreColor = useMemo(() => {
-    if (isExpanded) return '#FFFFFF';
+    if (isExpanded && !showCoreColor) return '#FFFFFF';
     const lightness =
       currentValue.lightness ?? sliderValueToLightness(currentValue.saturation);
     const saturation = currentValue.originalSaturation ?? baseSaturation;
     return hslToHex(currentValue.hue, saturation, lightness);
   }, [
     isExpanded,
+    showCoreColor,
     currentValue.hue,
     currentValue.lightness,
     currentValue.originalSaturation,
@@ -293,7 +298,7 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
           left: '50%',
           top: '50%',
           transform: 'translate(-50%, -50%)',
-          transition: `width ${animationDuration}ms ${BLOOM_CUBIC_BEZIER}, height ${animationDuration}ms ${BLOOM_CUBIC_BEZIER}`,
+          transition: `width ${animationDuration}ms ${BLOOM_EASING}, height ${animationDuration}ms ${BLOOM_EASING}`,
           zIndex: isExpanded ? 50 : 0,
         }}
         onMouseEnter={handleMouseEnter}
@@ -307,7 +312,7 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
             height: (barRadius + BAR_WIDTH / 2) * 2,
             opacity: isExpanded ? 1 : 0,
             transform: isExpanded ? 'scale(1)' : 'scale(0.8)',
-            transition: `opacity ${animationDuration}ms ${BLOOM_CUBIC_BEZIER}, transform ${animationDuration}ms ${BLOOM_CUBIC_BEZIER}`,
+            transition: `opacity ${animationDuration}ms ${BLOOM_EASING}, transform ${animationDuration}ms ${BLOOM_EASING}`,
             zIndex: 0,
           }}
         >
@@ -320,7 +325,7 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
                 currentLightness,
                 15
               ),
-              transition: 'background-color 300ms ease',
+              transition: `background-color ${animationDuration}ms ease`,
             }}
           />
         </div>
@@ -328,11 +333,7 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
         {/* Color Bar */}
         <ColorBar
           hue={currentValue.hue}
-          saturation={
-            currentValue.saturation < 10
-              ? (currentValue.saturation / 10) * baseSaturation
-              : baseSaturation
-          }
+          saturation={getVisualSaturation(currentValue.saturation, baseSaturation)}
           lightness={currentLightness}
           alpha={currentValue.alpha}
           radius={barRadius}
@@ -344,9 +345,7 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
         {/* Dynamic Layers */}
         {layers.map((layerColors, layerIdx) => {
           const radius = baseLayoutRadius + layerIdx * layoutStep;
-          const previousItemsCount = layers
-            .slice(0, layerIdx)
-            .reduce((sum, layer) => sum + layer.length, 0);
+          const previousItemsCount = layerPrefixCounts[layerIdx];
 
           const totalPetals = layerColors.length;
           // Identify the bottom index (6 o'clock)
@@ -378,8 +377,6 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
           };
 
           return layerColors.map((color, index) => {
-            const isSelected = currentValue.hue === color.h;
-
             const isHovered =
               hoveredPetal?.layer === layerIdx && hoveredPetal?.index === index;
 
@@ -409,11 +406,8 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
                     pointerEvents="none"
                     hasShadow={false}
                     alpha={1}
-                    onClick={() => { }}
                   />
-
                   {/* Visual Right Half (Highest Z) */}
-
                   <Petal
                     hue={color.h}
                     saturation={color.s}
@@ -433,11 +427,8 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
                     pointerEvents="none"
                     hasShadow={false}
                     alpha={1}
-                    onClick={() => { }}
                   />
-
                   {/* Interaction Layer (Top of this petal's stack, Transparent) */}
-
                   <Petal
                     hue={color.h}
                     saturation={color.s}
@@ -463,9 +454,7 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
                 </React.Fragment>
               );
             }
-
             // Normal rendering (Full petal)
-
             return (
               <Petal
                 key={`layer-${layerIdx}-${color.h}-${index}`}
@@ -525,7 +514,7 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
             boxShadow: isExpanded
               ? '0 0 0 2px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.15)'
               : '0 2px 8px rgba(0,0,0,0.15)',
-            transition: `transform ${animationDuration}ms ${BLOOM_CUBIC_BEZIER}, box-shadow ${animationDuration}ms ${BLOOM_CUBIC_BEZIER}`,
+            transition: `transform ${animationDuration}ms ${BLOOM_EASING}, box-shadow ${animationDuration}ms ${BLOOM_EASING}`,
             zIndex: 1000,
           }}
           aria-label={`Current color: hue ${currentValue.hue}, alpha ${currentValue.alpha}%`}

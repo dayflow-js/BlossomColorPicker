@@ -1,8 +1,9 @@
 import './index.css';
 export { BlossomColorPicker, default } from './BlossomColorPicker';
-export { OUTER_COLORS, INNER_COLORS } from './constants';
-export { hexToHsl, hslToHex, lightnessToSliderValue } from './utils';
+export { DEFAULT_COLORS } from './constants';
+export { hexToHsl, hslToHex, rgbToHsl, parseColor, lightnessToSliderValue } from './utils';
 export type {
+  ColorInput,
   BlossomColorPickerValue,
   BlossomColorPickerColor,
   BlossomColorPickerProps,

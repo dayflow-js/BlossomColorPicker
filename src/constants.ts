@@ -22,7 +22,10 @@ export const INNER_COLORS = [
   { h: 116, s: 42, l: 87 }, // #D2ECD0
 ];
 
-export const BLOOM_CUBIC_BEZIER = 'cubic-bezier(0.22, 1, 0.36, 1)';
+export const DEFAULT_COLORS = [...INNER_COLORS, ...OUTER_COLORS];
+
+// Spring easing: fast ramp, ~6% overshoot, subtle rebound, settled by 68% of duration
+export const BLOOM_EASING = 'linear(0, 0.060 3%, 0.200 7%, 0.420 13%, 0.680 20%, 0.900 28%, 1.020 35%, 1.060 45%, 1.025 53%, 0.997 62%, 1.0 68%)';
 export const HOVER_DELAY = 100;
 export const PETAL_STAGGER = 20;
 

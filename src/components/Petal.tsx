@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BLOOM_CUBIC_BEZIER } from '../constants';
+import { BLOOM_EASING } from '../constants';
 import { hslToString, hslaToString } from '../utils';
 
 interface PetalProps {
@@ -19,7 +19,7 @@ interface PetalProps {
   isExternalHover?: boolean;
   pointerEvents?: 'auto' | 'none';
   hasShadow?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
 }
@@ -69,9 +69,6 @@ export const Petal: React.FC<PetalProps> = ({
 
   const scale = isHovered ? 1.1 : 1;
 
-  // Use the precise zIndex passed from the parent to maintain the "fan" overlap.
-  const effectiveZIndex = zIndex;
-
   const clipStyle = clip === 'left' 
     ? { clipPath: 'polygon(0% -10%, 60% -10%, 60% 110%, 0% 110%)' }
     : clip === 'right'
@@ -96,8 +93,8 @@ export const Petal: React.FC<PetalProps> = ({
           : 'translate(0, 0) scale(0)',
         opacity: isExpanded ? 1 : 0,
         filter: isHovered && !isInvisible ? 'brightness(1.1)' : 'brightness(1)',
-        transition: `transform ${animationDuration}ms ${BLOOM_CUBIC_BEZIER} ${isExpanded && !isHovered ? staggerDelay : 0}ms,
-                     opacity ${animationDuration}ms ${BLOOM_CUBIC_BEZIER} ${isExpanded && !isHovered ? staggerDelay : 0}ms,
+        transition: `transform ${animationDuration}ms ${BLOOM_EASING} ${isExpanded && !isHovered ? staggerDelay : 0}ms,
+                     opacity ${animationDuration}ms ${BLOOM_EASING} ${isExpanded && !isHovered ? staggerDelay : 0}ms,
                      background-color 200ms ease,
                      box-shadow 200ms ease,
                      filter 200ms ease`,
@@ -110,7 +107,7 @@ export const Petal: React.FC<PetalProps> = ({
         top: '50%',
         marginLeft: -petalSize / 2,
         marginTop: -petalSize / 2,
-        zIndex: effectiveZIndex, // Will be overridden by parent if zIndex prop is precise
+        zIndex,
         pointerEvents,
         ...clipStyle,
       }}

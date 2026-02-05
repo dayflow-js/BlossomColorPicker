@@ -1,6 +1,21 @@
-import React, { useRef, useState, useCallback, useEffect, useMemo } from 'react';
-import { BLOOM_CUBIC_BEZIER, ARC_GRADIENT_STEPS } from '../constants';
-import { sliderValueToLightness, hslToString } from '../utils';
+import React, { useId, useRef, useState, useCallback, useEffect, useMemo } from 'react';
+import { BLOOM_EASING, ARC_GRADIENT_STEPS } from '../constants';
+import { sliderValueToLightness, hslToString, getVisualSaturation } from '../utils';
+
+const polarToCartesian = (cx: number, cy: number, r: number, angleInDegrees: number) => {
+  const angleInRadians = (angleInDegrees * Math.PI) / 180;
+  return {
+    x: cx + r * Math.cos(angleInRadians),
+    y: cy + r * Math.sin(angleInRadians),
+  };
+};
+
+const describeArc = (cx: number, cy: number, r: number, startAng: number, endAng: number) => {
+  const start = polarToCartesian(cx, cy, r, startAng);
+  const end = polarToCartesian(cx, cy, r, endAng);
+  const largeArcFlag = Math.abs(endAng - startAng) > 180 ? '1' : '0';
+  return `M ${start.x} ${start.y} A ${r} ${r} 0 ${largeArcFlag} 1 ${end.x} ${end.y}`;
+};
 
 interface ArcSliderProps {
   value: number; // Slider value 0-100 (0=bright, 100=dark)
@@ -34,21 +49,6 @@ export const ArcSlider: React.FC<ArcSliderProps> = ({
   const endAngle = 30;    // Bottom of arc (dark)
   const strokeWidth = barWidth;
   const handleRadius = barWidth / 2;
-
-  const polarToCartesian = (cx: number, cy: number, r: number, angleInDegrees: number) => {
-    const angleInRadians = (angleInDegrees * Math.PI) / 180;
-    return {
-      x: cx + r * Math.cos(angleInRadians),
-      y: cy + r * Math.sin(angleInRadians),
-    };
-  };
-
-  const describeArc = (cx: number, cy: number, r: number, startAng: number, endAng: number) => {
-    const start = polarToCartesian(cx, cy, r, startAng);
-    const end = polarToCartesian(cx, cy, r, endAng);
-    const largeArcFlag = Math.abs(endAng - startAng) > 180 ? '1' : '0';
-    return `M ${start.x} ${start.y} A ${r} ${r} 0 ${largeArcFlag} 1 ${end.x} ${end.y}`;
-  };
 
   const svgSize = (arcRadius + handleRadius + strokeWidth) * 2 + 20;
   const center = svgSize / 2;
@@ -105,11 +105,8 @@ export const ArcSlider: React.FC<ArcSliderProps> = ({
     };
   }, [isDragging, calculateValueFromMouse]);
 
-  // Handle color based on current slider value
   const handleLightness = sliderValueToLightness(value);
-  // Keep saturation vivid (matching petal) instead of scaling linearly to 0.
-  // We only desaturate near the absolute white top (value close to 0)
-  const handleSaturation = value < 10 ? (value / 10) * baseSaturation : baseSaturation;
+  const handleSaturation = getVisualSaturation(value, baseSaturation);
   const handleColor = hslToString(hue, handleSaturation, handleLightness);
 
   // Generate gradient colors (like BlossomColorPicker)
@@ -120,16 +117,16 @@ export const ArcSlider: React.FC<ArcSliderProps> = ({
       // t=0: white (value=0)
       // t=1: dark vivid (value=100)
       
-      // Match handle logic: value < 10 ? (value/10)*baseSat : baseSat
-      // value = t * 100
-      const value = t * 100;
-      const saturation = value < 10 ? (value / 10) * baseSaturation : baseSaturation;
+      const saturation = getVisualSaturation(t * 100, baseSaturation);
       const lightness = 100 - t * 80; // 100 → 20
       return hslToString(hue, saturation, lightness);
     });
   }, [hue, baseSaturation]);
 
-  const gradientId = useMemo(() => `arc-gradient-${Math.random().toString(36).slice(2, 9)}`, []);
+  const gradientId = `arc-gradient-${useId()}`;
+
+  const gradientStart = polarToCartesian(center, center, arcRadius, startAngle);
+  const gradientEnd = polarToCartesian(center, center, arcRadius, endAngle);
 
   return (
     <svg
@@ -144,16 +141,16 @@ export const ArcSlider: React.FC<ArcSliderProps> = ({
         marginTop: -svgSize / 2,
         opacity: isExpanded ? 1 : 0,
         transform: isExpanded ? 'scale(1)' : 'scale(0.8)',
-        transition: `opacity ${animationDuration}ms ${BLOOM_CUBIC_BEZIER} ${animationDuration / 2}ms, transform ${animationDuration}ms ${BLOOM_CUBIC_BEZIER} ${animationDuration / 2}ms`,
+        transition: `opacity ${animationDuration}ms ${BLOOM_EASING} ${animationDuration / 2}ms, transform ${animationDuration}ms ${BLOOM_EASING} ${animationDuration / 2}ms`,
         zIndex: 50,
       }}
     >
       <defs>
         <linearGradient id={gradientId} gradientUnits="userSpaceOnUse"
-          x1={polarToCartesian(center, center, arcRadius, startAngle).x}
-          y1={polarToCartesian(center, center, arcRadius, startAngle).y}
-          x2={polarToCartesian(center, center, arcRadius, endAngle).x}
-          y2={polarToCartesian(center, center, arcRadius, endAngle).y}
+          x1={gradientStart.x}
+          y1={gradientStart.y}
+          x2={gradientEnd.x}
+          y2={gradientEnd.y}
         >
           {gradientColors.map((color, i) => (
             <stop

@@ -1,6 +1,20 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { BlossomColorPicker } from '../src';
 import { BlossomColorPickerValue } from '../src/types';
+
+const colorPalette = [
+  // --- Layer 1: Outermost (12 Colors) ---
+  "#EFB920", "#E89826", "#E07222", "#D64B29",
+  "#C92A2A", "#B82878", "#8A35A3", "#5F3DC4",
+  "#364FC7", "#2B78A5", "#3F8F75", "#72A848",
+  // --- Layer 2: Middle (12 Colors) ---
+  "#FCD752", "#FDBA50", "#FA9C4D", "#F6774F",
+  "#F15656", "#E756A6", "#B261CC", "#8966DF",
+  "#6586E5", "#69B5E2", "#77C9A2", "#A4D483",
+  // --- Layer 3: Innermost (8 Colors) ---
+  "#FDF1B6", "#FCE0CA", "#F8C8D4", "#F4C2D7",
+  "#DEC2E9", "#C6DEF5", "#B2DFDB", "#D2ECD0",
+];
 
 const Example = () => {
   const [color, setColor] = useState<BlossomColorPickerValue>({
@@ -19,20 +33,6 @@ const Example = () => {
     layer: 'outer'
   });
 
-  // Generate 32 colors to trigger a balanced 3-layer bloom
-  // Layer 0: ~4-5, Layer 1: ~6-10, Layer 2: rest
-  const manyColors = useMemo(() => {
-    const colors = [];
-    for (let i = 0; i < 32; i++) {
-      colors.push({
-        h: (i * 360) / 12, // Cycle hues
-        s: 70 + Math.random() * 20,
-        l: 30 + (i * 60) / 32, // Vary lightness from 30 to 90
-      });
-    }
-    return colors;
-  }, []);
-
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-6 space-y-8">
       {/* Basic Example */}
@@ -42,13 +42,13 @@ const Example = () => {
             <span className="text-lg font-semibold text-gray-800 tracking-tight">
               Color
             </span>
-            {/* <span className="text-xs text-gray-400">Default 2-layer set</span> */}
           </div>
           <BlossomColorPicker
             value={color}
             onChange={(newColor) => setColor(newColor)}
             coreSize={36}
             petalSize={36}
+            showCoreColor={false}
           />
         </div>
       </div>
@@ -60,11 +60,11 @@ const Example = () => {
             <span className="text-lg font-semibold text-gray-800 tracking-tight">
               3-Layer Bloom
             </span>
-            <span className="text-xs text-gray-400">30 colors auto-distributed</span>
+            <span className="text-xs text-gray-400">32 colors auto-distributed</span>
           </div>
           <BlossomColorPicker
             value={multiLayerColor}
-            colors={manyColors}
+            colors={colorPalette}
             onChange={(newColor) => setMultiLayerColor(newColor)}
             coreSize={36}
             petalSize={36}

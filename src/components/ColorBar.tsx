@@ -1,5 +1,5 @@
 import React from 'react';
-import { BLOOM_CUBIC_BEZIER } from '../constants';
+import { BLOOM_EASING } from '../constants';
 import { hslaToString } from '../utils';
 
 interface ColorBarProps {
@@ -38,7 +38,7 @@ export const ColorBar: React.FC<ColorBarProps> = ({
         marginTop: -size / 2,
         opacity: isExpanded ? 1 : 0,
         transform: isExpanded ? 'scale(1)' : 'scale(0.8)',
-        transition: `opacity ${animationDuration}ms ${BLOOM_CUBIC_BEZIER}, transform ${animationDuration}ms ${BLOOM_CUBIC_BEZIER}`,
+        transition: `opacity ${animationDuration}ms ${BLOOM_EASING}, transform ${animationDuration}ms ${BLOOM_EASING}`,
         zIndex: 5,
       }}
     >
