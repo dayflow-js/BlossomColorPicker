@@ -1,0 +1,41 @@
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
+import dts from 'vite-plugin-dts';
+import path from 'path';
+
+export default defineConfig({
+  plugins: [
+    react(),
+    tailwindcss(),
+    dts({
+      insertTypesEntry: true,
+      include: ['src'],
+    }),
+  ],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
+  build: {
+    lib: {
+      entry: path.resolve(__dirname, 'src/index.ts'),
+      name: 'BlossomColorPicker',
+      formats: ['es', 'umd'],
+      fileName: (format) => `index.${format === 'es' ? 'esm' : 'js'}`,
+    },
+    rollupOptions: {
+      external: ['react', 'react-dom'],
+      output: {
+        exports: 'named',
+        globals: {
+          react: 'React',
+          'react-dom': 'ReactDOM',
+        },
+      },
+    },
+    sourcemap: true,
+    emptyOutDir: true,
+  },
+});
