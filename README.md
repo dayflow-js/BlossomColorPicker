@@ -26,6 +26,8 @@ const MyComponent = () => {
 
 ## Props
 
+### `BlossomColorPickerProps`
+
 | Prop                | Type                                       | Default                                                   | Description                                                                                                                           |
 |:--------------------|:-------------------------------------------|:----------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------|
 | `value`             | `BlossomColorPickerValue`                  | -                                                         | Controlled value of the picker.                                                                                                       |
@@ -38,10 +40,39 @@ const MyComponent = () => {
 | `initialExpanded`   | `boolean`                                  | `false`                                                   | Whether the picker starts expanded.                                                                                                   |
 | `animationDuration` | `number`                                   | `300`                                                     | Duration of the blooming animation in ms.                                                                                             |
 | `showAlphaSlider`   | `boolean`                                  | `true`                                                    | Whether to show the saturation arc slider.                                                                                            |
-| `coreSize`          | `number`                                   | `32`                                                      | Diameter of the central circle and layout placeholder.                                                                                |
-| `petalSize`         | `number`                                   | `32`                                                      | Diameter of individual color petals.                                                                                                  |
+| `coreSize`          | `number`                                   | `28`                                                      | Diameter of the central circle in px.                                                                                                 |
+| `petalSize`         | `number`                                   | `32`                                                      | Diameter of individual color petals in px.                                                                                            |
 | `showCoreColor`     | `boolean`                                  | `true`                                                    | When true, the core shows the selected color while expanded.                                                                          |
 | `className`         | `string`                                   | `""`                                                      | Additional CSS class for the container.                                                                                               |
+
+### `BlossomColorPickerValue`
+
+The value object used for controlled / uncontrolled state.
+
+| Field               | Type                | Description                                        |
+|:--------------------|:--------------------|:---------------------------------------------------|
+| `hue`               | `number`            | Hue angle (0–360).                                 |
+| `saturation`        | `number`            | Slider position (0–100). 0 = bright, 100 = dark.   |
+| `lightness`         | `number?`           | HSL lightness (auto-computed from slider if omitted). |
+| `originalSaturation`| `number?`           | Base saturation of the selected petal.             |
+| `alpha`             | `number`            | Alpha value (0–100).                               |
+| `layer`             | `'inner' \| 'outer'`| Which layer the selected petal belongs to.         |
+
+### `BlossomColorPickerColor`
+
+Extends `BlossomColorPickerValue` — returned by `onChange` and `onCollapse`.
+
+| Field  | Type     | Description                             |
+|:-------|:---------|:----------------------------------------|
+| `hex`  | `string` | Hex color string, e.g. `"#6586E5"`.    |
+| `hsl`  | `string` | HSL string, e.g. `"hsl(225, 71%, 65%)"`. |
+| `hsla` | `string` | HSLA string with alpha.                 |
+
+### `ColorInput`
+
+```ts
+type ColorInput = string | { h: number; s: number; l: number };
+```
 
 ### Color Formats
 
