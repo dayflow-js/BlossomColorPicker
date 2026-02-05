@@ -43,7 +43,7 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
   initialExpanded = false,
   animationDuration = 300,
   showAlphaSlider = true,
-  coreSize = 28,
+  coreSize = 32,
   petalSize = 32,
   showCoreColor = true,
   className = '',
@@ -130,6 +130,7 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
           currentValue.hue,
           sliderValue,
           visualSaturation,
+          pBaseSaturation,
           lightness,
           currentValue.alpha,
           currentValue.layer
@@ -218,6 +219,7 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
           currentValue.hue,
           sliderValue,
           visualSaturation,
+          baseSaturation,
           lightness,
           currentValue.alpha,
           currentValue.layer
@@ -249,6 +251,7 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
           color.h,
           sliderValue,
           visualSaturation,
+          color.s,
           color.l,
           currentValue.alpha,
           layerStr

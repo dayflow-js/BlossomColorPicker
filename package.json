@@ -1,6 +1,6 @@
 {
   "name": "@dayflow/blossom-color-picker",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "type": "module",
   "description": "A beautiful, blooming color picker for Web",
   "main": "dist/index.js",
@@ -25,6 +25,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "build:demo": "vite build --config vite.config.demo.ts",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run typecheck && npm run build"
   },

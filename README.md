@@ -26,22 +26,22 @@ const MyComponent = () => {
 
 ## Props
 
-| Prop                | Type                                       | Default                                                   | Description                                            |
-|:--------------------|:-------------------------------------------|:----------------------------------------------------------|:-------------------------------------------------------|
-| `value`             | `BlossomColorPickerValue`                  | -                                                         | Controlled value of the picker.                        |
-| `defaultValue`      | `BlossomColorPickerValue`                  | `{ hue: 220, saturation: 70, alpha: 50, layer: 'outer' }` | Initial value for uncontrolled mode.                   |
+| Prop                | Type                                       | Default                                                   | Description                                                                                                                           |
+|:--------------------|:-------------------------------------------|:----------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------|
+| `value`             | `BlossomColorPickerValue`                  | -                                                         | Controlled value of the picker.                                                                                                       |
+| `defaultValue`      | `BlossomColorPickerValue`                  | `{ hue: 220, saturation: 70, alpha: 50, layer: 'outer' }` | Initial value for uncontrolled mode.                                                                                                  |
 | `colors`            | `ColorInput[]`                             | (Default 18-color set)                                    | Color list, automatically sorted and distributed into layers. Accepts hex, `rgb()`, `hsl()`, or `{ h, s, l }` objects — can be mixed. |
-| `onChange`          | `(color: BlossomColorPickerColor) => void` | -                                                         | Called when color changes.                             |
-| `onCollapse`        | `(color: BlossomColorPickerColor) => void` | -                                                         | Called when the picker collapses.                      |
-| `disabled`          | `boolean`                                  | `false`                                                   | Whether the picker is disabled.                        |
-| `openOnHover`       | `boolean`                                  | `false`                                                   | If true, opens the picker on hover instead of click.   |
-| `initialExpanded`   | `boolean`                                  | `false`                                                   | Whether the picker starts expanded.                    |
-| `animationDuration` | `number`                                   | `300`                                                     | Duration of the blooming animation in ms.              |
-| `showAlphaSlider`   | `boolean`                                  | `true`                                                    | Whether to show the saturation arc slider.             |
-| `coreSize`          | `number`                                   | `28`                                                      | Diameter of the central circle and layout placeholder. |
-| `petalSize`         | `number`                                   | `32`                                                      | Diameter of individual color petals.                   |
-| `showCoreColor`     | `boolean`                                  | `true`                                                    | When true, the core shows the selected color while expanded. |
-| `className`         | `string`                                   | `""`                                                      | Additional CSS class for the container.                |
+| `onChange`          | `(color: BlossomColorPickerColor) => void` | -                                                         | Called when color changes.                                                                                                            |
+| `onCollapse`        | `(color: BlossomColorPickerColor) => void` | -                                                         | Called when the picker collapses.                                                                                                     |
+| `disabled`          | `boolean`                                  | `false`                                                   | Whether the picker is disabled.                                                                                                       |
+| `openOnHover`       | `boolean`                                  | `false`                                                   | If true, opens the picker on hover instead of click.                                                                                  |
+| `initialExpanded`   | `boolean`                                  | `false`                                                   | Whether the picker starts expanded.                                                                                                   |
+| `animationDuration` | `number`                                   | `300`                                                     | Duration of the blooming animation in ms.                                                                                             |
+| `showAlphaSlider`   | `boolean`                                  | `true`                                                    | Whether to show the saturation arc slider.                                                                                            |
+| `coreSize`          | `number`                                   | `32`                                                      | Diameter of the central circle and layout placeholder.                                                                                |
+| `petalSize`         | `number`                                   | `32`                                                      | Diameter of individual color petals.                                                                                                  |
+| `showCoreColor`     | `boolean`                                  | `true`                                                    | When true, the core shows the selected color while expanded.                                                                          |
+| `className`         | `string`                                   | `""`                                                      | Additional CSS class for the container.                                                                                               |
 
 ### Color Formats
 

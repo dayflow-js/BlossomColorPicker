@@ -134,6 +134,7 @@ export function createColorOutput(
   hue: number,
   sliderValue: number,
   visualSaturation: number,
+  baseSaturation: number,
   lightness: number,
   alpha: number,
   layer: 'inner' | 'outer'
@@ -141,7 +142,7 @@ export function createColorOutput(
   return {
     hue,
     saturation: sliderValue, // State value (0-100)
-    originalSaturation: visualSaturation,
+    originalSaturation: baseSaturation, // Petal's intrinsic saturation (not slider-adjusted)
     lightness,
     alpha,
     layer,
