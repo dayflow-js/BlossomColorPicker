@@ -1,3 +1,5 @@
+"use client";
+
 import './index.css';
 export { BlossomColorPicker, default } from './BlossomColorPicker';
 export { DEFAULT_COLORS } from './constants';

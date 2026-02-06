@@ -29,12 +29,21 @@ export default defineConfig({
       fileName: (format) => `index.${format === 'es' ? 'esm.js' : 'js'}`,
     },
     rollupOptions: {
-      external: ['react', 'react-dom'],
+      external: [
+        'react',
+        'react-dom',
+        'react/jsx-runtime',
+        'react-is',
+        /^react\//,
+        /^react-dom\//,
+      ],
       output: {
+        banner: '"use client";',
         exports: 'named',
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM',
+          'react/jsx-runtime': 'jsxRuntime',
         },
       },
     },
