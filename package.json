@@ -1,6 +1,6 @@
 {
   "name": "@dayflow/blossom-color-picker",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "type": "module",
   "description": "A beautiful, blooming color picker for Web",
   "main": "dist/index.js",
