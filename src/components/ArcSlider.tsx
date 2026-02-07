@@ -1,8 +1,24 @@
-import React, { useId, useRef, useState, useCallback, useEffect, useMemo } from 'react';
+import React, {
+  useId,
+  useRef,
+  useState,
+  useCallback,
+  useEffect,
+  useMemo,
+} from 'react';
 import { BLOOM_EASING, ARC_GRADIENT_STEPS } from '../constants';
-import { sliderValueToLightness, hslToString, getVisualSaturation } from '../utils';
+import {
+  sliderValueToLightness,
+  hslToString,
+  getVisualSaturation,
+} from '../utils';
 
-const polarToCartesian = (cx: number, cy: number, r: number, angleInDegrees: number) => {
+const polarToCartesian = (
+  cx: number,
+  cy: number,
+  r: number,
+  angleInDegrees: number
+) => {
   const angleInRadians = (angleInDegrees * Math.PI) / 180;
   return {
     x: cx + r * Math.cos(angleInRadians),
@@ -10,7 +26,13 @@ const polarToCartesian = (cx: number, cy: number, r: number, angleInDegrees: num
   };
 };
 
-const describeArc = (cx: number, cy: number, r: number, startAng: number, endAng: number) => {
+const describeArc = (
+  cx: number,
+  cy: number,
+  r: number,
+  startAng: number,
+  endAng: number
+) => {
   const start = polarToCartesian(cx, cy, r, startAng);
   const end = polarToCartesian(cx, cy, r, endAng);
   const largeArcFlag = Math.abs(endAng - startAng) > 180 ? '1' : '0';
@@ -27,6 +49,7 @@ interface ArcSliderProps {
   sliderOffset: number;
   animationDuration: number;
   onChange: (value: number) => void;
+  position?: 'top' | 'bottom' | 'left' | 'right';
 }
 
 export const ArcSlider: React.FC<ArcSliderProps> = ({
@@ -39,14 +62,40 @@ export const ArcSlider: React.FC<ArcSliderProps> = ({
   sliderOffset,
   animationDuration,
   onChange,
+  position = 'right',
 }) => {
   const sliderRef = useRef<SVGSVGElement>(null);
   const [isDragging, setIsDragging] = useState(false);
 
-  // Arc slider on the RIGHT side of the bar
+  // Map position to center angle
+  const centerAngle = useMemo(() => {
+    switch (position) {
+      case 'top':
+        return -90;
+      case 'bottom':
+        return 90;
+      case 'left':
+        return 180;
+      case 'right':
+      default:
+        return 0;
+    }
+  }, [position]);
+
   const arcRadius = barRadius + sliderOffset;
-  const startAngle = -30; // Top of arc (bright/white)
-  const endAngle = 30;    // Bottom of arc (dark)
+  const halfSweep = 30; // 60 degree total sweep
+
+  // Define drawing angles (Always clockwise for describeArc)
+  // Right: -30 to 30. Left: 150 to 210. Top: -120 to -60. Bottom: 60 to 120.
+  const drawStartAngle = centerAngle - halfSweep;
+  const drawEndAngle = centerAngle + halfSweep;
+
+  // Define value mapping angles (0% -> 100%)
+  // For 'left', we want 0% (Light) at Top (210) and 100% (Dark) at Bottom (150).
+  // For others, we keep standard clockwise (Left-to-Right or Top-to-Bottom).
+  const valStartAngle = position === 'left' ? drawEndAngle : drawStartAngle;
+  const valEndAngle = position === 'left' ? drawStartAngle : drawEndAngle;
+
   const strokeWidth = barWidth;
   const handleRadius = barWidth / 2;
 
@@ -54,7 +103,8 @@ export const ArcSlider: React.FC<ArcSliderProps> = ({
   const center = svgSize / 2;
 
   // Map slider value (0-100) to arc angle
-  const handleAngle = startAngle + (value / 100) * (endAngle - startAngle);
+  const handleAngle =
+    valStartAngle + (value / 100) * (valEndAngle - valStartAngle);
   const handlePos = polarToCartesian(center, center, arcRadius, handleAngle);
 
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
@@ -62,28 +112,53 @@ export const ArcSlider: React.FC<ArcSliderProps> = ({
     setIsDragging(true);
   }, []);
 
-  const calculateValueFromMouse = useCallback((e: MouseEvent | TouchEvent) => {
-    if (!sliderRef.current) return;
+  const calculateValueFromMouse = useCallback(
+    (e: MouseEvent | TouchEvent) => {
+      if (!sliderRef.current) return;
 
-    const rect = sliderRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
+      const rect = sliderRef.current.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
 
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
 
-    const dx = clientX - centerX;
-    const dy = clientY - centerY;
-    let angle = Math.atan2(dy, dx) * (180 / Math.PI);
+      const dx = clientX - centerX;
+      const dy = clientY - centerY;
+      let angle = Math.atan2(dy, dx) * (180 / Math.PI);
 
-    // Clamp angle to arc range
-    if (angle < startAngle) angle = startAngle;
-    if (angle > endAngle) angle = endAngle;
+      // Normalize angle relative to centerAngle
+      let normalizedAngle = angle - centerAngle;
+      while (normalizedAngle > 180) normalizedAngle -= 360;
+      while (normalizedAngle < -180) normalizedAngle += 360;
 
-    // Convert angle to slider value (0-100)
-    const newValue = ((angle - startAngle) / (endAngle - startAngle)) * 100;
-    onChange(Math.round(Math.max(0, Math.min(100, newValue))));
-  }, [onChange, startAngle, endAngle]);
+      // Clamp to arc range [-halfSweep, halfSweep]
+      normalizedAngle = Math.max(
+        -halfSweep,
+        Math.min(halfSweep, normalizedAngle)
+      );
+
+      // Convert to 0-100 based on mapping
+      // If position is left, range is inverted in value terms relative to angle
+      // valStart (Top, +30 relative to center) -> valEnd (Bottom, -30 relative to center)
+      // normalizedAngle is from -30 to +30.
+
+      let newValue;
+      if (position === 'left') {
+        // centerAngle is 180.
+        // angle is ~210 (+30 relative) -> value 0.
+        // angle is ~150 (-30 relative) -> value 100.
+        // normalizedAngle: +30 -> 0, -30 -> 100.
+        newValue = ((halfSweep - normalizedAngle) / (2 * halfSweep)) * 100;
+      } else {
+        // Standard: -30 -> 0, +30 -> 100.
+        newValue = ((normalizedAngle + halfSweep) / (2 * halfSweep)) * 100;
+      }
+
+      onChange(Math.round(Math.max(0, Math.min(100, newValue))));
+    },
+    [onChange, centerAngle, halfSweep, position]
+  );
 
   useEffect(() => {
     if (!isDragging) return;
@@ -116,7 +191,7 @@ export const ArcSlider: React.FC<ArcSliderProps> = ({
       const t = i / (ARC_GRADIENT_STEPS - 1); // 0 (top) to 1 (bottom)
       // t=0: white (value=0)
       // t=1: dark vivid (value=100)
-      
+
       const saturation = getVisualSaturation(t * 100, baseSaturation);
       const lightness = 100 - t * 80; // 100 → 20
       return hslToString(hue, saturation, lightness);
@@ -125,8 +200,14 @@ export const ArcSlider: React.FC<ArcSliderProps> = ({
 
   const gradientId = `arc-gradient-${useId()}`;
 
-  const gradientStart = polarToCartesian(center, center, arcRadius, startAngle);
-  const gradientEnd = polarToCartesian(center, center, arcRadius, endAngle);
+  // Gradient follows value direction: 0% -> 100%
+  const gradientStart = polarToCartesian(
+    center,
+    center,
+    arcRadius,
+    valStartAngle
+  );
+  const gradientEnd = polarToCartesian(center, center, arcRadius, valEndAngle);
 
   return (
     <svg
@@ -146,7 +227,9 @@ export const ArcSlider: React.FC<ArcSliderProps> = ({
       }}
     >
       <defs>
-        <linearGradient id={gradientId} gradientUnits="userSpaceOnUse"
+        <linearGradient
+          id={gradientId}
+          gradientUnits="userSpaceOnUse"
           x1={gradientStart.x}
           y1={gradientStart.y}
           x2={gradientEnd.x}
@@ -164,7 +247,7 @@ export const ArcSlider: React.FC<ArcSliderProps> = ({
 
       {/* Background track */}
       <path
-        d={describeArc(center, center, arcRadius, startAngle, endAngle)}
+        d={describeArc(center, center, arcRadius, drawStartAngle, drawEndAngle)}
         fill="none"
         stroke="rgba(0,0,0,0.06)"
         strokeWidth={strokeWidth}
@@ -173,7 +256,7 @@ export const ArcSlider: React.FC<ArcSliderProps> = ({
 
       {/* Gradient overlay */}
       <path
-        d={describeArc(center, center, arcRadius, startAngle, endAngle)}
+        d={describeArc(center, center, arcRadius, drawStartAngle, drawEndAngle)}
         fill="none"
         stroke={`url(#${gradientId})`}
         strokeWidth={strokeWidth}
@@ -196,7 +279,9 @@ export const ArcSlider: React.FC<ArcSliderProps> = ({
         className="pointer-events-auto cursor-grab active:cursor-grabbing"
         style={{
           filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
-          transition: isDragging ? 'none' : `cx ${animationDuration / 3}ms ease, cy ${animationDuration / 3}ms ease`,
+          transition: isDragging
+            ? 'none'
+            : `cx ${animationDuration / 3}ms ease, cy ${animationDuration / 3}ms ease`,
         }}
         onMouseDown={handleMouseDown}
         onTouchStart={(e) => {

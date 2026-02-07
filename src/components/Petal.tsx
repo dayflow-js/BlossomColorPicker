@@ -14,6 +14,7 @@ interface PetalProps {
   animationDuration: number;
   staggerDelay: number;
   zIndex: number;
+  rotationOffset?: number;
   alpha?: number;
   clip?: 'left' | 'right';
   isExternalHover?: boolean;
@@ -44,6 +45,7 @@ export const Petal: React.FC<PetalProps> = ({
   onClick,
   onMouseEnter,
   onMouseLeave,
+  rotationOffset = 0,
 }) => {
   const [internalHover, setInternalHover] = useState(false);
   const isHovered = isExternalHover ?? internalHover;
@@ -58,22 +60,24 @@ export const Petal: React.FC<PetalProps> = ({
     onMouseLeave?.();
   };
 
-  const angle = (index / totalPetals) * 360 - 90; // Start from top (12 o'clock)
+  const angle = (index / totalPetals) * 360 - 90 + rotationOffset; // Start from top (12 o'clock)
   const radian = (angle * Math.PI) / 180;
   const x = Math.cos(radian) * radius;
   const y = Math.sin(radian) * radius;
 
-  const color = alpha < 1
-    ? hslaToString(hue, saturation, lightness, alpha * 100)
-    : hslToString(hue, saturation, lightness);
+  const color =
+    alpha < 1
+      ? hslaToString(hue, saturation, lightness, alpha * 100)
+      : hslToString(hue, saturation, lightness);
 
   const scale = isHovered ? 1.1 : 1;
 
-  const clipStyle = clip === 'left' 
-    ? { clipPath: 'polygon(0% -10%, 60% -10%, 60% 110%, 0% 110%)' }
-    : clip === 'right'
-      ? { clipPath: 'polygon(40% -10%, 100% -10%, 100% 110%, 40% 110%)' }
-      : {};
+  const clipStyle =
+    clip === 'left'
+      ? { clipPath: 'polygon(0% -10%, 60% -10%, 60% 110%, 0% 110%)' }
+      : clip === 'right'
+        ? { clipPath: 'polygon(40% -10%, 100% -10%, 100% 110%, 40% 110%)' }
+        : {};
 
   const isInvisible = alpha === 0;
 
@@ -98,11 +102,12 @@ export const Petal: React.FC<PetalProps> = ({
                      background-color 200ms ease,
                      box-shadow 200ms ease,
                      filter 200ms ease`,
-        boxShadow: hasShadow && !isInvisible
-          ? (isHovered
+        boxShadow:
+          hasShadow && !isInvisible
+            ? isHovered
               ? '0 4px 12px rgba(0,0,0,0.25)'
-              : '0 2px 6px rgba(0,0,0,0.15)')
-          : 'none',
+              : '0 2px 6px rgba(0,0,0,0.15)'
+            : 'none',
         left: '50%',
         top: '50%',
         marginLeft: -petalSize / 2,

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, {
   useState,
@@ -27,12 +27,20 @@ import {
   getVisualSaturation,
   parseColor,
 } from './utils';
+import {
+  calculateLayerRadii,
+  calculateLayerRotations,
+  calculateBarRadius,
+  calculateContainerSize,
+  getPetalZIndex,
+} from './layout';
+import { useAdaptivePosition } from './hooks/useAdaptivePosition';
 import { Petal, ColorBar, ArcSlider } from './components';
 
 export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
   value,
   defaultValue = {
-    hue: 220,
+    hue: 330,
     saturation: 70,
     alpha: 50,
     layer: 'outer',
@@ -48,11 +56,14 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
   coreSize = 32,
   petalSize = 32,
   showCoreColor = true,
+  sliderPosition,
+  adaptivePositioning = true,
   className = '',
 }) => {
   // Normalize user input (hex/rgb/hsl strings or HSL objects) → { h, s, l }[]
   const normalizedColors = useMemo(
-    () => colors && colors.length > 0 ? colors.map(parseColor) : DEFAULT_COLORS,
+    () =>
+      colors && colors.length > 0 ? colors.map(parseColor) : DEFAULT_COLORS,
     [colors]
   );
 
@@ -80,8 +91,8 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
 
   const currentValue = value ?? internalValue;
 
-  const [isExpanded, setIsExpanded] = useState(initialExpanded);
   const [isHovering, setIsHovering] = useState(false);
+
   const [hoveredPetal, setHoveredPetal] = useState<{
     layer: number;
     index: number;
@@ -91,24 +102,44 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
     setIsExpanded(initialExpanded);
   }, [initialExpanded]);
 
-  const containerRef = useRef<HTMLDivElement>(null);
   const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Calculate max container size based on the outermost layer
-  // Compress layout when there are 3+ layers so petals stay closer to core
-  const baseCoeff = layers.length <= 2 ? 0.38 : 0.28;
-  const stepCoeff = layers.length <= 2 ? 0.55 : 0.42;
-  const baseLayoutRadius = coreSize / 2 + petalSize * baseCoeff - 2;
-  const layoutStep = petalSize * stepCoeff;
-  const maxLayerRadius = baseLayoutRadius + (layers.length - 1) * layoutStep;
+  // Calculate individual layer radii using Geometric Nesting with aggressive packing
+  const layerRadii = useMemo(
+    () => calculateLayerRadii(layers, coreSize, petalSize),
+    [layers, coreSize, petalSize]
+  );
+
+  // Calculate rotation offsets to stagger layers
+  const layerRotations = useMemo(
+    () => calculateLayerRotations(layers),
+    [layers]
+  );
 
   // The bar is drawn outside the last layer
-  const barRadius = maxLayerRadius + petalSize / 2 + BAR_GAP;
+  const barRadius = calculateBarRadius(layerRadii, petalSize, coreSize, BAR_GAP);
 
-  const containerSize = showAlphaSlider
-    ? (barRadius + SLIDER_OFFSET + BAR_WIDTH / 2) * 2 + 12
-    : (barRadius + BAR_WIDTH / 2) * 2 + 12;
+  const containerSize = calculateContainerSize(
+    barRadius,
+    BAR_WIDTH,
+    showAlphaSlider,
+    SLIDER_OFFSET
+  );
+
+  const [isExpanded, setIsExpanded] = useState(initialExpanded);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Handle auto-positioning and viewport shifting
+  const { effectivePosition, shiftOffset } = useAdaptivePosition({
+    isExpanded,
+    containerRef,
+    containerSize,
+    sliderPosition,
+    adaptivePositioning,
+  });
 
   const prevExpandedRef = useRef(isExpanded);
 
@@ -123,9 +154,12 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
     if (prevExpandedRef.current && !isExpanded && onCollapse) {
       const sliderValue = currentValue.saturation;
       const lightness = sliderValueToLightness(sliderValue);
-      const selectedPetal = allColors.find(c => c.h === currentValue.hue);
+      const selectedPetal = allColors.find((c) => c.h === currentValue.hue);
       const pBaseSaturation = selectedPetal?.s ?? 70;
-      const visualSaturation = getVisualSaturation(sliderValue, pBaseSaturation);
+      const visualSaturation = getVisualSaturation(
+        sliderValue,
+        pBaseSaturation
+      );
 
       onCollapse(
         createColorOutput(
@@ -190,7 +224,7 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
 
   const handleCoreClick = useCallback(() => {
     if (disabled) return;
-    setIsExpanded(prev => !prev);
+    setIsExpanded((prev) => !prev);
   }, [disabled]);
 
   // Get base saturation from selected petal
@@ -198,7 +232,7 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
     if (currentValue.originalSaturation !== undefined) {
       return currentValue.originalSaturation;
     }
-    const selectedColor = allColors.find(c => c.h === currentValue.hue);
+    const selectedColor = allColors.find((c) => c.h === currentValue.hue);
     return selectedColor?.s ?? 70;
   }, [currentValue.hue, currentValue.originalSaturation, allColors]);
 
@@ -302,8 +336,8 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
           height: isExpanded ? containerSize : coreSize,
           left: '50%',
           top: '50%',
-          transform: 'translate(-50%, -50%)',
-          transition: `width ${animationDuration}ms ${BLOOM_EASING}, height ${animationDuration}ms ${BLOOM_EASING}`,
+          transform: `translate(calc(-50% + ${shiftOffset.x}px), calc(-50% + ${shiftOffset.y}px))`,
+          transition: `width ${animationDuration}ms ${BLOOM_EASING}, height ${animationDuration}ms ${BLOOM_EASING}, transform ${animationDuration}ms ${BLOOM_EASING}`,
           zIndex: isExpanded ? 50 : 0,
         }}
         onMouseEnter={handleMouseEnter}
@@ -311,7 +345,7 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
       >
         {/* Background fill */}
         <div
-          className="absolute rounded-full pointer-events-none bg-white dark:bg-slate-900"
+          className="absolute rounded-full pointer-events-none bg-white"
           style={{
             width: (barRadius + BAR_WIDTH / 2) * 2,
             height: (barRadius + BAR_WIDTH / 2) * 2,
@@ -338,7 +372,10 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
         {/* Color Bar */}
         <ColorBar
           hue={currentValue.hue}
-          saturation={getVisualSaturation(currentValue.saturation, baseSaturation)}
+          saturation={getVisualSaturation(
+            currentValue.saturation,
+            baseSaturation
+          )}
           lightness={currentLightness}
           alpha={currentValue.alpha}
           radius={barRadius}
@@ -349,43 +386,19 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
 
         {/* Dynamic Layers */}
         {layers.map((layerColors, layerIdx) => {
-          const radius = baseLayoutRadius + layerIdx * layoutStep;
+          const radius = layerRadii[layerIdx];
+          const rotation = layerRotations[layerIdx];
           const previousItemsCount = layerPrefixCounts[layerIdx];
 
           const totalPetals = layerColors.length;
           // Identify the bottom index (6 o'clock)
           const bottomIndex = Math.floor(totalPetals / 2);
-
-          // Helper to get Z-Index for the "Fan" loop trick
-          // Goal: Continuous overlap (N covers N+1)
-          // Sequence: BottomRight(Top) -> Next -> ... -> BottomLeft(Bottom)
-          const getZIndex = (
-            index: number,
-            isBottomLeft: boolean = false,
-            isBottomRight: boolean = false
-          ) => {
-            const baseZ = (layers.length - layerIdx) * 100; // Base layer Z
-            const maxLocalZ = totalPetals + 10;
-
-            if (index === bottomIndex) {
-              if (isBottomRight) return baseZ + maxLocalZ; // Top of stack (6 o'clock Right)
-              if (isBottomLeft) return baseZ; // Bottom of stack (6 o'clock Left)
-              return baseZ;
-            }
-
-            // Steps from Bottom (clockwise)
-            // 6->0, 7->1, ..., 0->6, 1->7, ..., 5->11
-            // By using +steps, Z increases clockwise, creating counter-clockwise overlap (1 > 0 > 11)
-            let steps = (index - bottomIndex + totalPetals) % totalPetals;
-
-            return baseZ + steps;
-          };
+          const totalLayers = layers.length;
+          const baseZ = (totalLayers - layerIdx) * 100;
 
           return layerColors.map((color, index) => {
             const isHovered =
               hoveredPetal?.layer === layerIdx && hoveredPetal?.index === index;
-
-            const baseZ = (layers.length - layerIdx) * 100;
 
             // Special handling for the bottom petal to create the loop trick
             if (index === bottomIndex) {
@@ -405,11 +418,12 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
                     staggerDelay={
                       previousItemsCount * PETAL_STAGGER + index * PETAL_STAGGER
                     }
-                    zIndex={getZIndex(index, true, false)}
+                    zIndex={getPetalZIndex(index, bottomIndex, totalPetals, layerIdx, totalLayers, true, false)}
                     clip="left"
                     isExternalHover={isHovered}
                     pointerEvents="none"
                     hasShadow={false}
+                    rotationOffset={rotation}
                     alpha={1}
                   />
                   {/* Visual Right Half (Highest Z) */}
@@ -426,11 +440,12 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
                     staggerDelay={
                       previousItemsCount * PETAL_STAGGER + index * PETAL_STAGGER
                     }
-                    zIndex={getZIndex(index, false, true)}
+                    zIndex={getPetalZIndex(index, bottomIndex, totalPetals, layerIdx, totalLayers, false, true)}
                     clip="right"
                     isExternalHover={isHovered}
                     pointerEvents="none"
                     hasShadow={false}
+                    rotationOffset={rotation}
                     alpha={1}
                   />
                   {/* Interaction Layer (Top of this petal's stack, Transparent) */}
@@ -450,6 +465,7 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
                     zIndex={baseZ + totalPetals + 20} // Interaction needs to be on top of the local stack
                     alpha={0} // Invisible but interactive
                     hasShadow={false}
+                    rotationOffset={rotation}
                     onClick={() => handlePetalClick(color, layerIdx)}
                     onMouseEnter={() =>
                       setHoveredPetal({ layer: layerIdx, index })
@@ -475,9 +491,10 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
                 staggerDelay={
                   previousItemsCount * PETAL_STAGGER + index * PETAL_STAGGER
                 }
-                zIndex={getZIndex(index)}
+                zIndex={getPetalZIndex(index, bottomIndex, totalPetals, layerIdx, totalLayers)}
                 isExternalHover={isHovered}
                 hasShadow={false}
+                rotationOffset={rotation}
                 onClick={() => handlePetalClick(color, layerIdx)}
                 onMouseEnter={() => setHoveredPetal({ layer: layerIdx, index })}
                 onMouseLeave={() => setHoveredPetal(null)}
@@ -498,6 +515,7 @@ export const BlossomColorPicker: React.FC<BlossomColorPickerProps> = ({
             sliderOffset={SLIDER_OFFSET}
             animationDuration={animationDuration}
             onChange={handleSliderChange}
+            position={effectivePosition}
           />
         )}
 

@@ -35,5 +35,9 @@ export interface BlossomColorPickerProps {
   petalSize?: number;
   /** When true, the core circle displays the selected color even while expanded. Defaults to true. */
   showCoreColor?: boolean;
+  /** Position of the arc slider. Defaults to 'right'. */
+  sliderPosition?: 'top' | 'bottom' | 'left' | 'right';
+  /** Automatically shift the picker and adjust slider position to stay within viewport. Defaults to true. */
+  adaptivePositioning?: boolean;
   className?: string;
 }

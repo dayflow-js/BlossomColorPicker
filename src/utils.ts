@@ -36,16 +36,32 @@ export function hexToHsl(hex: string): { h: number; s: number; l: number } {
 
   let h_val = 0;
   switch (max) {
-    case r: h_val = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
-    case g: h_val = ((b - r) / d + 2) / 6; break;
-    case b: h_val = ((r - g) / d + 4) / 6; break;
+    case r:
+      h_val = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+      break;
+    case g:
+      h_val = ((b - r) / d + 2) / 6;
+      break;
+    case b:
+      h_val = ((r - g) / d + 4) / 6;
+      break;
   }
 
-  return { h: Math.round(h_val * 360), s: Math.round(s_val * 100), l: Math.round(l * 100) };
+  return {
+    h: Math.round(h_val * 360),
+    s: Math.round(s_val * 100),
+    l: Math.round(l * 100),
+  };
 }
 
-export function rgbToHsl(r: number, g: number, b: number): { h: number; s: number; l: number } {
-  r /= 255; g /= 255; b /= 255;
+export function rgbToHsl(
+  r: number,
+  g: number,
+  b: number
+): { h: number; s: number; l: number } {
+  r /= 255;
+  g /= 255;
+  b /= 255;
   const max = Math.max(r, g, b);
   const min = Math.min(r, g, b);
   const l = (max + min) / 2;
@@ -56,14 +72,28 @@ export function rgbToHsl(r: number, g: number, b: number): { h: number; s: numbe
   const s_val = l > 0.5 ? d / (2 - max - min) : d / (max + min);
   let h_val = 0;
   switch (max) {
-    case r: h_val = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
-    case g: h_val = ((b - r) / d + 2) / 6; break;
-    case b: h_val = ((r - g) / d + 4) / 6; break;
+    case r:
+      h_val = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+      break;
+    case g:
+      h_val = ((b - r) / d + 2) / 6;
+      break;
+    case b:
+      h_val = ((r - g) / d + 4) / 6;
+      break;
   }
-  return { h: Math.round(h_val * 360), s: Math.round(s_val * 100), l: Math.round(l * 100) };
+  return {
+    h: Math.round(h_val * 360),
+    s: Math.round(s_val * 100),
+    l: Math.round(l * 100),
+  };
 }
 
-export function parseColor(input: ColorInput): { h: number; s: number; l: number } {
+export function parseColor(input: ColorInput): {
+  h: number;
+  s: number;
+  l: number;
+} {
   if (typeof input === 'object') return input;
 
   const str = input.trim().toLowerCase();
@@ -72,7 +102,9 @@ export function parseColor(input: ColorInput): { h: number; s: number; l: number
   if (str.startsWith('#')) return hexToHsl(str);
 
   // hsl(h, s%, l%) / hsla(h, s%, l%, a) — comma or space separated
-  const hslMatch = str.match(/^hsla?\(\s*([\d.]+)[\s,]+([\d.]+)%?[\s,]+([\d.]+)%?/);
+  const hslMatch = str.match(
+    /^hsla?\(\s*([\d.]+)[\s,]+([\d.]+)%?[\s,]+([\d.]+)%?/
+  );
   if (hslMatch) {
     return {
       h: Math.round(parseFloat(hslMatch[1])),
@@ -87,7 +119,7 @@ export function parseColor(input: ColorInput): { h: number; s: number; l: number
     return rgbToHsl(
       parseFloat(rgbMatch[1]),
       parseFloat(rgbMatch[2]),
-      parseFloat(rgbMatch[3]),
+      parseFloat(rgbMatch[3])
     );
   }
 
@@ -101,13 +133,34 @@ export function hslToHex(h: number, s: number, l: number): string {
   const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
   const m = lNorm - c / 2;
 
-  let r = 0, g = 0, b = 0;
-  if (h >= 0 && h < 60) { r = c; g = x; b = 0; }
-  else if (h >= 60 && h < 120) { r = x; g = c; b = 0; }
-  else if (h >= 120 && h < 180) { r = 0; g = c; b = x; }
-  else if (h >= 180 && h < 240) { r = 0; g = x; b = c; }
-  else if (h >= 240 && h < 300) { r = x; g = 0; b = c; }
-  else { r = c; g = 0; b = x; }
+  let r = 0,
+    g = 0,
+    b = 0;
+  if (h >= 0 && h < 60) {
+    r = c;
+    g = x;
+    b = 0;
+  } else if (h >= 60 && h < 120) {
+    r = x;
+    g = c;
+    b = 0;
+  } else if (h >= 120 && h < 180) {
+    r = 0;
+    g = c;
+    b = x;
+  } else if (h >= 180 && h < 240) {
+    r = 0;
+    g = x;
+    b = c;
+  } else if (h >= 240 && h < 300) {
+    r = x;
+    g = 0;
+    b = c;
+  } else {
+    r = c;
+    g = 0;
+    b = x;
+  }
 
   const toHex = (n: number) => {
     const hex = Math.round((n + m) * 255).toString(16);
@@ -118,15 +171,25 @@ export function hslToHex(h: number, s: number, l: number): string {
 }
 
 // Compute visual saturation: desaturate only when slider value is near white (< 10)
-export function getVisualSaturation(sliderValue: number, baseSaturation: number): number {
-  return sliderValue < 10 ? (sliderValue / 10) * baseSaturation : baseSaturation;
+export function getVisualSaturation(
+  sliderValue: number,
+  baseSaturation: number
+): number {
+  return sliderValue < 10
+    ? (sliderValue / 10) * baseSaturation
+    : baseSaturation;
 }
 
 export function hslToString(h: number, s: number, l: number): string {
   return `hsl(${Math.round(h)}, ${Math.round(s)}%, ${Math.round(l)}%)`;
 }
 
-export function hslaToString(h: number, s: number, l: number, a: number): string {
+export function hslaToString(
+  h: number,
+  s: number,
+  l: number,
+  a: number
+): string {
   return `hsla(${Math.round(h)}, ${Math.round(s)}%, ${Math.round(l)}%, ${(a / 100).toFixed(2)})`;
 }
 
@@ -171,53 +234,44 @@ export function organizeColorsIntoLayers(
   const sortedByLightness = [...colors].sort((a, b) => b.l - a.l);
   const total = sortedByLightness.length;
 
-  // 2. Determine Number of Layers (N)
-  // Heuristic: We aim for the innermost layer to have around 6 petals.
-  // Capacity of N layers ≈ Sum(k=1..N) of 6*k = 3*N*(N+1)
-  // If Total <= 18 -> 2 layers (6, 12)
-  // If Total <= 40 -> 3 layers (approx 6, 12, 18 = 36)
-  // If Total > 40  -> 4+ layers
-  let numLayers = 2;
-  if (total > 42) numLayers = 4;
-  else if (total > 18) numLayers = 3;
+  // 2. Adaptive Layering Strategy
+  // For small counts, use fewer layers to keep them dense.
+  let layerCounts: number[] = [];
 
-  // 3. Distribute counts per layer using 1:2:3... ratio
-  // Denominator = Sum(1..numLayers) = N(N+1)/2
-  const denominator = (numLayers * (numLayers + 1)) / 2;
-  
-  const layerCounts = new Array(numLayers).fill(0);
-  let assignedCount = 0;
-
-  for (let i = 0; i < numLayers; i++) {
-    // Basic share: Total * (i+1) / Denominator
-    // We strictly floor it to avoid overshooting
-    const share = Math.floor(total * ((i + 1) / denominator));
-    layerCounts[i] = share;
-    assignedCount += share;
+  if (total <= 10) {
+    // Single layer for small counts
+    layerCounts = [total];
+  } else if (total <= 24) {
+    // 2 layers: Try to put ~1/3 in inner, ~2/3 in outer
+    const inner = Math.max(4, Math.floor(total * 0.35));
+    layerCounts = [inner, total - inner];
+  } else if (total <= 42) {
+    // 3 layers: 1:2:3 approx ratio
+    const inner = Math.max(5, Math.floor(total * 0.15));
+    const middle = Math.floor(total * 0.35);
+    layerCounts = [inner, middle, total - inner - middle];
+  } else {
+    // 4 layers
+    const inner = Math.max(6, Math.floor(total * 0.1));
+    const mid1 = Math.floor(total * 0.2);
+    const mid2 = Math.floor(total * 0.3);
+    layerCounts = [inner, mid1, mid2, total - inner - mid1 - mid2];
   }
 
-  // 4. Distribute remainder to outer layers first
-  // This makes the outer ring look even fuller
-  let remainder = total - assignedCount;
-  let layerIdx = numLayers - 1;
-  while (remainder > 0) {
-    layerCounts[layerIdx]++;
-    remainder--;
-    layerIdx--;
-    if (layerIdx < 0) layerIdx = numLayers - 1; // loop back to outer if needed
-  }
-
-  // 5. Fill layers
+  // 3. Fill layers
   const layers: { h: number; s: number; l: number }[][] = [];
   let currentIndex = 0;
 
-  for (let i = 0; i < numLayers; i++) {
+  for (let i = 0; i < layerCounts.length; i++) {
     const count = layerCounts[i];
-    const itemsForThisLayer = sortedByLightness.slice(currentIndex, currentIndex + count);
-    
+    const itemsForThisLayer = sortedByLightness.slice(
+      currentIndex,
+      currentIndex + count
+    );
+
     // Sort by Hue for rainbow effect
     itemsForThisLayer.sort((a, b) => a.h - b.h);
-    
+
     if (itemsForThisLayer.length > 0) {
       layers.push(itemsForThisLayer);
     }
