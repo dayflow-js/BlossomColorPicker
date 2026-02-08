@@ -1,8 +1,12 @@
 # Blossom Color Picker
 
-A beautiful, blooming color picker component for React.
+[![npm version](https://img.shields.io/npm/v/@dayflow/blossom-color-picker.svg)](https://www.npmjs.com/package/@dayflow/blossom-color-picker)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/dayflow-js/BlossomColorPicker/pulls)
+[![GitHub license](https://img.shields.io/github/license/dayflow-js/BlossomColorPicker)](https://github.com/dayflow-js/BlossomColorPicker/blob/main/LICENSE)
 
-https://github.com/user-attachments/assets/041c2002-c45b-4506-8323-d65bb7bb9ed5
+A beautiful, blooming color picker component for Web.
+
+https://github.com/user-attachments/assets/553ee0ff-1f52-497f-bc8f-cee9a7b91d66
 
 ## Installation
 
@@ -24,24 +28,24 @@ const MyComponent = () => {
 
 ### `BlossomColorPickerProps`
 
-| Prop | Type | Default | Description |
-| :-- | :-- | :-- | :-- |
-| `value` | `BlossomColorPickerValue` | - | Controlled value of the picker. |
-| `defaultValue` | `BlossomColorPickerValue` | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | Initial value for uncontrolled mode (Pink). |
-| `colors` | `ColorInput[]` | (Default 18-color set) | Color list, automatically sorted and distributed into layers. |
-| `onChange` | `(color: BlossomColorPickerColor) => void` | - | Called when color changes. |
-| `onCollapse` | `(color: BlossomColorPickerColor) => void` | - | Called when the picker collapses. |
-| `disabled` | `boolean` | `false` | Whether the picker is disabled. |
-| `openOnHover` | `boolean` | `false` | If true, opens the picker on hover instead of click. |
-| `initialExpanded` | `boolean` | `false` | Whether the picker starts expanded. |
-| `animationDuration` | `number` | `300` | Duration of the blooming animation in ms. |
-| `showAlphaSlider` | `boolean` | `true` | Whether to show the saturation arc slider. |
-| `coreSize` | `number` | `32` | Diameter of the central circle in px. |
-| `petalSize` | `number` | `32` | Diameter of individual color petals in px. |
-| `showCoreColor` | `boolean` | `true` | When true, the core shows the selected color while expanded. |
-| `sliderPosition` | `'top' \| 'bottom' \| 'left' \| 'right'` | `'right'` | Fixed position for the arc slider. |
-| `adaptivePositioning` | `boolean` | `true` | **Smart Shifter**: Automatically shifts the picker to stay within viewport and repositions the slider for best visibility. |
-| `className` | `string` | `""` | Additional CSS class for the container. |
+| Prop                  | Type                                       | Default                                                   | Description                                                                                                                |
+|:----------------------|:-------------------------------------------|:----------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------|
+| `value`               | `BlossomColorPickerValue`                  | -                                                         | Controlled value of the picker.                                                                                            |
+| `defaultValue`        | `BlossomColorPickerValue`                  | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | Initial value for uncontrolled mode (Pink).                                                                                |
+| `colors`              | `ColorInput[]`                             | (Default 18-color set)                                    | Color list, automatically sorted and distributed into layers.                                                              |
+| `onChange`            | `(color: BlossomColorPickerColor) => void` | -                                                         | Called when color changes.                                                                                                 |
+| `onCollapse`          | `(color: BlossomColorPickerColor) => void` | -                                                         | Called when the picker collapses.                                                                                          |
+| `disabled`            | `boolean`                                  | `false`                                                   | Whether the picker is disabled.                                                                                            |
+| `openOnHover`         | `boolean`                                  | `false`                                                   | If true, opens the picker on hover instead of click.                                                                       |
+| `initialExpanded`     | `boolean`                                  | `false`                                                   | Whether the picker starts expanded.                                                                                        |
+| `animationDuration`   | `number`                                   | `300`                                                     | Duration of the blooming animation in ms.                                                                                  |
+| `showAlphaSlider`     | `boolean`                                  | `true`                                                    | Whether to show the saturation arc slider.                                                                                 |
+| `coreSize`            | `number`                                   | `32`                                                      | Diameter of the central circle in px.                                                                                      |
+| `petalSize`           | `number`                                   | `32`                                                      | Diameter of individual color petals in px.                                                                                 |
+| `showCoreColor`       | `boolean`                                  | `true`                                                    | When true, the core shows the selected color while expanded.                                                               |
+| `sliderPosition`      | `'top' \| 'bottom' \| 'left' \| 'right'`   | `'right'`                                                 | Fixed position for the arc slider.                                                                                         |
+| `adaptivePositioning` | `boolean`                                  | `true`                                                    | **Smart Shifter**: Automatically shifts the picker to stay within viewport and repositions the slider for best visibility. |
+| `className`           | `string`                                   | `""`                                                      | Additional CSS class for the container.                                                                                    |
 
 ## Features
 
@@ -60,21 +64,21 @@ Our "Bloom" algorithm uses trigonometric calculations to ensure:
 
 The value object used for controlled / uncontrolled state.
 
-| Field | Type | Description |
-| :-- | :-- | :-- |
-| `hue` | `number` | Hue angle (0–360). |
-| `saturation` | `number` | Slider position (0–100). 0 = bright, 100 = dark. |
-| `lightness` | `number?` | HSL lightness (auto-computed from slider if omitted). |
-| `originalSaturation` | `number?` | Base saturation of the selected petal. |
-| `alpha` | `number` | Alpha value (0–100). |
-| `layer` | `'inner' \| 'outer'` | Which layer the selected petal belongs to. |
+| Field                | Type                 | Description                                           |
+|:---------------------|:---------------------|:------------------------------------------------------|
+| `hue`                | `number`             | Hue angle (0–360).                                    |
+| `saturation`         | `number`             | Slider position (0–100). 0 = bright, 100 = dark.      |
+| `lightness`          | `number?`            | HSL lightness (auto-computed from slider if omitted). |
+| `originalSaturation` | `number?`            | Base saturation of the selected petal.                |
+| `alpha`              | `number`             | Alpha value (0–100).                                  |
+| `layer`              | `'inner' \| 'outer'` | Which layer the selected petal belongs to.            |
 
 ### `BlossomColorPickerColor`
 
 Extends `BlossomColorPickerValue` — returned by `onChange` and `onCollapse`.
 
 | Field  | Type     | Description                              |
-| :----- | :------- | :--------------------------------------- |
+|:-------|:---------|:-----------------------------------------|
 | `hex`  | `string` | Hex color string, e.g. `"#6586E5"`.      |
 | `hsl`  | `string` | HSL string, e.g. `"hsl(225, 71%, 65%)"`. |
 | `hsla` | `string` | HSLA string with alpha.                  |
