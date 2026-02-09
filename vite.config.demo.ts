@@ -11,7 +11,8 @@ export default defineConfig({
   base: '/BlossomColorPicker/',
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@dayflow/blossom-color-picker-react': path.resolve(__dirname, './packages/react/src'),
+      '@dayflow/blossom-color-picker': path.resolve(__dirname, './packages/core/src'),
     },
   },
   build: {

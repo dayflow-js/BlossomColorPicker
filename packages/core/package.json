@@ -1,0 +1,46 @@
+{
+  "name": "@dayflow/blossom-color-picker",
+  "version": "2.0.0",
+  "type": "module",
+  "description": "A beautiful, blooming color picker — standalone vanilla JS",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./styles.css": "./dist/styles.css"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "color-picker",
+    "blossom",
+    "ui-component",
+    "animation",
+    "vanilla-js"
+  ],
+  "author": "Jayce Li",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "tsc && vite build",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "vite": "^5.4.20",
+    "vite-plugin-dts": "^4.5.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dayflow-js/BlossomColorPicker.git",
+    "directory": "packages/core"
+  }
+}
