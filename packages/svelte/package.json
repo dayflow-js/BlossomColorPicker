@@ -1,0 +1,56 @@
+{
+  "name": "@dayflow/blossom-color-picker-svelte",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Svelte wrapper for Blossom Color Picker",
+  "types": "dist/index.d.ts",
+  "svelte": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "svelte": "./src/index.ts"
+    }
+  },
+  "files": [
+    "dist/index.d.ts",
+    "dist/index.d.ts.map",
+    "dist/BlossomColorPicker.svelte.d.ts",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "svelte",
+    "color-picker",
+    "blossom",
+    "ui-component",
+    "animation"
+  ],
+  "author": "Jayce Li",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build",
+    "typecheck": "svelte-check && tsc --noEmit"
+  },
+  "dependencies": {
+    "@dayflow/blossom-color-picker": "^2.0.0"
+  },
+  "peerDependencies": {
+    "svelte": ">=5.0.0"
+  },
+  "devDependencies": {
+    "svelte": "^5.0.0",
+    "svelte-check": "^4.0.0",
+    "typescript": "^5.7.2",
+    "vite": "^5.4.20",
+    "@sveltejs/vite-plugin-svelte": "^4.0.0",
+    "vite-plugin-dts": "^4.5.4",
+    "tslib": "^2.8.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dayflow-js/BlossomColorPicker.git",
+    "directory": "packages/svelte"
+  }
+}

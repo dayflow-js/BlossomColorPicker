@@ -1,5 +1,6 @@
 node_modules
 dist
 dist-demo
+packages/*/dist
 *.log
 .DS_Store

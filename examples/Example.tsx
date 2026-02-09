@@ -1,6 +1,6 @@
-import React, { useMemo, useState, useEffect } from 'react';
-import { BlossomColorPicker } from '../src';
-import { BlossomColorPickerValue } from '../src/types';
+import React, { useMemo, useState } from 'react';
+import { BlossomColorPicker } from '@dayflow/blossom-color-picker-react';
+import type { BlossomColorPickerValue } from '@dayflow/blossom-color-picker-react';
 
 const colorPalette = [
   // --- Layer 1: Outermost (12 Colors) ---

@@ -1,63 +1,23 @@
 {
-  "name": "@dayflow/blossom-color-picker",
-  "version": "1.0.4",
+  "name": "blossom-color-picker-monorepo",
+  "private": true,
+  "version": "0.0.0",
   "type": "module",
   "description": "A beautiful, blooming color picker for Web",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist",
-    "README.md",
-    "LICENSE"
-  ],
-  "keywords": [
-    "react",
-    "color-picker",
-    "blossom",
-    "ui-component",
-    "animation"
-  ],
+  "scripts": {
+    "build": "pnpm -r build",
+    "dev": "vite --host",
+    "dev:packages": "pnpm -r dev",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "build:demo": "vite build --config vite.config.demo.ts",
+    "publish:all": "./scripts/publish.sh all",
+    "publish:main": "./scripts/publish.sh main",
+    "publish:angular": "./scripts/publish.sh angular",
+    "publish:dry": "./scripts/publish.sh all --dry-run"
+  },
   "author": "Jayce Li",
   "license": "MIT",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
-    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "format": "prettier --write \"src/**/*.{ts,tsx,css,json}\" \"examples/**/*.{ts,tsx,css,json}\"",
-    "build:demo": "vite build --config vite.config.demo.ts",
-    "typecheck": "tsc --noEmit",
-    "prepublishOnly": "npm run typecheck && npm run build"
-  },
-  "peerDependencies": {
-    "react": ">=18.0.0",
-    "react-dom": ">=18.0.0"
-  },
-  "devDependencies": {
-    "@tailwindcss/vite": "^4.1.18",
-    "@types/node": "^25.2.1",
-    "@types/react": "^18.2.66",
-    "@types/react-dom": "^18.2.22",
-    "@typescript-eslint/eslint-plugin": "^8.54.0",
-    "@typescript-eslint/parser": "^8.54.0",
-    "@vitejs/plugin-react": "^4.7.0",
-    "autoprefixer": "^10.4.24",
-    "eslint": "^9.39.2",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-react-refresh": "^0.5.0",
-    "postcss": "^8.5.6",
-    "prettier": "^3.8.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "tailwindcss": "^4.1.18",
-    "typescript": "^5.7.2",
-    "vite": "^5.4.20",
-    "vite-plugin-dts": "^4.5.4"
-  },
-  "directories": {
-    "example": "examples"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dayflow-js/BlossomColorPicker.git"
@@ -65,5 +25,21 @@
   "bugs": {
     "url": "https://github.com/dayflow-js/BlossomColorPicker/issues"
   },
-  "homepage": "https://github.com/dayflow-js/BlossomColorPicker#readme"
+  "homepage": "https://github.com/dayflow-js/BlossomColorPicker#readme",
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.18",
+    "@types/node": "^25.2.1",
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@vitejs/plugin-react": "^4.7.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwindcss": "^4.1.18",
+    "typescript": "^5.7.2",
+    "vite": "^5.4.20",
+    "vite-plugin-dts": "^4.5.4"
+  }
 }

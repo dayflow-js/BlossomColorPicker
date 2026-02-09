@@ -1,0 +1,12 @@
+.bcp-root { position: relative; display: inline-flex; align-items: center; justify-content: center; }
+.bcp-container { position: absolute; display: flex; align-items: center; justify-content: center; }
+.bcp-petal { position: absolute; border-radius: 50%; border: none; padding: 0; background: none; cursor: pointer; }
+.bcp-petal-visible:focus-visible { outline: none; box-shadow: 0 0 0 2px rgba(255,255,255,0.5); }
+.bcp-core { position: relative; border-radius: 50%; border: none; padding: 0; cursor: pointer; }
+.bcp-core:focus-visible { outline: none; box-shadow: 0 0 0 2px #3b82f6, 0 0 0 4px white; }
+.bcp-core:disabled { opacity: 0.5; cursor: not-allowed; }
+.bcp-svg { position: absolute; pointer-events: none; }
+.bcp-slider-track { pointer-events: auto; cursor: pointer; touch-action: none; }
+.bcp-slider-handle { pointer-events: auto; cursor: grab; touch-action: none; }
+.bcp-slider-handle:active { cursor: grabbing; }
+.bcp-bg { position: absolute; border-radius: 50%; pointer-events: none; }
