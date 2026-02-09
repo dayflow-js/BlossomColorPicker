@@ -13,7 +13,8 @@
     "build:demo": "vite build --config vite.config.demo.ts",
     "publish:all": "./scripts/publish.sh all",
     "publish:main": "./scripts/publish.sh main",
-    "publish:angular": "./scripts/publish.sh angular"
+    "publish:angular": "./scripts/publish.sh angular",
+    "publish:dry": "./scripts/publish.sh all --dry-run"
   },
   "author": "Jayce Li",
   "license": "MIT",

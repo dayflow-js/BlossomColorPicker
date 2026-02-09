@@ -148,18 +148,17 @@ else
 fi
 
 # ---------- Publish ----------
-case "$MODE" in
-  main|all)
-    # Core must be first
-    publish_pkg "@dayflow/blossom-color-picker"        "$ROOT/packages/core"
-    publish_pkg "@dayflow/blossom-color-picker-react"   "$ROOT/packages/react"
-    publish_pkg "@dayflow/blossom-color-picker-vue"     "$ROOT/packages/vue"
-    publish_pkg "@dayflow/blossom-color-picker-svelte"  "$ROOT/packages/svelte"
-    ;;&
-  angular|all)
-    publish_pkg "@dayflow/blossom-color-picker-angular" "$ROOT/packages/angular/dist"
-    ;;
-esac
+if [ "$MODE" = "main" ] || [ "$MODE" = "all" ]; then
+  # Core must be first
+  publish_pkg "@dayflow/blossom-color-picker"        "$ROOT/packages/core"
+  publish_pkg "@dayflow/blossom-color-picker-react"   "$ROOT/packages/react"
+  publish_pkg "@dayflow/blossom-color-picker-vue"     "$ROOT/packages/vue"
+  publish_pkg "@dayflow/blossom-color-picker-svelte"  "$ROOT/packages/svelte"
+fi
+
+if [ "$MODE" = "angular" ] || [ "$MODE" = "all" ]; then
+  publish_pkg "@dayflow/blossom-color-picker-angular" "$ROOT/packages/angular/dist"
+fi
 
 # ---------- Done ----------
 echo -e "\n${GREEN}${BOLD}Done!${NC}"
