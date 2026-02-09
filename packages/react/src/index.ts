@@ -72,10 +72,8 @@ export const BlossomColorPicker = forwardRef(function BlossomColorPicker(
       pickerRef.current?.destroy();
       pickerRef.current = null;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Sync value + callbacks (cheap, no DOM rebuild)
   useEffect(() => {
     pickerRef.current?.setOptions({
       value: props.value,
@@ -84,10 +82,8 @@ export const BlossomColorPicker = forwardRef(function BlossomColorPicker(
     });
   }, [props.value, props.onChange, props.onCollapse]);
 
-  // Sync structural props (may trigger DOM rebuild, but only when values actually change)
   useEffect(() => {
     pickerRef.current?.setOptions(propsToOptions(props));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     props.colors, props.disabled, props.openOnHover,
     props.initialExpanded, props.animationDuration,

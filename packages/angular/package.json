@@ -1,0 +1,41 @@
+{
+  "name": "@dayflow/blossom-color-picker-angular",
+  "version": "1.0.0",
+  "description": "Angular wrapper for Blossom Color Picker",
+  "author": "Jayce Li",
+  "license": "MIT",
+  "keywords": [
+    "angular",
+    "color-picker",
+    "blossom",
+    "ui-component",
+    "animation"
+  ],
+  "scripts": {
+    "build": "ng-packagr -p ng-package.json && node -e \"const f='dist/package.json';const p=JSON.parse(require('fs').readFileSync(f));p.sideEffects=['*.css'];require('fs').writeFileSync(f,JSON.stringify(p,null,2))\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@dayflow/blossom-color-picker": "^2.0.0"
+  },
+  "peerDependencies": {
+    "@angular/core": ">=16.0.0",
+    "@angular/common": ">=16.0.0"
+  },
+  "devDependencies": {
+    "@angular/core": "^19.0.0",
+    "@angular/common": "^19.0.0",
+    "@angular/compiler": "^19.0.0",
+    "@angular/compiler-cli": "^19.0.0",
+    "@angular/platform-browser": "^19.0.0",
+    "ng-packagr": "^19.0.0",
+    "rxjs": "^7.8.0",
+    "typescript": "~5.6.0",
+    "zone.js": "^0.15.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dayflow-js/BlossomColorPicker.git",
+    "directory": "packages/angular"
+  }
+}

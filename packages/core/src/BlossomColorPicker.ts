@@ -523,13 +523,14 @@ export class BlossomColorPicker {
     const val = this.currentValue;
     const duration = this.opts.animationDuration;
 
-    // Adaptive positioning
-    if (this.isExpanded && this.containerEl) {
-      const rect = this.containerEl.getBoundingClientRect();
+    // Adaptive positioning — compute only on expand transition, not during every update.
+    // Using rootEl (stable, small) instead of containerEl (animating, shifting) prevents jitter.
+    if (this.isExpanded && !this.prevExpanded && this.rootEl) {
+      const rootRect = this.rootEl.getBoundingClientRect();
       const result = computeAdaptivePosition({
-        elementRect: rect,
+        elementRect: rootRect,
         containerSize: this.containerSize,
-        currentShiftOffset: this.shiftOffset,
+        currentShiftOffset: { x: 0, y: 0 },
         windowWidth: window.innerWidth,
         windowHeight: window.innerHeight,
         sliderPosition: this.opts.sliderPosition,
@@ -539,6 +540,7 @@ export class BlossomColorPicker {
       this.effectivePosition = result.effectivePosition;
     } else if (!this.isExpanded) {
       this.shiftOffset = { x: 0, y: 0 };
+      this.effectivePosition = this.opts.sliderPosition || 'right';
     }
 
     // Container size + shift

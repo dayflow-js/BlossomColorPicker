@@ -124,12 +124,12 @@ export const BlossomColorPicker = defineComponent({
       picker = new CorePicker(containerRef.value, getOptions());
     });
 
-    // Watch value separately (frequent, cheap update)
+    // Watch value separately 
     watch(() => props.value, (val) => {
       picker?.setOptions({ value: val, onChange, onCollapse });
     }, { deep: true });
 
-    // Watch structural props (infrequent, may rebuild DOM — core compares values)
+    // Watch structural props 
     watch(
       () => [
         props.colors, props.disabled, props.openOnHover,
