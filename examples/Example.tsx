@@ -86,7 +86,7 @@ const Example = () => {
   );
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 dark:bg-slate-950 flex flex-col items-center justify-center p-6 space-y-16 overflow-x-hidden transition-colors duration-300">
+    <div className="fixed inset-0 bg-gray-50 dark:bg-slate-950 flex flex-col items-center justify-center pt-14 px-6 gap-6 overflow-hidden transition-colors duration-300">
       <header className="fixed top-0 left-0 right-0 h-14 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md z-50 border-b border-gray-200 dark:border-slate-800 px-4">
         <div className="relative h-full flex items-center justify-between w-full">
           {/* Left side icon */}
