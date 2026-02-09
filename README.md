@@ -43,7 +43,7 @@ npm install @dayflow/blossom-color-picker-angular
 
 ```js
 import { BlossomColorPicker } from '@dayflow/blossom-color-picker';
-import '@dayflow/blossom-color-picker/styles.css';
+import '@dayflow/blossom-color-picker/styles.css'; // <- must import css in pure JS
 
 const picker = new BlossomColorPicker(document.getElementById('picker'), {
   onChange: (color) => console.log(color.hex),
@@ -181,19 +181,6 @@ The core class exposes these additional methods:
 | `setOptions(opts)` | Update any options at runtime. |
 | `destroy()` | Remove all DOM elements and event listeners. |
 
-## Features
-
-### Smart Shifter & Adaptive UI
-The picker is built for all screen sizes. When `adaptivePositioning` is enabled:
-- **Viewport Shifting**: If the expanded picker would overflow the screen edge (common on mobile), it automatically shifts itself into view.
-- **Auto Slider Positioning**: The Arc Slider automatically moves to the side with the most available space (Top, Bottom, Left, or Right).
-- **Dark Mode Ready**: The background automatically adapts to your theme, using a soft, tinted overlay of the currently selected color.
-
-### Geometric Nesting
-Our "Bloom" algorithm uses trigonometric calculations to ensure:
-- **Zero Gaps**: Petals aggressively "hug" the core and nestle deep into the "valleys" of previous layers.
-- **Staggered Layout**: Adjacent layers are automatically staggered to create a dense, natural blossom effect regardless of the color count.
-
 ## Type Reference
 
 ### `BlossomColorPickerValue`
@@ -267,6 +254,5 @@ packages/
   angular/   @dayflow/blossom-color-picker-angular   — thin Angular wrapper
 ```
 
-The React, Vue, Svelte and Angular adapters are lightweight wrappers (~2 KB each) that mount the core instance into a container element and sync framework props/events to it.
 
 Made by [Jayce Li](https://github.com/JayceV552), idea from [@lichinlin](https://x.com/lichinlin/status/2019084548072689980).
