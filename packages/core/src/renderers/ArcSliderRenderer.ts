@@ -119,9 +119,6 @@ export class ArcSliderRenderer {
       'stroke-width': '2',
     });
     this.handle.classList.add('bcp-slider-handle');
-    setStyles(this.handle, {
-      filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
-    });
     this.handle.addEventListener('mousedown', (e) => {
       e.preventDefault();
       this.startDrag();

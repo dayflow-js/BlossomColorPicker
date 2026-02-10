@@ -1,6 +1,6 @@
 {
   "name": "@dayflow/blossom-color-picker-vue",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "Vue 3 wrapper for Blossom Color Picker",
   "main": "dist/index.js",
@@ -33,7 +33,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@dayflow/blossom-color-picker": "^2.0.0"
+    "@dayflow/blossom-color-picker": "^2.0.1"
   },
   "peerDependencies": {
     "vue": ">=3.3.0"

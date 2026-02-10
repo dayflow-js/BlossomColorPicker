@@ -26,7 +26,6 @@ import {
   lightnessToSliderValue,
   sliderValueToLightness,
   hslToHex,
-  hslaToString,
   createColorOutput,
   organizeColorsIntoLayers,
   getVisualSaturation,
@@ -45,6 +44,7 @@ import { PetalRenderer } from './renderers/PetalRenderer';
 import { ColorBarRenderer } from './renderers/ColorBarRenderer';
 import { ArcSliderRenderer } from './renderers/ArcSliderRenderer';
 import { CoreButtonRenderer } from './renderers/CoreButtonRenderer';
+import { BackgroundRenderer } from './renderers/BackgroundRenderer';
 
 export interface BlossomColorPickerOptions {
   value?: BlossomColorPickerValue;
@@ -75,8 +75,8 @@ export class BlossomColorPicker {
   private container: HTMLElement;
   private rootEl!: HTMLDivElement;
   private containerEl!: HTMLDivElement;
-  private bgEl!: HTMLDivElement;
-  private bgTintEl!: HTMLDivElement;
+  private mousePos: { x: number; y: number } | null = null;
+  private rafId: number | null = null;
 
   // Options
   private opts: Required<
@@ -110,6 +110,7 @@ export class BlossomColorPicker {
   private colorBarRenderer!: ColorBarRenderer;
   private arcSliderRenderer: ArcSliderRenderer | null = null;
   private coreButtonRenderer!: CoreButtonRenderer;
+  private backgroundRenderer!: BackgroundRenderer;
 
   // Timeouts
   private hoverTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -117,6 +118,7 @@ export class BlossomColorPicker {
 
   // Bound handlers
   private boundClickOutside: (e: MouseEvent) => void;
+  private boundMouseMove: (e: MouseEvent) => void;
 
   constructor(container: HTMLElement, options?: Partial<BlossomColorPickerOptions>) {
     this.container = container;
@@ -146,6 +148,7 @@ export class BlossomColorPicker {
     this.effectivePosition = this.opts.sliderPosition || 'right';
 
     this.boundClickOutside = this.handleClickOutside.bind(this);
+    this.boundMouseMove = this.handleMouseMove.bind(this);
 
     this.computeLayout();
     this.render();
@@ -342,23 +345,11 @@ export class BlossomColorPicker {
     }
 
     // Background
-    this.bgEl = createElement('div');
-    this.bgEl.className = 'bcp-bg';
-    const bgSize = (this.barRadius + BAR_WIDTH / 2) * 2;
-    setStyles(this.bgEl, {
-      width: `${bgSize}px`,
-      height: `${bgSize}px`,
-      backgroundColor: '#FFFFFF',
-    });
-
-    this.bgTintEl = createElement('div');
-    setStyles(this.bgTintEl, {
-      position: 'absolute',
-      inset: '0',
-      borderRadius: '50%',
-    });
-    this.bgEl.appendChild(this.bgTintEl);
-    this.containerEl.appendChild(this.bgEl);
+    this.backgroundRenderer = new BackgroundRenderer(
+      this.barRadius + BAR_WIDTH / 2,
+      this.opts.animationDuration
+    );
+    this.containerEl.appendChild(this.backgroundRenderer.el);
 
     // Color bar
     this.colorBarRenderer = new ColorBarRenderer(
@@ -376,9 +367,24 @@ export class BlossomColorPicker {
       const rotation = this.layerRotations[layerIdx];
       const previousItemsCount = this.layerPrefixCounts[layerIdx];
       const totalPetals = layerColors.length;
-      const bottomIndex = Math.floor(totalPetals / 2);
       const totalLayers = this.layers.length;
       const baseZ = (totalLayers - layerIdx) * 100;
+
+      // Find the petal index closest to 90 degrees (6 o'clock)
+      // Visual Angle = (index / total) * 360 - 90 + layerRotation
+      let bottomIndex = 0;
+      let minDiff = Infinity;
+      for (let i = 0; i < totalPetals; i++) {
+        const angle = (i / totalPetals) * 360 - 90 + rotation;
+        // Normalize angle to [0, 360)
+        const normalizedAngle = ((angle % 360) + 360) % 360;
+        // Circular difference to 90 degrees
+        const diff = Math.min(Math.abs(normalizedAngle - 90), 360 - Math.abs(normalizedAngle - 90));
+        if (diff < minDiff) {
+          minDiff = diff;
+          bottomIndex = i;
+        }
+      }
 
       for (let index = 0; index < layerColors.length; index++) {
         const color = layerColors[index];
@@ -386,7 +392,32 @@ export class BlossomColorPicker {
           previousItemsCount * PETAL_STAGGER + index * PETAL_STAGGER;
 
         if (index === bottomIndex) {
-          // Bottom petal split trick: left half, right half, invisible interaction
+          // Bottom petal split trick:
+          // 1. Underlay (Base): Full petal, no ring, lowest Z. Fills the seam gap.
+          // 2. Left Petal: Left half, has ring.
+          // 3. Right Petal: Right half, has ring.
+          // 4. Interaction Petal: Invisible, handles events.
+
+          const underlayPetal = new PetalRenderer({
+            hue: color.h,
+            saturation: color.s,
+            lightness: color.l,
+            index,
+            totalPetals,
+            petalSize: this.opts.petalSize,
+            radius,
+            animationDuration: this.opts.animationDuration,
+            staggerDelay,
+            zIndex: baseZ - 1, // Lowest
+            rotationOffset: rotation,
+            alpha: 1,
+            pointerEvents: 'none',
+            hasShadow: false,
+            noRing: true, // Crucial: No ring to avoid double-rendering artifacts
+          });
+          this.petalRenderers.push(underlayPetal);
+          this.containerEl.appendChild(underlayPetal.el);
+
           const leftPetal = new PetalRenderer(
             {
               hue: color.h,
@@ -452,14 +483,16 @@ export class BlossomColorPicker {
             () => this.handlePetalClick(color, layerIdx),
             () => {
               this.hoveredPetal = { layer: layerIdx, index };
-              // Update the visual halves
-              leftPetal.update(this.isExpanded, true);
-              rightPetal.update(this.isExpanded, true);
+              // Update all visual layers
+              underlayPetal.update(this.isExpanded, true, this.mousePos);
+              leftPetal.update(this.isExpanded, true, this.mousePos);
+              rightPetal.update(this.isExpanded, true, this.mousePos);
             },
             () => {
               this.hoveredPetal = null;
-              leftPetal.update(this.isExpanded, false);
-              rightPetal.update(this.isExpanded, false);
+              underlayPetal.update(this.isExpanded, false, this.mousePos);
+              leftPetal.update(this.isExpanded, false, this.mousePos);
+              rightPetal.update(this.isExpanded, false, this.mousePos);
             }
           );
           this.petalRenderers.push(interactionPetal);
@@ -553,22 +586,14 @@ export class BlossomColorPicker {
     });
 
     // Background
-    setStyles(this.bgEl, {
-      opacity: this.isExpanded ? '1' : '0',
-      transform: this.isExpanded ? 'scale(1)' : 'scale(0.8)',
-      transition: `opacity ${duration}ms ${BLOOM_EASING}, transform ${duration}ms ${BLOOM_EASING}`,
-      zIndex: '0',
-    });
-
-    setStyles(this.bgTintEl, {
-      backgroundColor: hslaToString(
-        val.hue,
-        val.saturation,
-        this.currentLightness,
-        15
-      ),
-      transition: `background-color ${duration}ms ease`,
-    });
+    this.backgroundRenderer.update(
+      val.hue,
+      val.saturation,
+      this.currentLightness,
+      this.isExpanded,
+      this.isHovering,
+      this.mousePos
+    );
 
     // Color bar
     this.colorBarRenderer.update(
@@ -581,7 +606,7 @@ export class BlossomColorPicker {
 
     // Petals
     for (const petal of this.petalRenderers) {
-      petal.update(this.isExpanded);
+      petal.update(this.isExpanded, undefined, this.mousePos);
     }
 
     // Arc slider
@@ -617,10 +642,70 @@ export class BlossomColorPicker {
     this.containerEl.addEventListener('mouseleave', () => {
       this.handleMouseLeave();
     });
+    this.containerEl.addEventListener('mousemove', this.boundMouseMove);
   }
 
   private unbindEvents(): void {
     document.removeEventListener('mousedown', this.boundClickOutside);
+    this.containerEl.removeEventListener('mousemove', this.boundMouseMove);
+  }
+
+  private handleMouseMove(e: MouseEvent): void {
+    const rect = this.containerEl.getBoundingClientRect();
+    this.mousePos = {
+      x: e.clientX - (rect.left + rect.width / 2),
+      y: e.clientY - (rect.top + rect.height / 2),
+    };
+    
+    if (this.isExpanded && !this.rafId) {
+      this.rafId = requestAnimationFrame(() => {
+        this.updateInteractive();
+        this.rafId = null;
+      });
+    }
+  }
+
+  private updateInteractive(): void {
+    const val = this.currentValue;
+    // Only update things that respond to mouse position
+    for (const petal of this.petalRenderers) {
+      petal.update(this.isExpanded, undefined, this.mousePos);
+    }
+    
+    this.backgroundRenderer.update(
+        val.hue,
+        val.saturation,
+        this.currentLightness,
+        this.isExpanded,
+        this.isHovering,
+        this.mousePos
+    );
+
+    // Sync other renderers just in case they were updated during the interactive frame
+    this.colorBarRenderer.update(
+      val.hue,
+      getVisualSaturation(val.saturation, this.baseSaturation),
+      this.currentLightness,
+      val.alpha,
+      this.isExpanded
+    );
+
+    if (this.arcSliderRenderer) {
+      this.arcSliderRenderer.update(
+        val.saturation,
+        val.hue,
+        this.baseSaturation,
+        this.isExpanded,
+        this.effectivePosition
+      );
+    }
+
+    this.coreButtonRenderer.update(
+      this.coreColor,
+      this.isExpanded,
+      this.isHovering,
+      this.opts.disabled
+    );
   }
 
   private destroyInner(): void {
@@ -633,10 +718,7 @@ export class BlossomColorPicker {
     this.arcSliderRenderer?.destroy();
     this.arcSliderRenderer = null;
     this.coreButtonRenderer?.destroy();
-
-    if (this.bgEl && this.bgEl.parentNode) {
-      this.bgEl.remove();
-    }
+    this.backgroundRenderer?.destroy();
   }
 
   private setExpanded(expanded: boolean): void {
@@ -703,14 +785,17 @@ export class BlossomColorPicker {
     const visualSaturation = color.s;
 
     const newValue: BlossomColorPickerValue = {
-      ...this.currentValue,
       hue: color.h,
       saturation: sliderValue,
       lightness: color.l,
       originalSaturation: color.s,
       layer: layerStr,
+      alpha: this.currentValue.alpha, // Keep current alpha
     };
-    this.internalValue = newValue;
+
+    if (this.controlledValue === undefined) {
+      this.internalValue = newValue;
+    }
 
     this.opts.onChange(
       createColorOutput(
