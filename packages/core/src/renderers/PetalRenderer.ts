@@ -18,6 +18,7 @@ export interface PetalConfig {
   clip?: 'left' | 'right';
   pointerEvents: 'auto' | 'none';
   hasShadow: boolean;
+  noRing?: boolean;
 }
 
 export class PetalRenderer {
@@ -77,30 +78,47 @@ export class PetalRenderer {
       marginTop: `${-petalSize / 2}px`,
     });
 
+    // Use strict 50% split. The Underlay petal will handle the gap seam.
     if (c.clip === 'left') {
-      this.el.style.clipPath = 'polygon(0% -10%, 60% -10%, 60% 110%, 0% 110%)';
+      this.el.style.clipPath = 'polygon(0% -50%, 50% -50%, 50% 150%, 0% 150%)';
     } else if (c.clip === 'right') {
-      this.el.style.clipPath = 'polygon(40% -10%, 100% -10%, 100% 110%, 40% 110%)';
+      this.el.style.clipPath = 'polygon(50% -50%, 100% -50%, 100% 150%, 50% 150%)';
     }
   }
 
-  update(isExpanded: boolean, externalHover?: boolean): void {
+  update(isExpanded: boolean, externalHover?: boolean, mousePos?: { x: number; y: number } | null): void {
     if (externalHover !== undefined) {
       this.isHovered = externalHover;
     }
-    this.updateStyles(isExpanded);
+    this.updateStyles(isExpanded, mousePos);
   }
 
-  private updateStyles(isExpanded: boolean): void {
-    this.lastExpanded = isExpanded;
+  private updateStyles(isExpanded: boolean, mousePos?: { x: number; y: number } | null): void {
+    const isExpanding = isExpanded && !this.lastExpanded;
     const c = this.config;
     const isHovered = this.isHovered;
     const isInvisible = c.alpha === 0;
 
     const angle = (c.index / c.totalPetals) * 360 - 90 + c.rotationOffset;
     const radian = (angle * Math.PI) / 180;
-    const x = Math.cos(radian) * c.radius;
-    const y = Math.sin(radian) * c.radius;
+    let x = Math.cos(radian) * c.radius;
+    let y = Math.sin(radian) * c.radius;
+
+    // Subtle push effect from demo.tsx
+    // Only apply if mousePos is valid (user has moved mouse)
+    if (isExpanded && mousePos && !isHovered && !isInvisible) {
+      const dx = x - mousePos.x;
+      const dy = y - mousePos.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const minDistance = 60;
+      
+      if (dist < minDistance) {
+        const pushStrength = (1 - dist / minDistance) * 6;
+        const pushAngle = Math.atan2(dy, dx);
+        x += Math.cos(pushAngle) * pushStrength;
+        y += Math.sin(pushAngle) * pushStrength;
+      }
+    }
 
     const color =
       c.alpha < 1
@@ -108,6 +126,14 @@ export class PetalRenderer {
         : hslToString(c.hue, c.saturation, c.lightness);
 
     const scale = isHovered ? 1.1 : 1;
+
+    // Use fast transition only if:
+    // 1. Picker already expanded (not currently expanding)
+    // 2. Mouse is active (mousePos exists)
+    // 3. Not hovering this specific petal
+    const transformTransition = isExpanded && !isExpanding && mousePos && !isHovered 
+      ? 'transform 150ms ease-out' 
+      : `transform ${c.animationDuration}ms ${BLOOM_EASING} ${isExpanded && !isHovered ? c.staggerDelay : 0}ms`;
 
     setStyles(this.el, {
       backgroundColor: color,
@@ -117,7 +143,7 @@ export class PetalRenderer {
       opacity: isExpanded ? '1' : '0',
       filter:
         isHovered && !isInvisible ? 'brightness(1.1)' : 'brightness(1)',
-      transition: `transform ${c.animationDuration}ms ${BLOOM_EASING} ${isExpanded && !isHovered ? c.staggerDelay : 0}ms,
+      transition: `${transformTransition},
                    opacity ${c.animationDuration}ms ${BLOOM_EASING} ${isExpanded && !isHovered ? c.staggerDelay : 0}ms,
                    background-color 200ms ease,
                    box-shadow 200ms ease,
@@ -133,6 +159,7 @@ export class PetalRenderer {
     });
 
     this.el.tabIndex = isExpanded ? 0 : -1;
+    this.lastExpanded = isExpanded;
   }
 
   destroy(): void {

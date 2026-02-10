@@ -10,3 +10,7 @@
 .bcp-slider-handle { pointer-events: auto; cursor: grab; touch-action: none; }
 .bcp-slider-handle:active { cursor: grabbing; }
 .bcp-bg { position: absolute; border-radius: 50%; pointer-events: none; }
+.bcp-bg-wrapper { position: absolute; border-radius: 50%; pointer-events: none; }
+.bcp-bg-gradient { position: absolute; border-radius: 50%; pointer-events: none; filter: blur(2px); }
+.bcp-bg-solid { position: absolute; inset: 0; border-radius: 50%; pointer-events: none; }
+.bcp-petal-ring { pointer-events: none; }
