@@ -1,6 +1,6 @@
 {
   "name": "@dayflow/blossom-color-picker-react",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "React wrapper for Blossom Color Picker",
   "main": "dist/index.js",
@@ -33,7 +33,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@dayflow/blossom-color-picker": "^2.0.0"
+    "@dayflow/blossom-color-picker": "^2.0.1"
   },
   "peerDependencies": {
     "react": ">=18.0.0",

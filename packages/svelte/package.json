@@ -1,6 +1,6 @@
 {
   "name": "@dayflow/blossom-color-picker-svelte",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "Svelte wrapper for Blossom Color Picker",
   "types": "dist/index.d.ts",
@@ -34,7 +34,7 @@
     "typecheck": "svelte-check && tsc --noEmit"
   },
   "dependencies": {
-    "@dayflow/blossom-color-picker": "^2.0.0"
+    "@dayflow/blossom-color-picker": "^2.0.1"
   },
   "peerDependencies": {
     "svelte": ">=5.0.0"
