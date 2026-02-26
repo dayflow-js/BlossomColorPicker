@@ -117,13 +117,16 @@ export function calculateBarRadius(
  */
 export function calculateContainerSize(
   barRadius: number,
-  barWidth: number,
+  circularBarWidth: number,
   showAlphaSlider: boolean,
-  sliderOffset: number
+  sliderOffset: number,
+  sliderWidth: number
 ): number {
-  return showAlphaSlider
-    ? (barRadius + sliderOffset + barWidth / 2) * 2 + 12
-    : (barRadius + barWidth / 2) * 2 + 12;
+  const barExtent = barRadius + circularBarWidth / 2;
+  const sliderExtent = showAlphaSlider
+    ? barRadius + sliderOffset + sliderWidth / 2
+    : 0;
+  return Math.max(barExtent, sliderExtent) * 2 + 12;
 }
 
 /**

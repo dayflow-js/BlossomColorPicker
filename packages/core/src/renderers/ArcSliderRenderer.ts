@@ -25,7 +25,6 @@ export class ArcSliderRenderer {
   private center: number;
   private arcRadius: number;
   private halfSweep = 30;
-  private strokeWidth: number;
   private handleRadius: number;
   private gradientId: string;
 
@@ -40,9 +39,9 @@ export class ArcSliderRenderer {
   private boundEnd: () => void;
 
   constructor(
-    private barRadius: number,
+    barRadius: number,
     private barWidth: number,
-    private sliderOffset: number,
+    sliderOffset: number,
     animationDuration: number,
     private onChange: (value: number) => void,
     position: SliderPosition = 'right'
@@ -50,9 +49,8 @@ export class ArcSliderRenderer {
     this.animationDuration = animationDuration;
     this.currentPosition = position;
     this.arcRadius = barRadius + sliderOffset;
-    this.strokeWidth = barWidth;
     this.handleRadius = barWidth / 2;
-    this.svgSize = (this.arcRadius + this.handleRadius + this.strokeWidth) * 2 + 20;
+    this.svgSize = (this.arcRadius + this.handleRadius + this.barWidth) * 2 + 20;
     this.center = this.svgSize / 2;
 
     this.gradientId = `bcp-arc-grad-${++arcIdCounter}`;
@@ -93,7 +91,7 @@ export class ArcSliderRenderer {
     this.bgPath = createSVGElement('path', {
       fill: 'none',
       stroke: 'rgba(0,0,0,0.06)',
-      'stroke-width': String(this.strokeWidth),
+      'stroke-width': String(this.barWidth),
       'stroke-linecap': 'round',
     });
     this.el.appendChild(this.bgPath);
@@ -102,7 +100,7 @@ export class ArcSliderRenderer {
     this.gradientPath = createSVGElement('path', {
       fill: 'none',
       stroke: `url(#${this.gradientId})`,
-      'stroke-width': String(this.strokeWidth),
+      'stroke-width': String(this.barWidth),
       'stroke-linecap': 'round',
     });
     this.gradientPath.classList.add('bcp-slider-track');

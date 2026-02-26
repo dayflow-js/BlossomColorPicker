@@ -53,6 +53,9 @@ function propsToOptions(props: BlossomColorPickerProps): Partial<BlossomColorPic
   if (props.showCoreColor !== undefined) opts.showCoreColor = props.showCoreColor;
   if (props.sliderPosition !== undefined) opts.sliderPosition = props.sliderPosition;
   if (props.adaptivePositioning !== undefined) opts.adaptivePositioning = props.adaptivePositioning;
+  if (props.circularBarWidth !== undefined) opts.circularBarWidth = props.circularBarWidth;
+  if (props.sliderWidth !== undefined) opts.sliderWidth = props.sliderWidth;
+  if (props.sliderOffset !== undefined) opts.sliderOffset = props.sliderOffset;
 
   return opts;
 }
@@ -89,6 +92,7 @@ export const BlossomColorPicker = forwardRef(function BlossomColorPicker(
     props.initialExpanded, props.animationDuration,
     props.showAlphaSlider, props.coreSize, props.petalSize,
     props.showCoreColor, props.sliderPosition, props.adaptivePositioning,
+    props.circularBarWidth, props.sliderWidth, props.sliderOffset,
   ]);
 
   // Forward ref

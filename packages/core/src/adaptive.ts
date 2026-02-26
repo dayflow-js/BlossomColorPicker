@@ -1,5 +1,4 @@
 import type { SliderPosition } from './types';
-import { BAR_WIDTH, SLIDER_OFFSET } from './constants';
 
 export interface ComputeAdaptivePositionInput {
   elementRect: { left: number; top: number; width: number; height: number };
@@ -9,6 +8,8 @@ export interface ComputeAdaptivePositionInput {
   windowHeight: number;
   sliderPosition?: SliderPosition;
   adaptivePositioning: boolean;
+  circularBarWidth: number;
+  sliderOffset: number;
 }
 
 export interface ComputeAdaptivePositionResult {
@@ -24,6 +25,8 @@ export function computeAdaptivePosition({
   windowHeight,
   sliderPosition,
   adaptivePositioning,
+  circularBarWidth,
+  sliderOffset,
 }: ComputeAdaptivePositionInput): ComputeAdaptivePositionResult {
   const halfSize = containerSize / 2;
   const centerX = elementRect.left + elementRect.width / 2 - currentShiftOffset.x;
@@ -56,7 +59,7 @@ export function computeAdaptivePosition({
     const spaceTop = centerY + newShiftY - halfSize;
     const spaceBottom = windowHeight - (centerY + newShiftY + halfSize);
 
-    const threshold = SLIDER_OFFSET + BAR_WIDTH + 20;
+    const threshold = sliderOffset + circularBarWidth + 20;
 
     if (spaceRight < threshold && spaceLeft > spaceRight) {
       effectivePosition = 'left';

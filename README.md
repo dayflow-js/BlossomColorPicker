@@ -165,6 +165,9 @@ All packages share the same set of options. In React they are passed as JSX prop
 | `showCoreColor`       | `boolean`                                  | `true`                                                    | When true, the core shows the selected color while expanded.                                                               |
 | `sliderPosition`      | `'top' \| 'bottom' \| 'left' \| 'right'`   | `'right'`                                                 | Fixed position for the arc slider.                                                                                         |
 | `adaptivePositioning` | `boolean`                                  | `true`                                                    | **Smart Shifter**: Automatically shifts the picker to stay within viewport and repositions the slider for best visibility. |
+| `circularBarWidth`    | `number`                                   | `12`                                                      | Thickness of the circular color bar in px.                                                                                 |
+| `sliderWidth`         | `number`                                   | `12`                                                      | Thickness of the arc slider track and handle in px.                                                                        |
+| `sliderOffset`        | `number`                                   | `30`                                                      | Distance between the outermost petals and the arc slider in px.                                                             |
 | `className` / `class` | `string`                                   | `""`                                                      | Additional CSS class (React: `className`, Svelte: `class`).                                                                |
 
 ### Vanilla JS Methods

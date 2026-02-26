@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "build": "ng-packagr -p ng-package.json && node -e \"const f='dist/package.json';const p=JSON.parse(require('fs').readFileSync(f));p.sideEffects=['*.css'];require('fs').writeFileSync(f,JSON.stringify(p,null,2))\"",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc -p tsconfig.lib.json --noEmit"
   },
   "dependencies": {
     "@dayflow/blossom-color-picker": "^2.0.1"
