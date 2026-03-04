@@ -1,6 +1,6 @@
 {
   "name": "@dayflow/blossom-color-picker-angular",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Angular wrapper for Blossom Color Picker",
   "author": "Jayce Li",
   "license": "MIT",
@@ -16,7 +16,7 @@
     "typecheck": "tsc -p tsconfig.lib.json --noEmit"
   },
   "dependencies": {
-    "@dayflow/blossom-color-picker": "^2.0.1"
+    "@dayflow/blossom-color-picker": "^2.1.0"
   },
   "peerDependencies": {
     "@angular/core": ">=16.0.0",
