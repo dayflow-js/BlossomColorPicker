@@ -45,6 +45,9 @@ export class BlossomColorPickerComponent
   @Input() showCoreColor = true;
   @Input() sliderPosition?: SliderPosition;
   @Input() adaptivePositioning = true;
+  @Input() circularBarWidth?: number;
+  @Input() sliderWidth?: number;
+  @Input() sliderOffset?: number;
 
   @Output() colorChange = new EventEmitter<BlossomColorPickerColor>();
   @Output() colorCollapse = new EventEmitter<BlossomColorPickerColor>();
@@ -97,6 +100,9 @@ export class BlossomColorPickerComponent
       showCoreColor: this.showCoreColor,
       sliderPosition: this.sliderPosition,
       adaptivePositioning: this.adaptivePositioning,
+      circularBarWidth: this.circularBarWidth,
+      sliderWidth: this.sliderWidth,
+      sliderOffset: this.sliderOffset,
       onChange: (color) => this.colorChange.emit(color),
       onCollapse: (color) => this.colorCollapse.emit(color),
     };

@@ -89,6 +89,18 @@ export const BlossomColorPicker = defineComponent({
       type: Boolean,
       default: true,
     },
+    circularBarWidth: {
+      type: Number,
+      default: undefined,
+    },
+    sliderWidth: {
+      type: Number,
+      default: undefined,
+    },
+    sliderOffset: {
+      type: Number,
+      default: undefined,
+    },
   },
   emits: ['change', 'collapse'],
   setup(props, { emit }) {
@@ -114,6 +126,9 @@ export const BlossomColorPicker = defineComponent({
         showCoreColor: props.showCoreColor,
         sliderPosition: props.sliderPosition,
         adaptivePositioning: props.adaptivePositioning,
+        circularBarWidth: props.circularBarWidth,
+        sliderWidth: props.sliderWidth,
+        sliderOffset: props.sliderOffset,
         onChange,
         onCollapse,
       };
@@ -136,6 +151,7 @@ export const BlossomColorPicker = defineComponent({
         props.initialExpanded, props.animationDuration,
         props.showAlphaSlider, props.coreSize, props.petalSize,
         props.showCoreColor, props.sliderPosition, props.adaptivePositioning,
+        props.circularBarWidth, props.sliderWidth, props.sliderOffset,
       ],
       () => {
         picker?.setOptions(getOptions());

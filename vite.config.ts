@@ -15,4 +15,7 @@ export default defineConfig({
       '@dayflow/blossom-color-picker': path.resolve(__dirname, './packages/core/src'),
     },
   },
+  server: {
+    open: true,
+  },
 });

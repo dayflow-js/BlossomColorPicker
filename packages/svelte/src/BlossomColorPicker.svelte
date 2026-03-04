@@ -23,6 +23,9 @@
     showCoreColor?: boolean;
     sliderPosition?: SliderPosition;
     adaptivePositioning?: boolean;
+    circularBarWidth?: number;
+    sliderWidth?: number;
+    sliderOffset?: number;
     class?: string;
     onchange?: (color: BlossomColorPickerColor) => void;
     oncollapse?: (color: BlossomColorPickerColor) => void;
@@ -42,6 +45,9 @@
     showCoreColor = true,
     sliderPosition = undefined,
     adaptivePositioning = true,
+    circularBarWidth = undefined,
+    sliderWidth = undefined,
+    sliderOffset = undefined,
     class: className = '',
     onchange = undefined,
     oncollapse = undefined,
@@ -65,6 +71,9 @@
       showCoreColor,
       sliderPosition,
       adaptivePositioning,
+      circularBarWidth,
+      sliderWidth,
+      sliderOffset,
       onChange: onchange,
       onCollapse: oncollapse,
     };

@@ -126,6 +126,7 @@ const Example = () => {
             onChange={(newColor) => setColor(newColor)}
             coreSize={36}
             petalSize={36}
+            sliderWidth={24}
             adaptivePositioning={false}
           />
         </div>
@@ -157,6 +158,7 @@ const Example = () => {
               initialExpanded={isPickerExpanded}
               coreSize={40}
               petalSize={32}
+              sliderWidth={18}
               onCollapse={() => setIsPickerExpanded(false)}
             />
           </div>
