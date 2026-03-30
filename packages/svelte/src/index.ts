@@ -1,5 +1,6 @@
 import '@dayflow/blossom-color-picker/styles.css';
 export { default as BlossomColorPicker } from './BlossomColorPicker.svelte';
+export { default as ChromePicker } from './ChromePicker.svelte';
 export type {
   BlossomColorPickerValue,
   BlossomColorPickerColor,

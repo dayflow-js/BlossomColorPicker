@@ -193,6 +193,25 @@ export function hslaToString(
   return `hsla(${Math.round(h)}, ${Math.round(s)}%, ${Math.round(l)}%, ${(a / 100).toFixed(2)})`;
 }
 
+export function hslToRgb(h: number, s: number, l: number): { r: number, g: number, b: number } {
+  const sNorm = s / 100;
+  const lNorm = l / 100;
+  const k = (n: number) => (n + h / 30) % 12;
+  const a = sNorm * Math.min(lNorm, 1 - lNorm);
+  const f = (n: number) =>
+    lNorm - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+
+  return {
+    r: Math.round(255 * f(0)),
+    g: Math.round(255 * f(8)),
+    b: Math.round(255 * f(4)),
+  };
+}
+
+export function rgbaToString(r: number, g: number, b: number, a: number): string {
+  return `rgba(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)}, ${(a / 100).toFixed(2)})`;
+}
+
 export function createColorOutput(
   hue: number,
   sliderValue: number,
@@ -202,6 +221,7 @@ export function createColorOutput(
   alpha: number,
   layer: 'inner' | 'outer'
 ): BlossomColorPickerColor {
+  const { r, g, b } = hslToRgb(hue, visualSaturation, lightness);
   return {
     hue,
     saturation: sliderValue, // State value (0-100)
@@ -209,9 +229,14 @@ export function createColorOutput(
     lightness,
     alpha,
     layer,
+    r,
+    g,
+    b,
     hex: hslToHex(hue, visualSaturation, lightness),
     hsl: hslToString(hue, visualSaturation, lightness),
     hsla: hslaToString(hue, visualSaturation, lightness, alpha),
+    rgb: `rgb(${r}, ${g}, ${b})`,
+    rgba: rgbaToString(r, g, b, alpha),
   };
 }
 

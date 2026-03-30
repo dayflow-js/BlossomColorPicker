@@ -13,8 +13,8 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import {
-  BlossomColorPicker as CorePicker,
-  type BlossomColorPickerOptions,
+  ChromePicker as CorePicker,
+  type ChromePickerOptions,
   type BlossomColorPickerValue,
   type BlossomColorPickerColor,
   type ColorInput,
@@ -23,11 +23,11 @@ import {
 
 
 @Component({
-  selector: 'blossom-color-picker',
+  selector: 'chrome-picker',
   standalone: true,
   template: '<div #container></div>',
 })
-export class BlossomColorPickerComponent
+export class ChromePickerComponent
   implements AfterViewInit, OnDestroy, OnChanges {
   @ViewChild('container', { static: true })
   containerRef!: ElementRef<HTMLDivElement>;
@@ -48,7 +48,7 @@ export class BlossomColorPickerComponent
   @Input() circularBarWidth?: number;
   @Input() sliderWidth?: number;
   @Input() sliderOffset?: number;
-  @Input() collapsible = true;
+  @Input() collapsible = false;
 
   @Output() colorChange = new EventEmitter<BlossomColorPickerColor>();
   @Output() colorCollapse = new EventEmitter<BlossomColorPickerColor>();
@@ -86,7 +86,7 @@ export class BlossomColorPickerComponent
     this.picker.setOptions(this.getOptions());
   }
 
-  private getOptions(): BlossomColorPickerOptions {
+  private getOptions(): ChromePickerOptions {
     return {
       value: this.value,
       defaultValue: this.defaultValue,

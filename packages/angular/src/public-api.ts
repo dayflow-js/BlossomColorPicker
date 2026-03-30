@@ -1,4 +1,5 @@
 export { BlossomColorPickerComponent } from './lib/blossom-color-picker.component';
+export { ChromePickerComponent } from './lib/chrome-picker.component';
 
 // Re-export types from core
 export type {

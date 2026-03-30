@@ -1,8 +1,7 @@
 import {
-  BlossomColorPicker as CorePicker,
-  type BlossomColorPickerOptions,
+  ChromePicker as CorePicker,
+  type ChromePickerOptions,
 } from '@dayflow/blossom-color-picker';
-import '@dayflow/blossom-color-picker/styles.css';
 import {
   useRef,
   useEffect,
@@ -11,32 +10,12 @@ import {
   type ForwardedRef,
 } from 'react';
 
-// Re-export types from core
-export type {
-  BlossomColorPickerValue,
-  BlossomColorPickerColor,
-  ColorInput,
-  SliderPosition,
-} from '@dayflow/blossom-color-picker';
-
-export type { BlossomColorPickerOptions } from '@dayflow/blossom-color-picker';
-
-// Re-export utilities
-export {
-  DEFAULT_COLORS,
-  hexToHsl,
-  hslToHex,
-  rgbToHsl,
-  parseColor,
-  lightnessToSliderValue,
-} from '@dayflow/blossom-color-picker';
-
-export interface BlossomColorPickerProps extends BlossomColorPickerOptions {
+export interface ChromePickerProps extends ChromePickerOptions {
   className?: string;
 }
 
-function propsToOptions(props: BlossomColorPickerProps): Partial<BlossomColorPickerOptions> {
-  const opts: Partial<BlossomColorPickerOptions> = {};
+function propsToOptions(props: ChromePickerProps): Partial<ChromePickerOptions> {
+  const opts: Partial<ChromePickerOptions> = {};
 
   if (props.value !== undefined) opts.value = props.value;
   if (props.defaultValue !== undefined) opts.defaultValue = props.defaultValue;
@@ -61,8 +40,8 @@ function propsToOptions(props: BlossomColorPickerProps): Partial<BlossomColorPic
   return opts;
 }
 
-export const BlossomColorPicker = forwardRef(function BlossomColorPicker(
-  props: BlossomColorPickerProps,
+export const ChromePicker = forwardRef(function ChromePicker(
+  props: ChromePickerProps,
   ref: ForwardedRef<HTMLDivElement>
 ) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -113,7 +92,4 @@ export const BlossomColorPicker = forwardRef(function BlossomColorPicker(
   });
 });
 
-export { ChromePicker } from './ChromePicker';
-export type { ChromePickerProps } from './ChromePicker';
-
-export default BlossomColorPicker;
+export default ChromePicker;

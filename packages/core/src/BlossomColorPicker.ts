@@ -27,6 +27,7 @@ import {
   lightnessToSliderValue,
   sliderValueToLightness,
   hslToHex,
+  hslaToString,
   createColorOutput,
   organizeColorsIntoLayers,
   getVisualSaturation,
@@ -66,6 +67,7 @@ export interface BlossomColorPickerOptions {
   circularBarWidth?: number;
   sliderWidth?: number;
   sliderOffset?: number;
+  collapsible?: boolean;
 }
 
 const DEFAULT_VALUE: BlossomColorPickerValue = {
@@ -148,11 +150,12 @@ export class BlossomColorPicker {
       circularBarWidth: options?.circularBarWidth ?? BAR_WIDTH,
       sliderWidth: options?.sliderWidth ?? BAR_WIDTH,
       sliderOffset: options?.sliderOffset ?? SLIDER_OFFSET,
+      collapsible: options?.collapsible ?? true,
     };
 
     this.controlledValue = options?.value;
     this.internalValue = options?.value ?? defaultValue;
-    this.isExpanded = this.opts.initialExpanded;
+    this.isExpanded = !this.opts.collapsible || this.opts.initialExpanded;
     this.prevExpanded = this.isExpanded;
     this.effectivePosition = this.opts.sliderPosition || 'right';
 
@@ -257,6 +260,12 @@ export class BlossomColorPicker {
       this.opts.showAlphaSlider = options.showAlphaSlider;
       needsRerender = true;
     }
+    if (options.collapsible !== undefined && options.collapsible !== this.opts.collapsible) {
+      this.opts.collapsible = options.collapsible;
+      if (!this.opts.collapsible) {
+        this.isExpanded = true;
+      }
+    }
 
     if (needsRerender) {
       this.destroyInner();
@@ -295,7 +304,7 @@ export class BlossomColorPicker {
     if (this.isExpanded && !this.opts.showCoreColor) return '#FFFFFF';
     const lightness = val.lightness ?? sliderValueToLightness(val.saturation);
     const saturation = val.originalSaturation ?? this.baseSaturation;
-    return hslToHex(val.hue, saturation, lightness);
+    return hslaToString(val.hue, saturation, lightness, val.alpha);
   }
 
   private get currentLightness(): number {
@@ -746,9 +755,13 @@ export class BlossomColorPicker {
   }
 
   private setExpanded(expanded: boolean): void {
-    this.isExpanded = expanded;
+    if (!this.opts.collapsible) {
+      this.isExpanded = true;
+    } else {
+      this.isExpanded = expanded;
+    }
 
-    if (expanded) {
+    if (this.isExpanded) {
       document.addEventListener('mousedown', this.boundClickOutside);
     } else {
       document.removeEventListener('mousedown', this.boundClickOutside);
@@ -758,6 +771,7 @@ export class BlossomColorPicker {
   }
 
   private handleClickOutside(e: MouseEvent): void {
+    if (!this.opts.collapsible) return;
     if (
       this.containerEl &&
       !this.containerEl.contains(e.target as Node)
@@ -767,7 +781,7 @@ export class BlossomColorPicker {
   }
 
   private handleMouseEnter(): void {
-    if (this.opts.disabled || !this.opts.openOnHover) return;
+    if (this.opts.disabled || !this.opts.openOnHover || !this.opts.collapsible) return;
 
     if (this.closeTimeout) {
       clearTimeout(this.closeTimeout);
@@ -788,7 +802,7 @@ export class BlossomColorPicker {
 
     this.isHovering = false;
 
-    if (this.opts.openOnHover) {
+    if (this.opts.openOnHover && this.opts.collapsible) {
       this.closeTimeout = setTimeout(() => {
         this.setExpanded(false);
       }, 200);
@@ -796,7 +810,7 @@ export class BlossomColorPicker {
   }
 
   private handleCoreClick(): void {
-    if (this.opts.disabled) return;
+    if (this.opts.disabled || !this.opts.collapsible) return;
     this.setExpanded(!this.isExpanded);
   }
 

@@ -1,7 +1,7 @@
 <script lang="ts">
   import {
-    BlossomColorPicker as CorePicker,
-    type BlossomColorPickerOptions,
+    ChromePicker as CorePicker,
+    type ChromePickerOptions,
     type BlossomColorPickerValue,
     type ColorInput,
     type SliderPosition,
@@ -49,7 +49,7 @@
     circularBarWidth = undefined,
     sliderWidth = undefined,
     sliderOffset = undefined,
-    collapsible = true,
+    collapsible = false,
     class: className = '',
     onchange = undefined,
     oncollapse = undefined,
@@ -58,7 +58,7 @@
   let container: HTMLDivElement;
   let picker: CorePicker | null = null;
 
-  function getOptions(): BlossomColorPickerOptions {
+  function getOptions(): ChromePickerOptions {
     return {
       value,
       defaultValue,

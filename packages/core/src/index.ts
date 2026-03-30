@@ -4,6 +4,9 @@ import './styles.css';
 export { BlossomColorPicker } from './BlossomColorPicker';
 export type { BlossomColorPickerOptions } from './BlossomColorPicker';
 
+export { ChromePicker } from './ChromePicker';
+export type { ChromePickerOptions } from './ChromePicker';
+
 // Types
 export type {
   BlossomColorPickerValue,
@@ -17,6 +20,8 @@ export {
   hexToHsl,
   hslToHex,
   rgbToHsl,
+  hslToRgb,
+  rgbaToString,
   parseColor,
   lightnessToSliderValue,
   sliderValueToLightness,

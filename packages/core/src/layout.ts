@@ -126,7 +126,7 @@ export function calculateContainerSize(
   const sliderExtent = showAlphaSlider
     ? barRadius + sliderOffset + sliderWidth / 2
     : 0;
-  return Math.max(barExtent, sliderExtent) * 2 + 12;
+  return Math.max(barExtent, sliderExtent) * 2 + 4;
 }
 
 /**
