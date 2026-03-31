@@ -25,7 +25,10 @@ const docsOptions = {
 
 export const docs = defineDocs({ dir: 'content/docs', ...docsOptions });
 export const docsZh = defineDocs({ dir: 'content/docs-zh', ...docsOptions });
-export const docsZhHant = defineDocs({ dir: 'content/docs-zh-hant', ...docsOptions });
+export const docsZhHant = defineDocs({
+  dir: 'content/docs-zh-hant',
+  ...docsOptions,
+});
 export const docsJa = defineDocs({ dir: 'content/docs-ja', ...docsOptions });
 export const docsKo = defineDocs({ dir: 'content/docs-ko', ...docsOptions });
 export const docsDe = defineDocs({ dir: 'content/docs-de', ...docsOptions });

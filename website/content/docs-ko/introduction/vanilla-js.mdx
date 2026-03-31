@@ -9,7 +9,7 @@ description: 독립 코어 패키지에서 Blossom Color Picker를 직접 사용
 
 ## 코어 패키지 설치
 
-<PackageTabs pkg="@dayflow/blossom-color-picker" />
+<PackageTabs pkg='@dayflow/blossom-color-picker' />
 
 ## 공유 스타일 가져오기
 
@@ -28,7 +28,7 @@ import '@dayflow/blossom-color-picker/styles.css';
 const root = document.getElementById('picker');
 
 const picker = new BlossomColorPicker(root, {
-  onChange: (color) => {
+  onChange: color => {
     console.log('Selected color:', color.hex);
   },
 });
@@ -36,15 +36,15 @@ const picker = new BlossomColorPicker(root, {
 
 ## 런타임 제어
 
-| 메서드 | 설명 |
-| :--- | :--- |
-| `setValue(value)` | 현재 값을 코드에서 직접 설정합니다. |
-| `getValue()` | 현재 색상을 `BlossomColorPickerColor`로 읽어옵니다. |
-| `expand()` | 피커를 펼칩니다. |
-| `collapse()` | 피커를 접습니다. |
-| `toggle()` | 펼침/접힘 상태를 전환합니다. |
-| `setOptions(options)` | 초기화 후 옵션을 업데이트합니다. |
-| `destroy()` | 생성된 DOM과 이벤트 리스너를 정리합니다. |
+| 메서드                | 설명                                                |
+| :-------------------- | :-------------------------------------------------- |
+| `setValue(value)`     | 현재 값을 코드에서 직접 설정합니다.                 |
+| `getValue()`          | 현재 색상을 `BlossomColorPickerColor`로 읽어옵니다. |
+| `expand()`            | 피커를 펼칩니다.                                    |
+| `collapse()`          | 피커를 접습니다.                                    |
+| `toggle()`            | 펼침/접힘 상태를 전환합니다.                        |
+| `setOptions(options)` | 초기화 후 옵션을 업데이트합니다.                    |
+| `destroy()`           | 생성된 DOM과 이벤트 리스너를 정리합니다.            |
 
 ## 런타임 예제
 
@@ -74,7 +74,7 @@ import { ChromePicker } from '@dayflow/blossom-color-picker';
 import '@dayflow/blossom-color-picker/styles.css';
 
 const picker = new ChromePicker(document.getElementById('picker'), {
-  onChange: (color) => console.log(color.rgba),
+  onChange: color => console.log(color.rgba),
 });
 ```
 

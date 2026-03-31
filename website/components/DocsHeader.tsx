@@ -4,6 +4,7 @@ import { SidebarTrigger } from 'fumadocs-ui/components/sidebar/base';
 import { buttonVariants } from 'fumadocs-ui/components/ui/button';
 import { Sidebar } from 'lucide-react';
 import Link from 'next/link';
+
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 function GithubIcon({ className }: { className?: string }) {
@@ -35,7 +36,9 @@ export function DocsHeader({ githubUrl }: DocsHeaderProps) {
               href='/'
               className='me-6 inline-flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-white'
             >
-              <span className='text-2xl' role='img' aria-label='Blossom'>🌸</span>
+              <span className='text-2xl' role='img' aria-label='Blossom'>
+                🌸
+              </span>
               Blossom Color Picker
             </Link>
 

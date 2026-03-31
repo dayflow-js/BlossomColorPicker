@@ -9,7 +9,7 @@ Mit dem eigenständigen Kernpaket können Sie `BlossomColorPicker` und `ChromePi
 
 ## Kernpaket installieren
 
-<PackageTabs pkg="@dayflow/blossom-color-picker" />
+<PackageTabs pkg='@dayflow/blossom-color-picker' />
 
 ## Gemeinsames Stylesheet importieren
 
@@ -28,7 +28,7 @@ import '@dayflow/blossom-color-picker/styles.css';
 const root = document.getElementById('picker');
 
 const picker = new BlossomColorPicker(root, {
-  onChange: (color) => {
+  onChange: color => {
     console.log('Selected color:', color.hex);
   },
 });
@@ -36,15 +36,15 @@ const picker = new BlossomColorPicker(root, {
 
 ## Laufzeitsteuerung
 
-| Methode | Beschreibung |
-| :--- | :--- |
-| `setValue(value)` | Setzt den aktuellen Wert per Code. |
-| `getValue()` | Liest die aktuelle Farbe als `BlossomColorPickerColor`. |
-| `expand()` | Öffnet den Picker. |
-| `collapse()` | Schließt den Picker. |
-| `toggle()` | Wechselt zwischen offen und geschlossen. |
-| `setOptions(options)` | Aktualisiert Optionen nach der Initialisierung. |
-| `destroy()` | Entfernt erzeugte DOM-Knoten und Event-Listener. |
+| Methode               | Beschreibung                                            |
+| :-------------------- | :------------------------------------------------------ |
+| `setValue(value)`     | Setzt den aktuellen Wert per Code.                      |
+| `getValue()`          | Liest die aktuelle Farbe als `BlossomColorPickerColor`. |
+| `expand()`            | Öffnet den Picker.                                      |
+| `collapse()`          | Schließt den Picker.                                    |
+| `toggle()`            | Wechselt zwischen offen und geschlossen.                |
+| `setOptions(options)` | Aktualisiert Optionen nach der Initialisierung.         |
+| `destroy()`           | Entfernt erzeugte DOM-Knoten und Event-Listener.        |
 
 ## Laufzeitbeispiel
 
@@ -74,7 +74,7 @@ import { ChromePicker } from '@dayflow/blossom-color-picker';
 import '@dayflow/blossom-color-picker/styles.css';
 
 const picker = new ChromePicker(document.getElementById('picker'), {
-  onChange: (color) => console.log(color.rgba),
+  onChange: color => console.log(color.rgba),
 });
 ```
 

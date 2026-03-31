@@ -1,5 +1,4 @@
 import '@dayflow/blossom-color-picker/styles.css';
-
 import {
   Component,
   ElementRef,
@@ -22,14 +21,14 @@ import {
   type ChromePickerThemeColors,
 } from '@dayflow/blossom-color-picker';
 
-
 @Component({
   selector: 'chrome-picker',
   standalone: true,
   template: '<div #container></div>',
 })
 export class ChromePickerComponent
-  implements AfterViewInit, OnDestroy, OnChanges {
+  implements AfterViewInit, OnDestroy, OnChanges
+{
   @ViewChild('container', { static: true })
   containerRef!: ElementRef<HTMLDivElement>;
 
@@ -74,14 +73,11 @@ export class ChromePickerComponent
     if (!this.picker) return;
 
     // Only send value + callbacks for value-only changes (cheap update)
-    if (
-      changes['value'] &&
-      Object.keys(changes).length === 1
-    ) {
+    if (changes['value'] && Object.keys(changes).length === 1) {
       this.picker.setOptions({
         value: this.value,
-        onChange: (color) => this.colorChange.emit(color),
-        onCollapse: (color) => this.colorCollapse.emit(color),
+        onChange: color => this.colorChange.emit(color),
+        onCollapse: color => this.colorCollapse.emit(color),
       });
       return;
     }
@@ -110,8 +106,8 @@ export class ChromePickerComponent
       collapsible: this.collapsible,
       darkMode: this.darkMode,
       darkModeColors: this.darkModeColors,
-      onChange: (color) => this.colorChange.emit(color),
-      onCollapse: (color) => this.colorCollapse.emit(color),
+      onChange: color => this.colorChange.emit(color),
+      onCollapse: color => this.colorCollapse.emit(color),
     };
   }
 }

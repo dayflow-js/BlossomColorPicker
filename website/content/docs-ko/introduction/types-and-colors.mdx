@@ -11,34 +11,34 @@ description: 값 객체, 콜백 반환값, 지원되는 색상 형식에 대한 
 
 제어형 `value`와 `defaultValue`에 사용하는 객체입니다.
 
-| 필드 | 타입 | 설명 |
-| :--- | :--- | :--- |
-| `hue` | `number` | `0`부터 `360`까지의 hue 각도입니다. |
-| `saturation` | `number` | `0`부터 `100`까지의 아크 슬라이더 위치입니다. |
-| `lightness` | `number?` | 선택적인 HSL lightness 오버라이드 값입니다. |
-| `originalSaturation` | `number?` | 선택된 꽃잎의 원래 채도입니다. |
-| `alpha` | `number` | `0`부터 `100`까지의 알파 값입니다. |
-| `layer` | `'inner' \| 'outer'` | 선택된 꽃잎의 레이어입니다. |
+| 필드                 | 타입                 | 설명                                          |
+| :------------------- | :------------------- | :-------------------------------------------- |
+| `hue`                | `number`             | `0`부터 `360`까지의 hue 각도입니다.           |
+| `saturation`         | `number`             | `0`부터 `100`까지의 아크 슬라이더 위치입니다. |
+| `lightness`          | `number?`            | 선택적인 HSL lightness 오버라이드 값입니다.   |
+| `originalSaturation` | `number?`            | 선택된 꽃잎의 원래 채도입니다.                |
+| `alpha`              | `number`             | `0`부터 `100`까지의 알파 값입니다.            |
+| `layer`              | `'inner' \| 'outer'` | 선택된 꽃잎의 레이어입니다.                   |
 
 ## `BlossomColorPickerColor`
 
 이 객체는 `onChange`, `onCollapse`, `getValue()`에서 반환됩니다.
 
-| 필드 | 타입 | 설명 |
-| :--- | :--- | :--- |
-| `hex` | `string` | 16진수 색상 문자열입니다. |
-| `hsl` | `string` | HSL 문자열입니다. |
-| `hsla` | `string` | HSLA 문자열입니다. |
-| `rgb` | `string` | RGB 문자열입니다. |
-| `rgba` | `string` | RGBA 문자열입니다. |
-| `r` | `number` | Red 채널 값입니다. |
-| `g` | `number` | Green 채널 값입니다. |
-| `b` | `number` | Blue 채널 값입니다. |
-| `hue` | `number` | `0`부터 `360`까지의 hue 각도입니다. |
-| `saturation` | `number` | `0`부터 `100`까지의 아크 슬라이더 위치입니다. |
-| `lightness` | `number` | 계산된 lightness 값입니다. |
-| `alpha` | `number` | `0`부터 `100`까지의 알파 값입니다. |
-| `layer` | `'inner' \| 'outer'` | 선택된 레이어입니다. |
+| 필드         | 타입                 | 설명                                          |
+| :----------- | :------------------- | :-------------------------------------------- |
+| `hex`        | `string`             | 16진수 색상 문자열입니다.                     |
+| `hsl`        | `string`             | HSL 문자열입니다.                             |
+| `hsla`       | `string`             | HSLA 문자열입니다.                            |
+| `rgb`        | `string`             | RGB 문자열입니다.                             |
+| `rgba`       | `string`             | RGBA 문자열입니다.                            |
+| `r`          | `number`             | Red 채널 값입니다.                            |
+| `g`          | `number`             | Green 채널 값입니다.                          |
+| `b`          | `number`             | Blue 채널 값입니다.                           |
+| `hue`        | `number`             | `0`부터 `360`까지의 hue 각도입니다.           |
+| `saturation` | `number`             | `0`부터 `100`까지의 아크 슬라이더 위치입니다. |
+| `lightness`  | `number`             | 계산된 lightness 값입니다.                    |
+| `alpha`      | `number`             | `0`부터 `100`까지의 알파 값입니다.            |
+| `layer`      | `'inner' \| 'outer'` | 선택된 레이어입니다.                          |
 
 ## Alpha 스케일
 

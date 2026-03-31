@@ -7,7 +7,10 @@ export { BlossomColorPicker } from './BlossomColorPicker';
 export type { BlossomColorPickerOptions } from './BlossomColorPicker';
 
 export { ChromePicker } from './ChromePicker';
-export type { ChromePickerOptions, ChromePickerThemeColors } from './ChromePicker';
+export type {
+  ChromePickerOptions,
+  ChromePickerThemeColors,
+} from './ChromePicker';
 
 // Types
 export type {
@@ -34,11 +37,7 @@ export {
   organizeColorsIntoLayers,
 } from './utils';
 
-export {
-  DEFAULT_COLORS,
-  OUTER_COLORS,
-  INNER_COLORS,
-} from './constants';
+export { DEFAULT_COLORS, OUTER_COLORS, INNER_COLORS } from './constants';
 
 export {
   calculateLayerRadii,

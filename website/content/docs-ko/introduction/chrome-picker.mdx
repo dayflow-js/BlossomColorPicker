@@ -18,14 +18,14 @@ description: HEX, RGBA, HSLA를 지원하는 전문가용 컬러 피커입니다
 
 `ChromePicker`는 코어 패키지에서 직접 사용할 수도 있습니다:
 
-<PackageTabs pkg="@dayflow/blossom-color-picker" />
+<PackageTabs pkg='@dayflow/blossom-color-picker' />
 
 ```js
 import { ChromePicker } from '@dayflow/blossom-color-picker';
 import '@dayflow/blossom-color-picker/styles.css';
 
 const picker = new ChromePicker(document.getElementById('picker'), {
-  onChange: (color) => console.log(color.hex),
+  onChange: color => console.log(color.hex),
 });
 ```
 
@@ -53,6 +53,7 @@ const picker = new ChromePicker(document.getElementById('picker'), {
       );
     }
     ```
+
   </Tab>
   <Tab>
     ```vue
@@ -79,6 +80,7 @@ const picker = new ChromePicker(document.getElementById('picker'), {
     }
     </script>
     ```
+
   </Tab>
   <Tab>
     ```typescript
@@ -112,6 +114,7 @@ const picker = new ChromePicker(document.getElementById('picker'), {
       }
     }
     ```
+
   </Tab>
   <Tab>
     ```svelte
@@ -135,6 +138,7 @@ const picker = new ChromePicker(document.getElementById('picker'), {
       onchange={handleChange}
     />
     ```
+
   </Tab>
 </FrameworkTabs>
 
@@ -142,17 +146,17 @@ const picker = new ChromePicker(document.getElementById('picker'), {
 
 `ChromePicker`는 표준 `BlossomColorPicker`와 거의 동일한 옵션을 공유합니다.
 
-| 옵션 | 타입 | 기본값 | 설명 |
-| :--- | :--- | :--- | :--- |
-| `value` | `BlossomColorPickerValue` | - | 제어 모드의 현재 값입니다. |
-| `defaultValue` | `BlossomColorPickerValue` | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | 비제어 모드의 초기값입니다. |
-| `colors` | `ColorInput[]` | `DEFAULT_COLORS` | blossom 영역에 표시할 꽃잎 색상입니다. |
-| `onChange` | `(color: BlossomColorPickerColor) => void` | - | 색상 변경 시 호출됩니다. |
-| `onCollapse` | `(color: BlossomColorPickerColor) => void` | - | 피커가 접힐 때 호출됩니다. |
-| `disabled` | `boolean` | `false` | 상호작용을 비활성화합니다. |
-| `showAlphaSlider` | `boolean` | `true` | 알파 슬라이더 행을 표시합니다. |
-| `coreSize` | `number` | `32` | blossom 코어 버튼 크기(px)입니다. |
-| `petalSize` | `number` | `32` | blossom 꽃잎 크기(px)입니다. |
-| `collapsible` | `boolean` | `false` | blossom 영역 접기 허용 여부입니다. `ChromePicker`의 기본값은 `false`입니다. |
+| 옵션              | 타입                                       | 기본값                                                    | 설명                                                                        |
+| :---------------- | :----------------------------------------- | :-------------------------------------------------------- | :-------------------------------------------------------------------------- |
+| `value`           | `BlossomColorPickerValue`                  | -                                                         | 제어 모드의 현재 값입니다.                                                  |
+| `defaultValue`    | `BlossomColorPickerValue`                  | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | 비제어 모드의 초기값입니다.                                                 |
+| `colors`          | `ColorInput[]`                             | `DEFAULT_COLORS`                                          | blossom 영역에 표시할 꽃잎 색상입니다.                                      |
+| `onChange`        | `(color: BlossomColorPickerColor) => void` | -                                                         | 색상 변경 시 호출됩니다.                                                    |
+| `onCollapse`      | `(color: BlossomColorPickerColor) => void` | -                                                         | 피커가 접힐 때 호출됩니다.                                                  |
+| `disabled`        | `boolean`                                  | `false`                                                   | 상호작용을 비활성화합니다.                                                  |
+| `showAlphaSlider` | `boolean`                                  | `true`                                                    | 알파 슬라이더 행을 표시합니다.                                              |
+| `coreSize`        | `number`                                   | `32`                                                      | blossom 코어 버튼 크기(px)입니다.                                           |
+| `petalSize`       | `number`                                   | `32`                                                      | blossom 꽃잎 크기(px)입니다.                                                |
+| `collapsible`     | `boolean`                                  | `false`                                                   | blossom 영역 접기 허용 여부입니다. `ChromePicker`의 기본값은 `false`입니다. |
 
 전체 공유 옵션은 [옵션](/docs-ko/introduction/options)을 참고하세요.

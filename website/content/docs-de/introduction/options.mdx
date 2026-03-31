@@ -11,27 +11,27 @@ Das eigenständige Kernpaket und alle Framework-Wrapper von Blossom Color Picker
 
 ## Konfigurationsreferenz
 
-| Option | Typ | Standard | Beschreibung |
-| :--- | :--- | :--- | :--- |
-| `value` | `BlossomColorPickerValue` | - | Kontrollierter aktueller Wert. |
-| `defaultValue` | `BlossomColorPickerValue` | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | Startwert im unkontrollierten Modus. |
-| `colors` | `ColorInput[]` | `DEFAULT_COLORS` | Eigenes Farbarray. Der Kern organisiert diese Farben automatisch in Blütenebenen. |
-| `onChange` | `(color: BlossomColorPickerColor) => void` | - | Wird bei Farbänderungen aufgerufen. |
-| `onCollapse` | `(color: BlossomColorPickerColor) => void` | - | Wird beim Einklappen des Pickers aufgerufen. |
-| `disabled` | `boolean` | `false` | Deaktiviert die Interaktion. |
-| `openOnHover` | `boolean` | `false` | Öffnet den Picker beim Hover. |
-| `initialExpanded` | `boolean` | `false` | Startet den Picker geöffnet. |
-| `animationDuration` | `number` | `300` | Dauer der Bloom-Animation in Millisekunden. |
-| `showAlphaSlider` | `boolean` | `true` | Zeigt den äußeren Bogenslider an. |
-| `coreSize` | `number` | `32` | Durchmesser des Kernbuttons in Pixeln. |
-| `petalSize` | `number` | `32` | Durchmesser jedes Blütenblatts in Pixeln. |
-| `showCoreColor` | `boolean` | `true` | Zeigt die aktuelle Farbe im Kern an. |
-| `sliderPosition` | `'top' \| 'bottom' \| 'left' \| 'right'` | `undefined` | Feste Position des Bogensliders. Ohne Angabe startet er rechts und kann automatisch verschoben werden. |
-| `adaptivePositioning` | `boolean` | `true` | Verschiebt den geöffneten Picker und den Bogenslider automatisch in den sichtbaren Bereich. |
-| `circularBarWidth` | `number` | `12` | Breite des kreisförmigen Hue-Balkens in Pixeln. |
-| `sliderWidth` | `number` | `12` | Breite von Spur und Griff des äußeren Bogensliders in Pixeln. |
-| `sliderOffset` | `number` | `30` | Abstand zwischen Blütenblättern und äußerem Bogenslider. |
-| `collapsible` | `boolean` | `true` | Erlaubt das Einklappen des Pickers. |
+| Option                | Typ                                        | Standard                                                  | Beschreibung                                                                                           |
+| :-------------------- | :----------------------------------------- | :-------------------------------------------------------- | :----------------------------------------------------------------------------------------------------- |
+| `value`               | `BlossomColorPickerValue`                  | -                                                         | Kontrollierter aktueller Wert.                                                                         |
+| `defaultValue`        | `BlossomColorPickerValue`                  | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | Startwert im unkontrollierten Modus.                                                                   |
+| `colors`              | `ColorInput[]`                             | `DEFAULT_COLORS`                                          | Eigenes Farbarray. Der Kern organisiert diese Farben automatisch in Blütenebenen.                      |
+| `onChange`            | `(color: BlossomColorPickerColor) => void` | -                                                         | Wird bei Farbänderungen aufgerufen.                                                                    |
+| `onCollapse`          | `(color: BlossomColorPickerColor) => void` | -                                                         | Wird beim Einklappen des Pickers aufgerufen.                                                           |
+| `disabled`            | `boolean`                                  | `false`                                                   | Deaktiviert die Interaktion.                                                                           |
+| `openOnHover`         | `boolean`                                  | `false`                                                   | Öffnet den Picker beim Hover.                                                                          |
+| `initialExpanded`     | `boolean`                                  | `false`                                                   | Startet den Picker geöffnet.                                                                           |
+| `animationDuration`   | `number`                                   | `300`                                                     | Dauer der Bloom-Animation in Millisekunden.                                                            |
+| `showAlphaSlider`     | `boolean`                                  | `true`                                                    | Zeigt den äußeren Bogenslider an.                                                                      |
+| `coreSize`            | `number`                                   | `32`                                                      | Durchmesser des Kernbuttons in Pixeln.                                                                 |
+| `petalSize`           | `number`                                   | `32`                                                      | Durchmesser jedes Blütenblatts in Pixeln.                                                              |
+| `showCoreColor`       | `boolean`                                  | `true`                                                    | Zeigt die aktuelle Farbe im Kern an.                                                                   |
+| `sliderPosition`      | `'top' \| 'bottom' \| 'left' \| 'right'`   | `undefined`                                               | Feste Position des Bogensliders. Ohne Angabe startet er rechts und kann automatisch verschoben werden. |
+| `adaptivePositioning` | `boolean`                                  | `true`                                                    | Verschiebt den geöffneten Picker und den Bogenslider automatisch in den sichtbaren Bereich.            |
+| `circularBarWidth`    | `number`                                   | `12`                                                      | Breite des kreisförmigen Hue-Balkens in Pixeln.                                                        |
+| `sliderWidth`         | `number`                                   | `12`                                                      | Breite von Spur und Griff des äußeren Bogensliders in Pixeln.                                          |
+| `sliderOffset`        | `number`                                   | `30`                                                      | Abstand zwischen Blütenblättern und äußerem Bogenslider.                                               |
+| `collapsible`         | `boolean`                                  | `true`                                                    | Erlaubt das Einklappen des Pickers.                                                                    |
 
 Für `ChromePicker` gilt dieselbe Optionsmenge, allerdings mit `collapsible = false` als Standard.
 

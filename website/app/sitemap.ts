@@ -5,7 +5,8 @@ export const dynamic = 'force-static';
 import { source } from '@/lib/source';
 
 const BASE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || 'https://dayflow-js.github.io/blossomColorPicker';
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  'https://dayflow-js.github.io/blossomColorPicker';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();

@@ -96,13 +96,11 @@ const InstallCommand = ({ cmd, pkg }: { cmd: string; pkg: string }) => {
 
   return (
     <div className='group relative mt-4'>
-      <div className={commandBlockClassName}>
-        {command}
-      </div>
+      <div className={commandBlockClassName}>{command}</div>
       <button
         type='button'
         onClick={copy}
-        className='absolute top-2 right-2 rounded-md border border-border bg-white p-2 opacity-0 transition-opacity group-hover:opacity-100 dark:bg-zinc-700'
+        className='border-border absolute top-2 right-2 rounded-md border bg-white p-2 opacity-0 transition-opacity group-hover:opacity-100 dark:bg-zinc-700'
         aria-label='Copy to clipboard'
       >
         {copied ? (
@@ -118,7 +116,7 @@ const InstallCommand = ({ cmd, pkg }: { cmd: string; pkg: string }) => {
         ) : (
           <svg
             viewBox='0 0 24 24'
-            className='h-4 w-4 text-muted-foreground'
+            className='text-muted-foreground h-4 w-4'
             fill='none'
             stroke='currentColor'
             strokeWidth='2'
@@ -144,13 +142,11 @@ const SimpleCommand = ({ cmd, pkg }: { cmd: string; pkg: string }) => {
 
   return (
     <div className='group relative mt-4'>
-      <div className={commandBlockClassName}>
-        {command}
-      </div>
+      <div className={commandBlockClassName}>{command}</div>
       <button
         type='button'
         onClick={copy}
-        className='absolute top-2 right-2 rounded-md border border-border bg-white p-2 opacity-0 transition-opacity group-hover:opacity-100 dark:bg-zinc-700'
+        className='border-border absolute top-2 right-2 rounded-md border bg-white p-2 opacity-0 transition-opacity group-hover:opacity-100 dark:bg-zinc-700'
         aria-label='Copy to clipboard'
       >
         {copied ? (
@@ -166,7 +162,7 @@ const SimpleCommand = ({ cmd, pkg }: { cmd: string; pkg: string }) => {
         ) : (
           <svg
             viewBox='0 0 24 24'
-            className='h-4 w-4 text-muted-foreground'
+            className='text-muted-foreground h-4 w-4'
             fill='none'
             stroke='currentColor'
             strokeWidth='2'
@@ -205,8 +201,8 @@ export function FrameworkInstall() {
   const [activeFramework, setActiveFramework] = useState(frameworks[0]);
 
   return (
-    <div className='my-6 overflow-hidden rounded-xl border border-border bg-background'>
-      <div className='flex flex-wrap gap-2 border-b border-border bg-muted/20 p-4'>
+    <div className='border-border bg-background my-6 overflow-hidden rounded-xl border'>
+      <div className='border-border bg-muted/20 flex flex-wrap gap-2 border-b p-4'>
         {frameworks.map(fw => (
           <button
             type='button'
@@ -215,7 +211,7 @@ export function FrameworkInstall() {
             className={`flex items-center gap-2 rounded-lg border px-4 py-2 transition-all ${
               activeFramework.id === fw.id
                 ? 'border-pink-200 bg-pink-50 shadow-sm dark:border-pink-900/30 dark:bg-pink-900/10'
-                : 'border-transparent bg-transparent hover:bg-muted dark:hover:bg-zinc-800'
+                : 'hover:bg-muted border-transparent bg-transparent dark:hover:bg-zinc-800'
             }`}
           >
             {fw.icon}

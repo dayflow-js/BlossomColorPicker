@@ -4,10 +4,7 @@ import { RootProvider } from 'fumadocs-ui/provider/next';
 import { usePathname } from 'next/navigation';
 
 import { DocsSearchDialog } from '@/components/DocsSearchDialog';
-import {
-  getLanguageCodeFromPathname,
-  localeItems,
-} from '@/lib/i18n';
+import { getLanguageCodeFromPathname, localeItems } from '@/lib/i18n';
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH || '';
 

@@ -12,21 +12,21 @@
 @variant dark (.dark &);
 
 /* Clerk TOC: classes not in fumadocs generated CSS, needed for Tailwind v4 scanning */
-@source inline("top-(--fd-top)");
-@source inline("h-(--fd-height)");
-@source inline("transition-[top,height]");
-@source inline("stroke-fd-foreground/10");
-@source inline("-top-1.5");
-@source inline("bg-fd-foreground/10");
-@source inline("w-px");
-@source inline("top-1.5");
-@source inline("bottom-1.5");
+@source inline('top-(--fd-top)');
+@source inline('h-(--fd-height)');
+@source inline('transition-[top,height]');
+@source inline('stroke-fd-foreground/10');
+@source inline('-top-1.5');
+@source inline('bg-fd-foreground/10');
+@source inline('w-px');
+@source inline('top-1.5');
+@source inline('bottom-1.5');
 
 /* fumadocs Tabs: data-[state=active] variants not picked up by Turbopack @source scanning */
-@source inline("data-[state=active]:border-fd-primary");
-@source inline("data-[state=active]:text-fd-primary");
-@source inline("data-[state=inactive]:hidden");
-@source inline("group-data-[state=active]:bg-fd-primary");
+@source inline('data-[state=active]:border-fd-primary');
+@source inline('data-[state=active]:text-fd-primary');
+@source inline('data-[state=inactive]:hidden');
+@source inline('group-data-[state=active]:bg-fd-primary');
 
 /* fumadocs Tabs: fallback direct CSS for active tab underline (Turbopack @source inline limitation) */
 [role='tab'][data-state='active'] {

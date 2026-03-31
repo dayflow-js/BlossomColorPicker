@@ -18,14 +18,14 @@ description: 支援 HEX、RGBA 與 HSLA 的專業級顏色選擇器。
 
 `ChromePicker` 也可以直接從核心套件使用：
 
-<PackageTabs pkg="@dayflow/blossom-color-picker" />
+<PackageTabs pkg='@dayflow/blossom-color-picker' />
 
 ```js
 import { ChromePicker } from '@dayflow/blossom-color-picker';
 import '@dayflow/blossom-color-picker/styles.css';
 
 const picker = new ChromePicker(document.getElementById('picker'), {
-  onChange: (color) => console.log(color.hex),
+  onChange: color => console.log(color.hex),
 });
 ```
 
@@ -53,6 +53,7 @@ const picker = new ChromePicker(document.getElementById('picker'), {
       );
     }
     ```
+
   </Tab>
   <Tab>
     ```vue
@@ -79,6 +80,7 @@ const picker = new ChromePicker(document.getElementById('picker'), {
     }
     </script>
     ```
+
   </Tab>
   <Tab>
     ```typescript
@@ -112,6 +114,7 @@ const picker = new ChromePicker(document.getElementById('picker'), {
       }
     }
     ```
+
   </Tab>
   <Tab>
     ```svelte
@@ -135,6 +138,7 @@ const picker = new ChromePicker(document.getElementById('picker'), {
       onchange={handleChange}
     />
     ```
+
   </Tab>
 </FrameworkTabs>
 
@@ -142,17 +146,17 @@ const picker = new ChromePicker(document.getElementById('picker'), {
 
 `ChromePicker` 與標準 `BlossomColorPicker` 共用大多數選項。
 
-| 選項 | 型別 | 預設值 | 說明 |
-| :--- | :--- | :--- | :--- |
-| `value` | `BlossomColorPickerValue` | - | 受控模式的目前值。 |
-| `defaultValue` | `BlossomColorPickerValue` | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | 非受控模式的初始值。 |
-| `colors` | `ColorInput[]` | `DEFAULT_COLORS` | 在 blossom 區域中顯示的花瓣顏色。 |
-| `onChange` | `(color: BlossomColorPickerColor) => void` | - | 顏色變化時觸發。 |
-| `onCollapse` | `(color: BlossomColorPickerColor) => void` | - | 選擇器收合時觸發。 |
-| `disabled` | `boolean` | `false` | 是否停用互動。 |
-| `showAlphaSlider` | `boolean` | `true` | 是否顯示透明度滑桿列。 |
-| `coreSize` | `number` | `32` | blossom 核心按鈕大小（像素）。 |
-| `petalSize` | `number` | `32` | blossom 花瓣大小（像素）。 |
-| `collapsible` | `boolean` | `false` | 是否允許收合 blossom 區域。`ChromePicker` 預設為 `false`。 |
+| 選項              | 型別                                       | 預設值                                                    | 說明                                                       |
+| :---------------- | :----------------------------------------- | :-------------------------------------------------------- | :--------------------------------------------------------- |
+| `value`           | `BlossomColorPickerValue`                  | -                                                         | 受控模式的目前值。                                         |
+| `defaultValue`    | `BlossomColorPickerValue`                  | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | 非受控模式的初始值。                                       |
+| `colors`          | `ColorInput[]`                             | `DEFAULT_COLORS`                                          | 在 blossom 區域中顯示的花瓣顏色。                          |
+| `onChange`        | `(color: BlossomColorPickerColor) => void` | -                                                         | 顏色變化時觸發。                                           |
+| `onCollapse`      | `(color: BlossomColorPickerColor) => void` | -                                                         | 選擇器收合時觸發。                                         |
+| `disabled`        | `boolean`                                  | `false`                                                   | 是否停用互動。                                             |
+| `showAlphaSlider` | `boolean`                                  | `true`                                                    | 是否顯示透明度滑桿列。                                     |
+| `coreSize`        | `number`                                   | `32`                                                      | blossom 核心按鈕大小（像素）。                             |
+| `petalSize`       | `number`                                   | `32`                                                      | blossom 花瓣大小（像素）。                                 |
+| `collapsible`     | `boolean`                                  | `false`                                                   | 是否允許收合 blossom 區域。`ChromePicker` 預設為 `false`。 |
 
 完整共享配置請參考 [選項](/docs-zh-hant/introduction/options)。

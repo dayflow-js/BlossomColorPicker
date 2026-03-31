@@ -19,7 +19,7 @@ Blossom Color Picker는 현대적인 웹 애플리케이션을 위한 블루밍 
 
 코어 패키지를 직접 사용하려면 `@dayflow/blossom-color-picker`를 설치하세요:
 
-<PackageTabs pkg="@dayflow/blossom-color-picker" />
+<PackageTabs pkg='@dayflow/blossom-color-picker' />
 
 ### 스타일 가져오기
 
@@ -59,6 +59,7 @@ import '@dayflow/blossom-color-picker/styles.css';
       );
     }
     ```
+
   </Tab>
   <Tab>
     ```vue
@@ -85,6 +86,7 @@ import '@dayflow/blossom-color-picker/styles.css';
     }
     </script>
     ```
+
   </Tab>
   <Tab>
     ```typescript
@@ -118,6 +120,7 @@ import '@dayflow/blossom-color-picker/styles.css';
       }
     }
     ```
+
   </Tab>
   <Tab>
     ```svelte
@@ -141,6 +144,7 @@ import '@dayflow/blossom-color-picker/styles.css';
       onchange={handleChange}
     />
     ```
+
   </Tab>
 </FrameworkTabs>
 
@@ -151,7 +155,7 @@ import { BlossomColorPicker } from '@dayflow/blossom-color-picker';
 import '@dayflow/blossom-color-picker/styles.css';
 
 const picker = new BlossomColorPicker(document.getElementById('picker'), {
-  onChange: (color) => console.log(color.hex),
+  onChange: color => console.log(color.hex),
 });
 ```
 

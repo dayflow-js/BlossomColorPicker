@@ -11,34 +11,34 @@ This page describes the value objects used by Blossom Color Picker and the suppo
 
 Use this object for controlled `value` props and `defaultValue`:
 
-| Field | Type | Description |
-| :--- | :--- | :--- |
-| `hue` | `number` | Hue angle from `0` to `360`. |
-| `saturation` | `number` | Arc slider position from `0` to `100`. |
-| `lightness` | `number?` | Optional HSL lightness override. |
-| `originalSaturation` | `number?` | Intrinsic saturation of the selected petal. |
-| `alpha` | `number` | Alpha from `0` to `100`. |
-| `layer` | `'inner' \| 'outer'` | The petal layer currently selected. |
+| Field                | Type                 | Description                                 |
+| :------------------- | :------------------- | :------------------------------------------ |
+| `hue`                | `number`             | Hue angle from `0` to `360`.                |
+| `saturation`         | `number`             | Arc slider position from `0` to `100`.      |
+| `lightness`          | `number?`            | Optional HSL lightness override.            |
+| `originalSaturation` | `number?`            | Intrinsic saturation of the selected petal. |
+| `alpha`              | `number`             | Alpha from `0` to `100`.                    |
+| `layer`              | `'inner' \| 'outer'` | The petal layer currently selected.         |
 
 ## `BlossomColorPickerColor`
 
 This object is returned by `onChange`, `onCollapse`, and `getValue()`:
 
-| Field | Type | Description |
-| :--- | :--- | :--- |
-| `hex` | `string` | Hex color string, for example `"#6586E5"`. |
-| `hsl` | `string` | HSL string. |
-| `hsla` | `string` | HSLA string. |
-| `rgb` | `string` | RGB string. |
-| `rgba` | `string` | RGBA string. |
-| `r` | `number` | Red channel value. |
-| `g` | `number` | Green channel value. |
-| `b` | `number` | Blue channel value. |
-| `hue` | `number` | Hue angle from `0` to `360`. |
-| `saturation` | `number` | Arc slider position from `0` to `100`. |
-| `lightness` | `number` | Computed lightness value. |
-| `alpha` | `number` | Alpha from `0` to `100`. |
-| `layer` | `'inner' \| 'outer'` | The selected petal layer. |
+| Field        | Type                 | Description                                |
+| :----------- | :------------------- | :----------------------------------------- |
+| `hex`        | `string`             | Hex color string, for example `"#6586E5"`. |
+| `hsl`        | `string`             | HSL string.                                |
+| `hsla`       | `string`             | HSLA string.                               |
+| `rgb`        | `string`             | RGB string.                                |
+| `rgba`       | `string`             | RGBA string.                               |
+| `r`          | `number`             | Red channel value.                         |
+| `g`          | `number`             | Green channel value.                       |
+| `b`          | `number`             | Blue channel value.                        |
+| `hue`        | `number`             | Hue angle from `0` to `360`.               |
+| `saturation` | `number`             | Arc slider position from `0` to `100`.     |
+| `lightness`  | `number`             | Computed lightness value.                  |
+| `alpha`      | `number`             | Alpha from `0` to `100`.                   |
+| `layer`      | `'inner' \| 'outer'` | The selected petal layer.                  |
 
 ## Alpha Scale
 

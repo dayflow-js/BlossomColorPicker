@@ -29,8 +29,10 @@ export function computeAdaptivePosition({
   sliderOffset,
 }: ComputeAdaptivePositionInput): ComputeAdaptivePositionResult {
   const halfSize = containerSize / 2;
-  const centerX = elementRect.left + elementRect.width / 2 - currentShiftOffset.x;
-  const centerY = elementRect.top + elementRect.height / 2 - currentShiftOffset.y;
+  const centerX =
+    elementRect.left + elementRect.width / 2 - currentShiftOffset.x;
+  const centerY =
+    elementRect.top + elementRect.height / 2 - currentShiftOffset.y;
 
   let newShiftX = 0;
   let newShiftY = 0;

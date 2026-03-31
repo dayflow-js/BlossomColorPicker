@@ -14,7 +14,9 @@ export interface ChromePickerProps extends ChromePickerOptions {
   className?: string;
 }
 
-function propsToOptions(props: ChromePickerProps): Partial<ChromePickerOptions> {
+function propsToOptions(
+  props: ChromePickerProps
+): Partial<ChromePickerOptions> {
   const opts: Partial<ChromePickerOptions> = {};
 
   if (props.value !== undefined) opts.value = props.value;
@@ -24,20 +26,28 @@ function propsToOptions(props: ChromePickerProps): Partial<ChromePickerOptions> 
   if (props.onCollapse !== undefined) opts.onCollapse = props.onCollapse;
   if (props.disabled !== undefined) opts.disabled = props.disabled;
   if (props.openOnHover !== undefined) opts.openOnHover = props.openOnHover;
-  if (props.initialExpanded !== undefined) opts.initialExpanded = props.initialExpanded;
-  if (props.animationDuration !== undefined) opts.animationDuration = props.animationDuration;
-  if (props.showAlphaSlider !== undefined) opts.showAlphaSlider = props.showAlphaSlider;
+  if (props.initialExpanded !== undefined)
+    opts.initialExpanded = props.initialExpanded;
+  if (props.animationDuration !== undefined)
+    opts.animationDuration = props.animationDuration;
+  if (props.showAlphaSlider !== undefined)
+    opts.showAlphaSlider = props.showAlphaSlider;
   if (props.coreSize !== undefined) opts.coreSize = props.coreSize;
   if (props.petalSize !== undefined) opts.petalSize = props.petalSize;
-  if (props.showCoreColor !== undefined) opts.showCoreColor = props.showCoreColor;
-  if (props.sliderPosition !== undefined) opts.sliderPosition = props.sliderPosition;
-  if (props.adaptivePositioning !== undefined) opts.adaptivePositioning = props.adaptivePositioning;
-  if (props.circularBarWidth !== undefined) opts.circularBarWidth = props.circularBarWidth;
+  if (props.showCoreColor !== undefined)
+    opts.showCoreColor = props.showCoreColor;
+  if (props.sliderPosition !== undefined)
+    opts.sliderPosition = props.sliderPosition;
+  if (props.adaptivePositioning !== undefined)
+    opts.adaptivePositioning = props.adaptivePositioning;
+  if (props.circularBarWidth !== undefined)
+    opts.circularBarWidth = props.circularBarWidth;
   if (props.sliderWidth !== undefined) opts.sliderWidth = props.sliderWidth;
   if (props.sliderOffset !== undefined) opts.sliderOffset = props.sliderOffset;
   if (props.collapsible !== undefined) opts.collapsible = props.collapsible;
   if (props.darkMode !== undefined) opts.darkMode = props.darkMode;
-  if (props.darkModeColors !== undefined) opts.darkModeColors = props.darkModeColors;
+  if (props.darkModeColors !== undefined)
+    opts.darkModeColors = props.darkModeColors;
 
   return opts;
 }
@@ -52,7 +62,10 @@ export const ChromePicker = forwardRef(function ChromePicker(
   // Mount core instance
   useEffect(() => {
     if (!containerRef.current) return;
-    pickerRef.current = new CorePicker(containerRef.current, propsToOptions(props));
+    pickerRef.current = new CorePicker(
+      containerRef.current,
+      propsToOptions(props)
+    );
     return () => {
       pickerRef.current?.destroy();
       pickerRef.current = null;
@@ -70,12 +83,23 @@ export const ChromePicker = forwardRef(function ChromePicker(
   useEffect(() => {
     pickerRef.current?.setOptions(propsToOptions(props));
   }, [
-    props.colors, props.disabled, props.openOnHover,
-    props.initialExpanded, props.animationDuration,
-    props.showAlphaSlider, props.coreSize, props.petalSize,
-    props.showCoreColor, props.sliderPosition, props.adaptivePositioning,
-    props.circularBarWidth, props.sliderWidth, props.sliderOffset,
-    props.collapsible, props.darkMode, props.darkModeColors,
+    props.colors,
+    props.disabled,
+    props.openOnHover,
+    props.initialExpanded,
+    props.animationDuration,
+    props.showAlphaSlider,
+    props.coreSize,
+    props.petalSize,
+    props.showCoreColor,
+    props.sliderPosition,
+    props.adaptivePositioning,
+    props.circularBarWidth,
+    props.sliderWidth,
+    props.sliderOffset,
+    props.collapsible,
+    props.darkMode,
+    props.darkModeColors,
   ]);
 
   // Forward ref

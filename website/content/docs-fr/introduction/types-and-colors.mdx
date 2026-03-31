@@ -11,34 +11,34 @@ Cette page décrit les objets de valeur utilisés par Blossom Color Picker ainsi
 
 Cet objet est utilisé pour les props contrôlées `value` et `defaultValue`.
 
-| Champ | Type | Description |
-| :--- | :--- | :--- |
-| `hue` | `number` | Angle de teinte entre `0` et `360`. |
-| `saturation` | `number` | Position du curseur en arc entre `0` et `100`. |
-| `lightness` | `number?` | Valeur de lightness HSL optionnelle. |
-| `originalSaturation` | `number?` | Saturation d'origine du pétale sélectionné. |
-| `alpha` | `number` | Valeur alpha entre `0` et `100`. |
-| `layer` | `'inner' \| 'outer'` | Couche du pétale sélectionné. |
+| Champ                | Type                 | Description                                    |
+| :------------------- | :------------------- | :--------------------------------------------- |
+| `hue`                | `number`             | Angle de teinte entre `0` et `360`.            |
+| `saturation`         | `number`             | Position du curseur en arc entre `0` et `100`. |
+| `lightness`          | `number?`            | Valeur de lightness HSL optionnelle.           |
+| `originalSaturation` | `number?`            | Saturation d'origine du pétale sélectionné.    |
+| `alpha`              | `number`             | Valeur alpha entre `0` et `100`.               |
+| `layer`              | `'inner' \| 'outer'` | Couche du pétale sélectionné.                  |
 
 ## `BlossomColorPickerColor`
 
 Cet objet est renvoyé par `onChange`, `onCollapse` et `getValue()`.
 
-| Champ | Type | Description |
-| :--- | :--- | :--- |
-| `hex` | `string` | Chaîne de couleur hexadécimale. |
-| `hsl` | `string` | Chaîne HSL. |
-| `hsla` | `string` | Chaîne HSLA. |
-| `rgb` | `string` | Chaîne RGB. |
-| `rgba` | `string` | Chaîne RGBA. |
-| `r` | `number` | Valeur du canal rouge. |
-| `g` | `number` | Valeur du canal vert. |
-| `b` | `number` | Valeur du canal bleu. |
-| `hue` | `number` | Angle de teinte entre `0` et `360`. |
-| `saturation` | `number` | Position du curseur en arc entre `0` et `100`. |
-| `lightness` | `number` | Valeur de lightness calculée. |
-| `alpha` | `number` | Valeur alpha entre `0` et `100`. |
-| `layer` | `'inner' \| 'outer'` | Couche sélectionnée. |
+| Champ        | Type                 | Description                                    |
+| :----------- | :------------------- | :--------------------------------------------- |
+| `hex`        | `string`             | Chaîne de couleur hexadécimale.                |
+| `hsl`        | `string`             | Chaîne HSL.                                    |
+| `hsla`       | `string`             | Chaîne HSLA.                                   |
+| `rgb`        | `string`             | Chaîne RGB.                                    |
+| `rgba`       | `string`             | Chaîne RGBA.                                   |
+| `r`          | `number`             | Valeur du canal rouge.                         |
+| `g`          | `number`             | Valeur du canal vert.                          |
+| `b`          | `number`             | Valeur du canal bleu.                          |
+| `hue`        | `number`             | Angle de teinte entre `0` et `360`.            |
+| `saturation` | `number`             | Position du curseur en arc entre `0` et `100`. |
+| `lightness`  | `number`             | Valeur de lightness calculée.                  |
+| `alpha`      | `number`             | Valeur alpha entre `0` et `100`.               |
+| `layer`      | `'inner' \| 'outer'` | Couche sélectionnée.                           |
 
 ## Échelle Alpha
 

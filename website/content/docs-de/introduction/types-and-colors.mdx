@@ -11,34 +11,34 @@ Diese Seite beschreibt die von Blossom Color Picker verwendeten Wertobjekte und 
 
 Dieses Objekt wird für kontrollierte `value`-Props und `defaultValue` verwendet.
 
-| Feld | Typ | Beschreibung |
-| :--- | :--- | :--- |
-| `hue` | `number` | Farbwinkel von `0` bis `360`. |
-| `saturation` | `number` | Position des Bogensliders von `0` bis `100`. |
-| `lightness` | `number?` | Optionaler HSL-Lightness-Override. |
-| `originalSaturation` | `number?` | Ursprüngliche Sättigung des ausgewählten Blütenblatts. |
-| `alpha` | `number` | Alpha-Wert von `0` bis `100`. |
-| `layer` | `'inner' \| 'outer'` | Ebene des ausgewählten Blütenblatts. |
+| Feld                 | Typ                  | Beschreibung                                           |
+| :------------------- | :------------------- | :----------------------------------------------------- |
+| `hue`                | `number`             | Farbwinkel von `0` bis `360`.                          |
+| `saturation`         | `number`             | Position des Bogensliders von `0` bis `100`.           |
+| `lightness`          | `number?`            | Optionaler HSL-Lightness-Override.                     |
+| `originalSaturation` | `number?`            | Ursprüngliche Sättigung des ausgewählten Blütenblatts. |
+| `alpha`              | `number`             | Alpha-Wert von `0` bis `100`.                          |
+| `layer`              | `'inner' \| 'outer'` | Ebene des ausgewählten Blütenblatts.                   |
 
 ## `BlossomColorPickerColor`
 
 Dieses Objekt wird von `onChange`, `onCollapse` und `getValue()` zurückgegeben.
 
-| Feld | Typ | Beschreibung |
-| :--- | :--- | :--- |
-| `hex` | `string` | Hex-Farbstring. |
-| `hsl` | `string` | HSL-String. |
-| `hsla` | `string` | HSLA-String. |
-| `rgb` | `string` | RGB-String. |
-| `rgba` | `string` | RGBA-String. |
-| `r` | `number` | Rot-Kanalwert. |
-| `g` | `number` | Grün-Kanalwert. |
-| `b` | `number` | Blau-Kanalwert. |
-| `hue` | `number` | Farbwinkel von `0` bis `360`. |
-| `saturation` | `number` | Position des Bogensliders von `0` bis `100`. |
-| `lightness` | `number` | Berechnete Lightness. |
-| `alpha` | `number` | Alpha-Wert von `0` bis `100`. |
-| `layer` | `'inner' \| 'outer'` | Ausgewählte Ebene. |
+| Feld         | Typ                  | Beschreibung                                 |
+| :----------- | :------------------- | :------------------------------------------- |
+| `hex`        | `string`             | Hex-Farbstring.                              |
+| `hsl`        | `string`             | HSL-String.                                  |
+| `hsla`       | `string`             | HSLA-String.                                 |
+| `rgb`        | `string`             | RGB-String.                                  |
+| `rgba`       | `string`             | RGBA-String.                                 |
+| `r`          | `number`             | Rot-Kanalwert.                               |
+| `g`          | `number`             | Grün-Kanalwert.                              |
+| `b`          | `number`             | Blau-Kanalwert.                              |
+| `hue`        | `number`             | Farbwinkel von `0` bis `360`.                |
+| `saturation` | `number`             | Position des Bogensliders von `0` bis `100`. |
+| `lightness`  | `number`             | Berechnete Lightness.                        |
+| `alpha`      | `number`             | Alpha-Wert von `0` bis `100`.                |
+| `layer`      | `'inner' \| 'outer'` | Ausgewählte Ebene.                           |
 
 ## Alpha-Skala
 

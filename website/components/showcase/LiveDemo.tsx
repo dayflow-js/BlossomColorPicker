@@ -16,7 +16,8 @@ export function LiveDemo() {
             A beautiful, blooming color picker for Web
           </h1>
           <p className='mt-4 text-base text-slate-600 sm:text-lg dark:text-slate-400'>
-            Blossom color picker provides an elegant and high-performance color picking experience.
+            Blossom color picker provides an elegant and high-performance color
+            picking experience.
           </p>
           <div className='mt-8 flex flex-wrap items-center justify-center gap-4'>
             <Link

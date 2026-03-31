@@ -1,14 +1,5 @@
 import '@dayflow/blossom-color-picker/styles.css';
 import {
-  defineComponent,
-  ref,
-  onMounted,
-  onBeforeUnmount,
-  watch,
-  h,
-  type PropType,
-} from 'vue';
-import {
   BlossomColorPicker as CorePicker,
   ChromePicker as CoreChromePicker,
   type BlossomColorPickerValue,
@@ -17,6 +8,15 @@ import {
   type SliderPosition,
   type ChromePickerThemeColors,
 } from '@dayflow/blossom-color-picker';
+import {
+  defineComponent,
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  watch,
+  h,
+  type PropType,
+} from 'vue';
 
 // Re-export types
 export type {
@@ -149,29 +149,46 @@ export const BlossomColorPicker = defineComponent({
     let picker: CorePicker | null = null;
 
     const onChange = (color: BlossomColorPickerColor) => emit('change', color);
-    const onCollapse = (color: BlossomColorPickerColor) => emit('collapse', color);
+    const onCollapse = (color: BlossomColorPickerColor) =>
+      emit('collapse', color);
 
     onMounted(() => {
       if (!containerRef.value) return;
-      picker = new CorePicker(containerRef.value, getCommonOptions(props, onChange, onCollapse));
+      picker = new CorePicker(
+        containerRef.value,
+        getCommonOptions(props, onChange, onCollapse)
+      );
     });
 
-    watch(() => props.value, (val) => {
-      picker?.setOptions({ value: val, onChange, onCollapse });
-    }, { deep: true });
+    watch(
+      () => props.value,
+      val => {
+        picker?.setOptions({ value: val, onChange, onCollapse });
+      },
+      { deep: true }
+    );
 
     watch(
       () => [
-        props.colors, props.disabled, props.openOnHover,
-        props.initialExpanded, props.animationDuration,
-        props.showAlphaSlider, props.coreSize, props.petalSize,
-        props.showCoreColor, props.sliderPosition, props.adaptivePositioning,
-        props.circularBarWidth, props.sliderWidth, props.sliderOffset,
+        props.colors,
+        props.disabled,
+        props.openOnHover,
+        props.initialExpanded,
+        props.animationDuration,
+        props.showAlphaSlider,
+        props.coreSize,
+        props.petalSize,
+        props.showCoreColor,
+        props.sliderPosition,
+        props.adaptivePositioning,
+        props.circularBarWidth,
+        props.sliderWidth,
+        props.sliderOffset,
         props.collapsible,
       ],
       () => {
         picker?.setOptions(getCommonOptions(props, onChange, onCollapse));
-      },
+      }
     );
 
     onBeforeUnmount(() => {
@@ -206,29 +223,48 @@ export const ChromePicker = defineComponent({
     let picker: CoreChromePicker | null = null;
 
     const onChange = (color: BlossomColorPickerColor) => emit('change', color);
-    const onCollapse = (color: BlossomColorPickerColor) => emit('collapse', color);
+    const onCollapse = (color: BlossomColorPickerColor) =>
+      emit('collapse', color);
 
     onMounted(() => {
       if (!containerRef.value) return;
-      picker = new CoreChromePicker(containerRef.value, getChromeOptions(props, onChange, onCollapse));
+      picker = new CoreChromePicker(
+        containerRef.value,
+        getChromeOptions(props, onChange, onCollapse)
+      );
     });
 
-    watch(() => props.value, (val) => {
-      picker?.setOptions({ value: val, onChange, onCollapse });
-    }, { deep: true });
+    watch(
+      () => props.value,
+      val => {
+        picker?.setOptions({ value: val, onChange, onCollapse });
+      },
+      { deep: true }
+    );
 
     watch(
       () => [
-        props.colors, props.disabled, props.openOnHover,
-        props.initialExpanded, props.animationDuration,
-        props.showAlphaSlider, props.coreSize, props.petalSize,
-        props.showCoreColor, props.sliderPosition, props.adaptivePositioning,
-        props.circularBarWidth, props.sliderWidth, props.sliderOffset,
-        props.collapsible, props.darkMode, props.darkModeColors,
+        props.colors,
+        props.disabled,
+        props.openOnHover,
+        props.initialExpanded,
+        props.animationDuration,
+        props.showAlphaSlider,
+        props.coreSize,
+        props.petalSize,
+        props.showCoreColor,
+        props.sliderPosition,
+        props.adaptivePositioning,
+        props.circularBarWidth,
+        props.sliderWidth,
+        props.sliderOffset,
+        props.collapsible,
+        props.darkMode,
+        props.darkModeColors,
       ],
       () => {
         picker?.setOptions(getChromeOptions(props, onChange, onCollapse));
-      },
+      }
     );
 
     onBeforeUnmount(() => {

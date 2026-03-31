@@ -1,5 +1,3 @@
-import { BLOOM_EASING, ARC_GRADIENT_STEPS } from '../constants';
-import type { SliderPosition } from '../types';
 import {
   polarToCartesian,
   describeArc,
@@ -7,8 +5,14 @@ import {
   calculateSliderValueFromPoint,
   calculateArcGradientColors,
 } from '../arc-geometry';
-import { sliderValueToLightness, hslToString, getVisualSaturation } from '../utils';
+import { BLOOM_EASING, ARC_GRADIENT_STEPS } from '../constants';
 import { createSVGElement, setStyles, setAttributes } from '../dom-helpers';
+import type { SliderPosition } from '../types';
+import {
+  sliderValueToLightness,
+  hslToString,
+  getVisualSaturation,
+} from '../utils';
 
 let arcIdCounter = 0;
 
@@ -50,7 +54,8 @@ export class ArcSliderRenderer {
     this.currentPosition = position;
     this.arcRadius = barRadius + sliderOffset;
     this.handleRadius = barWidth / 2;
-    this.svgSize = (this.arcRadius + this.handleRadius + this.barWidth) * 2 + 20;
+    this.svgSize =
+      (this.arcRadius + this.handleRadius + this.barWidth) * 2 + 20;
     this.center = this.svgSize / 2;
 
     this.gradientId = `bcp-arc-grad-${++arcIdCounter}`;
@@ -104,7 +109,7 @@ export class ArcSliderRenderer {
       'stroke-linecap': 'round',
     });
     this.gradientPath.classList.add('bcp-slider-track');
-    this.gradientPath.addEventListener('click', (e) => {
+    this.gradientPath.addEventListener('click', e => {
       this.handleTrackClick(e);
     });
     this.el.appendChild(this.gradientPath);
@@ -117,11 +122,11 @@ export class ArcSliderRenderer {
       'stroke-width': '2',
     });
     this.handle.classList.add('bcp-slider-handle');
-    this.handle.addEventListener('mousedown', (e) => {
+    this.handle.addEventListener('mousedown', e => {
       e.preventDefault();
       this.startDrag();
     });
-    this.handle.addEventListener('touchstart', (e) => {
+    this.handle.addEventListener('touchstart', e => {
       e.preventDefault();
       this.startDrag();
     });
@@ -139,7 +144,9 @@ export class ArcSliderRenderer {
     this.isDragging = true;
     window.addEventListener('mousemove', this.boundMouseMove);
     window.addEventListener('mouseup', this.boundEnd);
-    window.addEventListener('touchmove', this.boundTouchMove, { passive: false });
+    window.addEventListener('touchmove', this.boundTouchMove, {
+      passive: false,
+    });
     window.addEventListener('touchend', this.boundEnd);
   }
 
@@ -255,10 +262,8 @@ export class ArcSliderRenderer {
     const centerAngle = getCenterAngle(position);
     const drawStartAngle = centerAngle - this.halfSweep;
     const drawEndAngle = centerAngle + this.halfSweep;
-    const valStartAngle =
-      position === 'left' ? drawEndAngle : drawStartAngle;
-    const valEndAngle =
-      position === 'left' ? drawStartAngle : drawEndAngle;
+    const valStartAngle = position === 'left' ? drawEndAngle : drawStartAngle;
+    const valEndAngle = position === 'left' ? drawStartAngle : drawEndAngle;
 
     const handleAngle =
       valStartAngle + (value / 100) * (valEndAngle - valStartAngle);

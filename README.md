@@ -10,13 +10,13 @@ https://github.com/user-attachments/assets/553ee0ff-1f52-497f-bc8f-cee9a7b91d66
 
 ## Packages
 
-| Package | Description | Version |
-|:--------|:------------|:--------|
-| `@dayflow/blossom-color-picker` | Vanilla JS core (zero dependencies) | 2.0.0 |
-| `@dayflow/blossom-color-picker-react` | React wrapper | 1.0.0 |
-| `@dayflow/blossom-color-picker-vue` | Vue 3 wrapper | 1.0.0 |
-| `@dayflow/blossom-color-picker-svelte` | Svelte wrapper | 1.0.0 |
-| `@dayflow/blossom-color-picker-angular` | Angular wrapper | 1.0.0 |
+| Package                                 | Description                         | Version |
+| :-------------------------------------- | :---------------------------------- | :------ |
+| `@dayflow/blossom-color-picker`         | Vanilla JS core (zero dependencies) | 2.0.0   |
+| `@dayflow/blossom-color-picker-react`   | React wrapper                       | 1.0.0   |
+| `@dayflow/blossom-color-picker-vue`     | Vue 3 wrapper                       | 1.0.0   |
+| `@dayflow/blossom-color-picker-svelte`  | Svelte wrapper                      | 1.0.0   |
+| `@dayflow/blossom-color-picker-angular` | Angular wrapper                     | 1.0.0   |
 
 ## Installation
 
@@ -46,7 +46,7 @@ import { BlossomColorPicker } from '@dayflow/blossom-color-picker';
 import '@dayflow/blossom-color-picker/styles.css'; // <- must import css in pure JS
 
 const picker = new BlossomColorPicker(document.getElementById('picker'), {
-  onChange: (color) => console.log(color.hex),
+  onChange: color => console.log(color.hex),
 });
 
 // Programmatic control
@@ -65,15 +65,13 @@ import { BlossomColorPicker } from '@dayflow/blossom-color-picker-react';
 
 function App() {
   const [color, setColor] = useState({
-    hue: 330, saturation: 70, alpha: 100, layer: 'outer' as const,
+    hue: 330,
+    saturation: 70,
+    alpha: 100,
+    layer: 'outer' as const,
   });
 
-  return (
-    <BlossomColorPicker
-      value={color}
-      onChange={(c) => setColor(c)}
-    />
-  );
+  return <BlossomColorPicker value={color} onChange={c => setColor(c)} />;
 }
 ```
 
@@ -85,7 +83,10 @@ import { ref } from 'vue';
 import { BlossomColorPicker } from '@dayflow/blossom-color-picker-vue';
 
 const color = ref({
-  hue: 330, saturation: 70, alpha: 100, layer: 'outer',
+  hue: 330,
+  saturation: 70,
+  alpha: 100,
+  layer: 'outer',
 });
 
 function handleChange(c) {
@@ -149,7 +150,7 @@ export class App {
 All packages share the same set of options. In React they are passed as JSX props; in Vue as component props (with events via `@change` / `@collapse`); in Svelte as callback props (`onchange` / `oncollapse`); in Angular as `@Input()` bindings (with events via `(colorChange)` / `(colorCollapse)`).
 
 | Option                | Type                                       | Default                                                   | Description                                                                                                                |
-|:----------------------|:-------------------------------------------|:----------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------|
+| :-------------------- | :----------------------------------------- | :-------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------- |
 | `value`               | `BlossomColorPickerValue`                  | -                                                         | Controlled value of the picker.                                                                                            |
 | `defaultValue`        | `BlossomColorPickerValue`                  | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | Initial value for uncontrolled mode.                                                                                       |
 | `colors`              | `ColorInput[]`                             | (Default 18-color set)                                    | Color list, automatically sorted and distributed into layers.                                                              |
@@ -167,22 +168,22 @@ All packages share the same set of options. In React they are passed as JSX prop
 | `adaptivePositioning` | `boolean`                                  | `true`                                                    | **Smart Shifter**: Automatically shifts the picker to stay within viewport and repositions the slider for best visibility. |
 | `circularBarWidth`    | `number`                                   | `12`                                                      | Thickness of the circular color bar in px.                                                                                 |
 | `sliderWidth`         | `number`                                   | `12`                                                      | Thickness of the arc slider track and handle in px.                                                                        |
-| `sliderOffset`        | `number`                                   | `30`                                                      | Distance between the outermost petals and the arc slider in px.                                                             |
+| `sliderOffset`        | `number`                                   | `30`                                                      | Distance between the outermost petals and the arc slider in px.                                                            |
 | `className` / `class` | `string`                                   | `""`                                                      | Additional CSS class (React: `className`, Svelte: `class`).                                                                |
 
 ### Vanilla JS Methods
 
 The core class exposes these additional methods:
 
-| Method | Description |
-|:-------|:------------|
-| `setValue(value)` | Set the current color value. |
-| `getValue()` | Get the current color as a `BlossomColorPickerColor`. |
-| `expand()` | Open the picker. |
-| `collapse()` | Close the picker. |
-| `toggle()` | Toggle open/close. |
-| `setOptions(opts)` | Update any options at runtime. |
-| `destroy()` | Remove all DOM elements and event listeners. |
+| Method             | Description                                           |
+| :----------------- | :---------------------------------------------------- |
+| `setValue(value)`  | Set the current color value.                          |
+| `getValue()`       | Get the current color as a `BlossomColorPickerColor`. |
+| `expand()`         | Open the picker.                                      |
+| `collapse()`       | Close the picker.                                     |
+| `toggle()`         | Toggle open/close.                                    |
+| `setOptions(opts)` | Update any options at runtime.                        |
+| `destroy()`        | Remove all DOM elements and event listeners.          |
 
 ## Type Reference
 
@@ -191,7 +192,7 @@ The core class exposes these additional methods:
 The value object used for controlled / uncontrolled state.
 
 | Field                | Type                 | Description                                           |
-|:---------------------|:---------------------|:------------------------------------------------------|
+| :------------------- | :------------------- | :---------------------------------------------------- |
 | `hue`                | `number`             | Hue angle (0-360).                                    |
 | `saturation`         | `number`             | Slider position (0-100). 0 = bright, 100 = dark.      |
 | `lightness`          | `number?`            | HSL lightness (auto-computed from slider if omitted). |
@@ -204,7 +205,7 @@ The value object used for controlled / uncontrolled state.
 Extends `BlossomColorPickerValue` — returned by `onChange` and `onCollapse`.
 
 | Field  | Type     | Description                              |
-|:-------|:---------|:-----------------------------------------|
+| :----- | :------- | :--------------------------------------- |
 | `hex`  | `string` | Hex color string, e.g. `"#6586E5"`.      |
 | `hsl`  | `string` | HSL string, e.g. `"hsl(225, 71%, 65%)"`. |
 | `hsla` | `string` | HSLA string with alpha.                  |
@@ -223,12 +224,12 @@ The `colors` option accepts any of the following formats, and they can be mixed:
 // Vanilla JS
 const picker = new BlossomColorPicker(el, {
   colors: [
-    '#FF6B6B',                    // hex
-    'rgb(107, 203, 119)',         // rgb()
-    'rgba(65, 105, 225, 0.9)',    // rgba()
-    'hsl(280, 70%, 55%)',         // hsl()
-    'hsl(200 80% 60%)',           // hsl() space-separated
-    { h: 45, s: 90, l: 65 },     // HSL object
+    '#FF6B6B', // hex
+    'rgb(107, 203, 119)', // rgb()
+    'rgba(65, 105, 225, 0.9)', // rgba()
+    'hsl(280, 70%, 55%)', // hsl()
+    'hsl(200 80% 60%)', // hsl() space-separated
+    { h: 45, s: 90, l: 65 }, // HSL object
   ],
 });
 ```
@@ -236,11 +237,7 @@ const picker = new BlossomColorPicker(el, {
 ```tsx
 // React
 <BlossomColorPicker
-  colors={[
-    '#FF6B6B',
-    'rgb(107, 203, 119)',
-    { h: 45, s: 90, l: 65 },
-  ]}
+  colors={['#FF6B6B', 'rgb(107, 203, 119)', { h: 45, s: 90, l: 65 }]}
 />
 ```
 
@@ -256,6 +253,5 @@ packages/
   svelte/    @dayflow/blossom-color-picker-svelte    — thin Svelte 5 wrapper
   angular/   @dayflow/blossom-color-picker-angular   — thin Angular wrapper
 ```
-
 
 Made by [Jayce Li](https://github.com/JayceV552), idea from [@lichinlin](https://x.com/lichinlin/status/2019084548072689980).

@@ -33,7 +33,7 @@ export default async function Page(props: {
 }
 
 export async function generateStaticParams() {
-  return source.getPages().map((page) => ({
+  return source.getPages().map(page => ({
     slug: page.slugs,
   }));
 }

@@ -19,7 +19,7 @@ Choisissez votre framework et votre gestionnaire de paquets :
 
 Si vous souhaitez utiliser directement le paquet cœur, installez `@dayflow/blossom-color-picker` :
 
-<PackageTabs pkg="@dayflow/blossom-color-picker" />
+<PackageTabs pkg='@dayflow/blossom-color-picker' />
 
 ### Importer les styles
 
@@ -59,6 +59,7 @@ Choisissez votre framework pour voir comment intégrer Blossom Color Picker :
       );
     }
     ```
+
   </Tab>
   <Tab>
     ```vue
@@ -85,6 +86,7 @@ Choisissez votre framework pour voir comment intégrer Blossom Color Picker :
     }
     </script>
     ```
+
   </Tab>
   <Tab>
     ```typescript
@@ -118,6 +120,7 @@ Choisissez votre framework pour voir comment intégrer Blossom Color Picker :
       }
     }
     ```
+
   </Tab>
   <Tab>
     ```svelte
@@ -141,6 +144,7 @@ Choisissez votre framework pour voir comment intégrer Blossom Color Picker :
       onchange={handleChange}
     />
     ```
+
   </Tab>
 </FrameworkTabs>
 
@@ -151,7 +155,7 @@ import { BlossomColorPicker } from '@dayflow/blossom-color-picker';
 import '@dayflow/blossom-color-picker/styles.css';
 
 const picker = new BlossomColorPicker(document.getElementById('picker'), {
-  onChange: (color) => console.log(color.hex),
+  onChange: color => console.log(color.hex),
 });
 ```
 

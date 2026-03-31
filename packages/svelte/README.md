@@ -38,28 +38,28 @@ npm install @dayflow/blossom-color-picker-svelte @dayflow/blossom-color-picker
 
 Supports all props from the core `BlossomColorPickerOptions`.
 
-| Prop | Type | Default |
-| :--- | :--- | :--- |
-| `value` | `BlossomColorPickerValue` | - |
-| `defaultValue` | `BlossomColorPickerValue` | - |
-| `colors` | `ColorInput[]` | - |
-| `disabled` | `boolean` | `false` |
-| `openOnHover` | `boolean` | `false` |
-| `initialExpanded` | `boolean` | `false` |
-| `animationDuration` | `number` | `300` |
-| `showAlphaSlider` | `boolean` | `true` |
-| `coreSize` | `number` | `32` |
-| `petalSize` | `number` | `32` |
-| `showCoreColor` | `boolean` | `true` |
-| `sliderPosition` | `'top' \| 'bottom' \| 'left' \| 'right'` | `undefined` |
-| `adaptivePositioning` | `boolean` | `true` |
-| `class` | `string` | `""` |
+| Prop                  | Type                                     | Default     |
+| :-------------------- | :--------------------------------------- | :---------- |
+| `value`               | `BlossomColorPickerValue`                | -           |
+| `defaultValue`        | `BlossomColorPickerValue`                | -           |
+| `colors`              | `ColorInput[]`                           | -           |
+| `disabled`            | `boolean`                                | `false`     |
+| `openOnHover`         | `boolean`                                | `false`     |
+| `initialExpanded`     | `boolean`                                | `false`     |
+| `animationDuration`   | `number`                                 | `300`       |
+| `showAlphaSlider`     | `boolean`                                | `true`      |
+| `coreSize`            | `number`                                 | `32`        |
+| `petalSize`           | `number`                                 | `32`        |
+| `showCoreColor`       | `boolean`                                | `true`      |
+| `sliderPosition`      | `'top' \| 'bottom' \| 'left' \| 'right'` | `undefined` |
+| `adaptivePositioning` | `boolean`                                | `true`      |
+| `class`               | `string`                                 | `""`        |
 
 ## Events
 
-| Event | Detail | Description |
-| :--- | :--- | :--- |
-| `change` | `BlossomColorPickerColor` | Fired when the color changes. |
+| Event      | Detail                    | Description                      |
+| :--------- | :------------------------ | :------------------------------- |
+| `change`   | `BlossomColorPickerColor` | Fired when the color changes.    |
 | `collapse` | `BlossomColorPickerColor` | Fired when the picker collapses. |
 
 ## License

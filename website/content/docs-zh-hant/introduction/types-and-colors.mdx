@@ -11,34 +11,34 @@ description: 值物件、回呼回傳值與支援的顏色格式參考。
 
 受控 `value` 與 `defaultValue` 都使用這個物件：
 
-| 欄位 | 型別 | 說明 |
-| :--- | :--- | :--- |
-| `hue` | `number` | `0` 到 `360` 的色相角。 |
-| `saturation` | `number` | `0` 到 `100` 的弧形滑桿位置。 |
-| `lightness` | `number?` | 可選的 HSL 明度覆寫值。 |
-| `originalSaturation` | `number?` | 目前選中花瓣的固有飽和度。 |
-| `alpha` | `number` | `0` 到 `100` 的透明度。 |
-| `layer` | `'inner' \| 'outer'` | 目前選中花瓣所在層級。 |
+| 欄位                 | 型別                 | 說明                          |
+| :------------------- | :------------------- | :---------------------------- |
+| `hue`                | `number`             | `0` 到 `360` 的色相角。       |
+| `saturation`         | `number`             | `0` 到 `100` 的弧形滑桿位置。 |
+| `lightness`          | `number?`            | 可選的 HSL 明度覆寫值。       |
+| `originalSaturation` | `number?`            | 目前選中花瓣的固有飽和度。    |
+| `alpha`              | `number`             | `0` 到 `100` 的透明度。       |
+| `layer`              | `'inner' \| 'outer'` | 目前選中花瓣所在層級。        |
 
 ## `BlossomColorPickerColor`
 
 這個物件會由 `onChange`、`onCollapse` 與 `getValue()` 回傳：
 
-| 欄位 | 型別 | 說明 |
-| :--- | :--- | :--- |
-| `hex` | `string` | 十六進位顏色字串。 |
-| `hsl` | `string` | HSL 字串。 |
-| `hsla` | `string` | HSLA 字串。 |
-| `rgb` | `string` | RGB 字串。 |
-| `rgba` | `string` | RGBA 字串。 |
-| `r` | `number` | 紅色通道值。 |
-| `g` | `number` | 綠色通道值。 |
-| `b` | `number` | 藍色通道值。 |
-| `hue` | `number` | `0` 到 `360` 的色相角。 |
-| `saturation` | `number` | `0` 到 `100` 的弧形滑桿位置。 |
-| `lightness` | `number` | 計算後的明度值。 |
-| `alpha` | `number` | `0` 到 `100` 的透明度。 |
-| `layer` | `'inner' \| 'outer'` | 目前選中層級。 |
+| 欄位         | 型別                 | 說明                          |
+| :----------- | :------------------- | :---------------------------- |
+| `hex`        | `string`             | 十六進位顏色字串。            |
+| `hsl`        | `string`             | HSL 字串。                    |
+| `hsla`       | `string`             | HSLA 字串。                   |
+| `rgb`        | `string`             | RGB 字串。                    |
+| `rgba`       | `string`             | RGBA 字串。                   |
+| `r`          | `number`             | 紅色通道值。                  |
+| `g`          | `number`             | 綠色通道值。                  |
+| `b`          | `number`             | 藍色通道值。                  |
+| `hue`        | `number`             | `0` 到 `360` 的色相角。       |
+| `saturation` | `number`             | `0` 到 `100` 的弧形滑桿位置。 |
+| `lightness`  | `number`             | 計算後的明度值。              |
+| `alpha`      | `number`             | `0` 到 `100` 的透明度。       |
+| `layer`      | `'inner' \| 'outer'` | 目前選中層級。                |
 
 ## Alpha 範圍
 

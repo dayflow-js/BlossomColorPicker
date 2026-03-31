@@ -9,7 +9,7 @@ description: 単体コアパッケージから Blossom Color Picker を直接使
 
 ## コアパッケージのインストール
 
-<PackageTabs pkg="@dayflow/blossom-color-picker" />
+<PackageTabs pkg='@dayflow/blossom-color-picker' />
 
 ## 共有スタイルの読み込み
 
@@ -28,7 +28,7 @@ import '@dayflow/blossom-color-picker/styles.css';
 const root = document.getElementById('picker');
 
 const picker = new BlossomColorPicker(root, {
-  onChange: (color) => {
+  onChange: color => {
     console.log('Selected color:', color.hex);
   },
 });
@@ -36,15 +36,15 @@ const picker = new BlossomColorPicker(root, {
 
 ## ランタイム制御
 
-| メソッド | 説明 |
-| :--- | :--- |
-| `setValue(value)` | 現在値をプログラムから設定します。 |
-| `getValue()` | 現在の色を `BlossomColorPickerColor` として取得します。 |
-| `expand()` | ピッカーを展開します。 |
-| `collapse()` | ピッカーを閉じます。 |
-| `toggle()` | 展開と折りたたみを切り替えます。 |
-| `setOptions(options)` | 初期化後に各種オプションを更新します。 |
-| `destroy()` | 生成した DOM とイベントリスナーを破棄します。 |
+| メソッド              | 説明                                                    |
+| :-------------------- | :------------------------------------------------------ |
+| `setValue(value)`     | 現在値をプログラムから設定します。                      |
+| `getValue()`          | 現在の色を `BlossomColorPickerColor` として取得します。 |
+| `expand()`            | ピッカーを展開します。                                  |
+| `collapse()`          | ピッカーを閉じます。                                    |
+| `toggle()`            | 展開と折りたたみを切り替えます。                        |
+| `setOptions(options)` | 初期化後に各種オプションを更新します。                  |
+| `destroy()`           | 生成した DOM とイベントリスナーを破棄します。           |
 
 ## ランタイム例
 
@@ -74,7 +74,7 @@ import { ChromePicker } from '@dayflow/blossom-color-picker';
 import '@dayflow/blossom-color-picker/styles.css';
 
 const picker = new ChromePicker(document.getElementById('picker'), {
-  onChange: (color) => console.log(color.rgba),
+  onChange: color => console.log(color.rgba),
 });
 ```
 

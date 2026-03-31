@@ -18,14 +18,14 @@ The `ChromePicker` is a professional-grade color picker built for more conventio
 
 `ChromePicker` is exported from the core package too:
 
-<PackageTabs pkg="@dayflow/blossom-color-picker" />
+<PackageTabs pkg='@dayflow/blossom-color-picker' />
 
 ```js
 import { ChromePicker } from '@dayflow/blossom-color-picker';
 import '@dayflow/blossom-color-picker/styles.css';
 
 const picker = new ChromePicker(document.getElementById('picker'), {
-  onChange: (color) => console.log(color.hex),
+  onChange: color => console.log(color.hex),
 });
 ```
 
@@ -55,6 +55,7 @@ Select your framework to see how to integrate `ChromePicker` into your applicati
       );
     }
     ```
+
   </Tab>
   <Tab>
     ```vue
@@ -81,6 +82,7 @@ Select your framework to see how to integrate `ChromePicker` into your applicati
     }
     </script>
     ```
+
   </Tab>
   <Tab>
     ```typescript
@@ -114,6 +116,7 @@ Select your framework to see how to integrate `ChromePicker` into your applicati
       }
     }
     ```
+
   </Tab>
   <Tab>
     ```svelte
@@ -137,6 +140,7 @@ Select your framework to see how to integrate `ChromePicker` into your applicati
       onchange={handleChange}
     />
     ```
+
   </Tab>
 </FrameworkTabs>
 
@@ -144,17 +148,17 @@ Select your framework to see how to integrate `ChromePicker` into your applicati
 
 The `ChromePicker` shares most of the same configuration options as the standard `BlossomColorPicker`.
 
-| Option | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `value` | `BlossomColorPickerValue` | - | Controlled value for the picker. |
-| `defaultValue` | `BlossomColorPickerValue` | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | Initial value used when the picker is uncontrolled. |
-| `colors` | `ColorInput[]` | `DEFAULT_COLORS` | Array of colors displayed as petals in the blossom section. |
-| `onChange` | `(color: BlossomColorPickerColor) => void` | - | Called whenever the selected color changes. |
-| `onCollapse` | `(color: BlossomColorPickerColor) => void` | - | Called when the picker collapses. |
-| `disabled` | `boolean` | `false` | Disables user interaction. |
-| `showAlphaSlider` | `boolean` | `true` | Shows the alpha slider row. |
-| `coreSize` | `number` | `32` | Size of the blossom core button in pixels. |
-| `petalSize` | `number` | `32` | Size of the blossom petals in pixels. |
-| `collapsible` | `boolean` | `false` | Whether the blossom section can collapse. `ChromePicker` defaults to `false`. |
+| Option            | Type                                       | Default                                                   | Description                                                                   |
+| :---------------- | :----------------------------------------- | :-------------------------------------------------------- | :---------------------------------------------------------------------------- |
+| `value`           | `BlossomColorPickerValue`                  | -                                                         | Controlled value for the picker.                                              |
+| `defaultValue`    | `BlossomColorPickerValue`                  | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | Initial value used when the picker is uncontrolled.                           |
+| `colors`          | `ColorInput[]`                             | `DEFAULT_COLORS`                                          | Array of colors displayed as petals in the blossom section.                   |
+| `onChange`        | `(color: BlossomColorPickerColor) => void` | -                                                         | Called whenever the selected color changes.                                   |
+| `onCollapse`      | `(color: BlossomColorPickerColor) => void` | -                                                         | Called when the picker collapses.                                             |
+| `disabled`        | `boolean`                                  | `false`                                                   | Disables user interaction.                                                    |
+| `showAlphaSlider` | `boolean`                                  | `true`                                                    | Shows the alpha slider row.                                                   |
+| `coreSize`        | `number`                                   | `32`                                                      | Size of the blossom core button in pixels.                                    |
+| `petalSize`       | `number`                                   | `32`                                                      | Size of the blossom petals in pixels.                                         |
+| `collapsible`     | `boolean`                                  | `false`                                                   | Whether the blossom section can collapse. `ChromePicker` defaults to `false`. |
 
 For the full shared option set, please refer to the [Options](/docs/introduction/options) page.

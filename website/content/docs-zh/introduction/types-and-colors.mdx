@@ -11,14 +11,14 @@ description: 值对象、回调返回值以及支持的颜色格式参考。
 
 受控 `value` 和 `defaultValue` 都使用这个对象：
 
-| 字段 | 类型 | 描述 |
-| :--- | :--- | :--- |
-| `hue` | `number` | `0` 到 `360` 的色相角。 |
-| `saturation` | `number` | `0` 到 `100` 的弧形滑块位置。 |
-| `lightness` | `number?` | 可选的 HSL 明度覆盖值。 |
-| `originalSaturation` | `number?` | 当前选中花瓣的固有饱和度。 |
-| `alpha` | `number` | `0` 到 `100` 的透明度。 |
-| `layer` | `'inner' \| 'outer'` | 当前选中花瓣所在层级。 |
+| 字段                 | 类型                 | 描述                          |
+| :------------------- | :------------------- | :---------------------------- |
+| `hue`                | `number`             | `0` 到 `360` 的色相角。       |
+| `saturation`         | `number`             | `0` 到 `100` 的弧形滑块位置。 |
+| `lightness`          | `number?`            | 可选的 HSL 明度覆盖值。       |
+| `originalSaturation` | `number?`            | 当前选中花瓣的固有饱和度。    |
+| `alpha`              | `number`             | `0` 到 `100` 的透明度。       |
+| `layer`              | `'inner' \| 'outer'` | 当前选中花瓣所在层级。        |
 
 ## Alpha 取值范围
 
@@ -31,21 +31,21 @@ description: 值对象、回调返回值以及支持的颜色格式参考。
 
 这个对象会由 `onChange`、`onCollapse` 和 `getValue()` 返回：
 
-| 字段 | 类型 | 描述 |
-| :--- | :--- | :--- |
-| `hex` | `string` | 十六进制颜色字符串，例如 `"#6586E5"`。 |
-| `hsl` | `string` | HSL 字符串。 |
-| `hsla` | `string` | HSLA 字符串。 |
-| `rgb` | `string` | RGB 字符串。 |
-| `rgba` | `string` | RGBA 字符串。 |
-| `r` | `number` | 红色通道值。 |
-| `g` | `number` | 绿色通道值。 |
-| `b` | `number` | 蓝色通道值。 |
-| `hue` | `number` | `0` 到 `360` 的色相角。 |
-| `saturation` | `number` | `0` 到 `100` 的弧形滑块位置。 |
-| `lightness` | `number` | 计算后的明度值。 |
-| `alpha` | `number` | `0` 到 `100` 的透明度。 |
-| `layer` | `'inner' \| 'outer'` | 当前选中花瓣所在层级。 |
+| 字段         | 类型                 | 描述                                   |
+| :----------- | :------------------- | :------------------------------------- |
+| `hex`        | `string`             | 十六进制颜色字符串，例如 `"#6586E5"`。 |
+| `hsl`        | `string`             | HSL 字符串。                           |
+| `hsla`       | `string`             | HSLA 字符串。                          |
+| `rgb`        | `string`             | RGB 字符串。                           |
+| `rgba`       | `string`             | RGBA 字符串。                          |
+| `r`          | `number`             | 红色通道值。                           |
+| `g`          | `number`             | 绿色通道值。                           |
+| `b`          | `number`             | 蓝色通道值。                           |
+| `hue`        | `number`             | `0` 到 `360` 的色相角。                |
+| `saturation` | `number`             | `0` 到 `100` 的弧形滑块位置。          |
+| `lightness`  | `number`             | 计算后的明度值。                       |
+| `alpha`      | `number`             | `0` 到 `100` 的透明度。                |
+| `layer`      | `'inner' \| 'outer'` | 当前选中花瓣所在层级。                 |
 
 ## `ColorInput`
 

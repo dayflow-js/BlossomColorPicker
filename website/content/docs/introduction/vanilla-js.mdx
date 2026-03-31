@@ -9,7 +9,7 @@ The standalone core package gives you direct access to the `BlossomColorPicker` 
 
 ## Install the Core Package
 
-<PackageTabs pkg="@dayflow/blossom-color-picker" />
+<PackageTabs pkg='@dayflow/blossom-color-picker' />
 
 ## Import the Shared Stylesheet
 
@@ -28,7 +28,7 @@ import '@dayflow/blossom-color-picker/styles.css';
 const root = document.getElementById('picker');
 
 const picker = new BlossomColorPicker(root, {
-  onChange: (color) => {
+  onChange: color => {
     console.log('Selected color:', color.hex);
   },
 });
@@ -38,15 +38,15 @@ const picker = new BlossomColorPicker(root, {
 
 The core class exposes methods you can call at runtime:
 
-| Method | Description |
-| :--- | :--- |
-| `setValue(value)` | Set the current value programmatically. |
-| `getValue()` | Read the current color as a `BlossomColorPickerColor` object. |
-| `expand()` | Expand the picker. |
-| `collapse()` | Collapse the picker. |
-| `toggle()` | Toggle between expanded and collapsed state. |
-| `setOptions(options)` | Update any supported options after initialization. |
-| `destroy()` | Remove DOM nodes and event listeners created by the picker. |
+| Method                | Description                                                   |
+| :-------------------- | :------------------------------------------------------------ |
+| `setValue(value)`     | Set the current value programmatically.                       |
+| `getValue()`          | Read the current color as a `BlossomColorPickerColor` object. |
+| `expand()`            | Expand the picker.                                            |
+| `collapse()`          | Collapse the picker.                                          |
+| `toggle()`            | Toggle between expanded and collapsed state.                  |
+| `setOptions(options)` | Update any supported options after initialization.            |
+| `destroy()`           | Remove DOM nodes and event listeners created by the picker.   |
 
 ## Runtime Example
 
@@ -78,7 +78,7 @@ import { ChromePicker } from '@dayflow/blossom-color-picker';
 import '@dayflow/blossom-color-picker/styles.css';
 
 const picker = new ChromePicker(document.getElementById('picker'), {
-  onChange: (color) => console.log(color.rgba),
+  onChange: color => console.log(color.rgba),
 });
 ```
 

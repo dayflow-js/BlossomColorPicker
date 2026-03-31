@@ -1,5 +1,4 @@
 import '@dayflow/blossom-color-picker/styles.css';
-
 import {
   Component,
   ElementRef,
@@ -21,14 +20,14 @@ import {
   type SliderPosition,
 } from '@dayflow/blossom-color-picker';
 
-
 @Component({
   selector: 'blossom-color-picker',
   standalone: true,
   template: '<div #container></div>',
 })
 export class BlossomColorPickerComponent
-  implements AfterViewInit, OnDestroy, OnChanges {
+  implements AfterViewInit, OnDestroy, OnChanges
+{
   @ViewChild('container', { static: true })
   containerRef!: ElementRef<HTMLDivElement>;
 
@@ -71,14 +70,11 @@ export class BlossomColorPickerComponent
     if (!this.picker) return;
 
     // Only send value + callbacks for value-only changes (cheap update)
-    if (
-      changes['value'] &&
-      Object.keys(changes).length === 1
-    ) {
+    if (changes['value'] && Object.keys(changes).length === 1) {
       this.picker.setOptions({
         value: this.value,
-        onChange: (color) => this.colorChange.emit(color),
-        onCollapse: (color) => this.colorCollapse.emit(color),
+        onChange: color => this.colorChange.emit(color),
+        onCollapse: color => this.colorCollapse.emit(color),
       });
       return;
     }
@@ -105,8 +101,8 @@ export class BlossomColorPickerComponent
       sliderWidth: this.sliderWidth,
       sliderOffset: this.sliderOffset,
       collapsible: this.collapsible,
-      onChange: (color) => this.colorChange.emit(color),
-      onCollapse: (color) => this.colorCollapse.emit(color),
+      onChange: color => this.colorChange.emit(color),
+      onCollapse: color => this.colorCollapse.emit(color),
     };
   }
 }

@@ -1,10 +1,7 @@
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { MDXComponents } from 'mdx/types';
 
-import {
-  FrameworkInstall,
-  PackageTabs,
-} from '@/components/FrameworkInstall';
+import { FrameworkInstall, PackageTabs } from '@/components/FrameworkInstall';
 import { FrameworkTabs, Tab } from '@/components/FrameworkTabs';
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH || '';

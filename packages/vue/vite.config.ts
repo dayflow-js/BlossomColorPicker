@@ -1,7 +1,8 @@
-import { defineConfig } from 'vite';
-import dts from 'vite-plugin-dts';
 import path from 'path';
 import { fileURLToPath } from 'url';
+
+import { defineConfig } from 'vite';
+import dts from 'vite-plugin-dts';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -17,13 +18,10 @@ export default defineConfig({
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'BlossomColorPickerVue',
       formats: ['es', 'umd'],
-      fileName: (format) => `index.${format === 'es' ? 'esm.js' : 'js'}`,
+      fileName: format => `index.${format === 'es' ? 'esm.js' : 'js'}`,
     },
     rollupOptions: {
-      external: [
-        'vue',
-        /^@dayflow\/blossom-color-picker/,
-      ],
+      external: ['vue', /^@dayflow\/blossom-color-picker/],
       output: {
         exports: 'named',
         globals: {
