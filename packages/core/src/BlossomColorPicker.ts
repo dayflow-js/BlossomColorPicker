@@ -756,9 +756,7 @@ export class BlossomColorPicker {
       val.hue,
       val.saturation,
       this.currentLightness,
-      this.isExpanded,
-      this.isHovering,
-      this.mousePos
+      this.isExpanded
     );
 
     // Sync other renderers just in case they were updated during the interactive frame

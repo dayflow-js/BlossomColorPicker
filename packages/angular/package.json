@@ -1,6 +1,6 @@
 {
   "name": "@dayflow/blossom-color-picker-angular",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Angular wrapper for Blossom Color Picker",
   "keywords": [
     "angular",
@@ -21,7 +21,7 @@
     "typecheck": "tsc -p tsconfig.lib.json --noEmit"
   },
   "dependencies": {
-    "@dayflow/blossom-color-picker": "workspace:*"
+    "@dayflow/blossom-color-picker": "^2.2.0"
   },
   "devDependencies": {
     "@angular/common": "^19.0.0",

@@ -1,6 +1,6 @@
 {
   "name": "@dayflow/blossom-color-picker-react",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "React wrapper for Blossom Color Picker",
   "keywords": [
     "animation",
@@ -38,7 +38,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@dayflow/blossom-color-picker": "workspace:*"
+    "@dayflow/blossom-color-picker": "^2.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

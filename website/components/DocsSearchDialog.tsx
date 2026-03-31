@@ -1,9 +1,8 @@
 'use client';
 
+import { Charset, Document } from 'flexsearch';
 import { useOnChange } from 'fumadocs-core/utils/use-on-change';
 import {
-  Charset,
-  Document,
   SearchDialog,
   SearchDialogClose,
   SearchDialogContent,

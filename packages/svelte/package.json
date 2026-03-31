@@ -1,6 +1,6 @@
 {
   "name": "@dayflow/blossom-color-picker-svelte",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Svelte wrapper for Blossom Color Picker",
   "keywords": [
     "animation",
@@ -39,7 +39,7 @@
     "typecheck": "svelte-check && tsc --noEmit"
   },
   "dependencies": {
-    "@dayflow/blossom-color-picker": "workspace:*"
+    "@dayflow/blossom-color-picker": "^2.2.0"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^4.0.0",
