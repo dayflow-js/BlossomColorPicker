@@ -1,0 +1,100 @@
+---
+title: Types et couleurs
+description: Référence pour les objets de valeur, les valeurs de retour des callbacks et les formats de couleur pris en charge.
+---
+
+# Types et couleurs
+
+Cette page décrit les objets de valeur utilisés par Blossom Color Picker ainsi que les formats pris en charge pour les couleurs personnalisées.
+
+## `BlossomColorPickerValue`
+
+Cet objet est utilisé pour les props contrôlées `value` et `defaultValue`.
+
+| Champ | Type | Description |
+| :--- | :--- | :--- |
+| `hue` | `number` | Angle de teinte entre `0` et `360`. |
+| `saturation` | `number` | Position du curseur en arc entre `0` et `100`. |
+| `lightness` | `number?` | Valeur de lightness HSL optionnelle. |
+| `originalSaturation` | `number?` | Saturation d'origine du pétale sélectionné. |
+| `alpha` | `number` | Valeur alpha entre `0` et `100`. |
+| `layer` | `'inner' \| 'outer'` | Couche du pétale sélectionné. |
+
+## `BlossomColorPickerColor`
+
+Cet objet est renvoyé par `onChange`, `onCollapse` et `getValue()`.
+
+| Champ | Type | Description |
+| :--- | :--- | :--- |
+| `hex` | `string` | Chaîne de couleur hexadécimale. |
+| `hsl` | `string` | Chaîne HSL. |
+| `hsla` | `string` | Chaîne HSLA. |
+| `rgb` | `string` | Chaîne RGB. |
+| `rgba` | `string` | Chaîne RGBA. |
+| `r` | `number` | Valeur du canal rouge. |
+| `g` | `number` | Valeur du canal vert. |
+| `b` | `number` | Valeur du canal bleu. |
+| `hue` | `number` | Angle de teinte entre `0` et `360`. |
+| `saturation` | `number` | Position du curseur en arc entre `0` et `100`. |
+| `lightness` | `number` | Valeur de lightness calculée. |
+| `alpha` | `number` | Valeur alpha entre `0` et `100`. |
+| `layer` | `'inner' \| 'outer'` | Couche sélectionnée. |
+
+## Échelle Alpha
+
+Oui, la plage `0-100` indiquée pour `alpha` est correcte et correspond bien au format public utilisé par le sélecteur.
+
+- `value.alpha`, `defaultValue.alpha` et les valeurs renvoyées par les callbacks utilisent tous l'échelle `0-100`
+- Les chaînes `rgba` et `hsla` générées sont normalisées en `0-1` pour correspondre au format CSS
+
+## `ColorInput`
+
+L'option `colors` accepte des chaînes de couleur CSS ou des objets HSL.
+
+```ts
+type ColorInput = string | { h: number; s: number; l: number };
+```
+
+## Formats de couleur pris en charge
+
+- `#RRGGBB`
+- `rgb(...)`
+- `rgba(...)`
+- `hsl(...)`
+- `hsla(...)`
+- objets HSL comme `{ h: 45, s: 90, l: 65 }`
+
+## Exemple de couleurs personnalisées
+
+```tsx
+<BlossomColorPicker
+  colors={[
+    '#FF6B6B',
+    'rgb(107, 203, 119)',
+    'rgba(65, 105, 225, 0.9)',
+    'hsl(280, 70%, 55%)',
+    'hsla(200, 80%, 60%, 0.7)',
+    { h: 45, s: 90, l: 65 },
+  ]}
+/>
+```
+
+## Comment les couleurs personnalisées sont organisées
+
+Lorsque vous fournissez un tableau `colors` plat, le cœur :
+
+- trie les couleurs par lightness pour rapprocher les tons clairs du centre,
+- répartit la liste en couches florales denses,
+- trie chaque couche par teinte pour un flux plus naturel.
+
+## Exports utilitaires utiles
+
+- `DEFAULT_COLORS`
+- `INNER_COLORS`
+- `OUTER_COLORS`
+- `hexToHsl`
+- `hslToHex`
+- `rgbToHsl`
+- `parseColor`
+- `lightnessToSliderValue`
+- `sliderValueToLightness`

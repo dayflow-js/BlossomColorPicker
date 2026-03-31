@@ -1,0 +1,83 @@
+---
+title: 选项
+description: Blossom Color Picker 配置项与默认值参考。
+---
+
+# 选项
+
+Blossom Color Picker 的独立核心包和所有框架封装都共享同一套核心配置项。
+
+其中 `value` 和 `defaultValue` 使用 `BlossomColorPickerValue` 结构，`colors` 则接受 `ColorInput[]`。完整类型可参考 [类型与颜色](/docs-zh/introduction/types-and-colors)。
+
+## 配置参考
+
+| 选项 | 类型 | 默认值 | 描述 |
+| :--- | :--- | :--- | :--- |
+| `value` | `BlossomColorPickerValue` | - | 受控模式下的当前值。 |
+| `defaultValue` | `BlossomColorPickerValue` | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | 非受控模式下的初始值。 |
+| `colors` | `ColorInput[]` | `DEFAULT_COLORS` | 自定义颜色集合。核心会自动将这些颜色整理成花瓣层级。 |
+| `onChange` | `(color: BlossomColorPickerColor) => void` | - | 颜色变化时触发。 |
+| `onCollapse` | `(color: BlossomColorPickerColor) => void` | - | 选择器折叠时触发。 |
+| `disabled` | `boolean` | `false` | 是否禁用交互。 |
+| `openOnHover` | `boolean` | `false` | 是否在悬停时展开。 |
+| `initialExpanded` | `boolean` | `false` | 初始是否展开。 |
+| `animationDuration` | `number` | `300` | 绽放动画时长，单位为毫秒。 |
+| `showAlphaSlider` | `boolean` | `true` | 是否显示花瓣外侧的弧形滑块。 |
+| `coreSize` | `number` | `32` | 中心核心按钮直径，单位为像素。 |
+| `petalSize` | `number` | `32` | 单个花瓣直径，单位为像素。 |
+| `showCoreColor` | `boolean` | `true` | 是否在核心区域显示当前选中颜色。 |
+| `sliderPosition` | `'top' \| 'bottom' \| 'left' \| 'right'` | `undefined` | 固定弧形滑块位置。若不传，则初始从右侧开始，并可自动调整。 |
+| `adaptivePositioning` | `boolean` | `true` | 自动调整展开后的选择器和弧形滑块位置，使其尽量保持在视口内。 |
+| `circularBarWidth` | `number` | `12` | 圆形色相条宽度，单位为像素。 |
+| `sliderWidth` | `number` | `12` | 外侧弧形滑块轨道和手柄宽度，单位为像素。 |
+| `sliderOffset` | `number` | `30` | 花瓣与外侧弧形滑块之间的距离。 |
+| `collapsible` | `boolean` | `true` | 是否允许折叠。 |
+
+`ChromePicker` 使用相同的选项集合，只是 `collapsible` 的默认值为 `false`。
+
+## 各框架事件名称
+
+- **React**：`onChange`、`onCollapse`
+- **Vue**：`@change`、`@collapse`
+- **Svelte**：`onchange`、`oncollapse` 回调属性
+- **Angular**：`(colorChange)`、`(colorCollapse)`
+
+## 回调返回的颜色对象
+
+`onChange` 和 `onCollapse` 回调都会收到一个 `BlossomColorPickerColor` 对象：
+
+```ts
+interface BlossomColorPickerColor {
+  hex: string;
+  hsl: string;
+  hsla: string;
+  rgb: string;
+  rgba: string;
+  r: number;
+  g: number;
+  b: number;
+  hue: number;
+  saturation: number;
+  lightness: number;
+  alpha: number;
+  layer: 'inner' | 'outer';
+}
+```
+
+## 自定义颜色
+
+你可以传入自己的颜色列表作为花瓣：
+
+```tsx
+<BlossomColorPicker
+  colors={[
+    '#FF6B6B',
+    'rgb(107, 203, 119)',
+    'rgba(65, 105, 225, 0.9)',
+    'hsl(280, 70%, 55%)',
+    { h: 45, s: 90, l: 65 },
+  ]}
+/>
+```
+
+完整的值对象与颜色格式说明请参考 [类型与颜色](/docs-zh/introduction/types-and-colors)。

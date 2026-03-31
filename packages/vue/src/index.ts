@@ -15,6 +15,7 @@ import {
   type BlossomColorPickerColor,
   type ColorInput,
   type SliderPosition,
+  type ChromePickerThemeColors,
 } from '@dayflow/blossom-color-picker';
 
 // Re-export types
@@ -23,6 +24,7 @@ export type {
   BlossomColorPickerColor,
   ColorInput,
   SliderPosition,
+  ChromePickerThemeColors,
 } from '@dayflow/blossom-color-picker';
 
 // Re-export utilities
@@ -130,6 +132,14 @@ function getCommonOptions(props: any, onChange: any, onCollapse: any) {
   };
 }
 
+function getChromeOptions(props: any, onChange: any, onCollapse: any) {
+  return {
+    ...getCommonOptions(props, onChange, onCollapse),
+    darkMode: props.darkMode,
+    darkModeColors: props.darkModeColors,
+  };
+}
+
 export const BlossomColorPicker = defineComponent({
   name: 'BlossomColorPicker',
   props: commonProps,
@@ -177,6 +187,14 @@ export const ChromePicker = defineComponent({
   name: 'ChromePicker',
   props: {
     ...commonProps,
+    darkMode: {
+      type: null as unknown as PropType<boolean | undefined>,
+      default: undefined,
+    },
+    darkModeColors: {
+      type: Object as PropType<Partial<ChromePickerThemeColors>>,
+      default: undefined,
+    },
     collapsible: {
       type: Boolean,
       default: false,
@@ -192,7 +210,7 @@ export const ChromePicker = defineComponent({
 
     onMounted(() => {
       if (!containerRef.value) return;
-      picker = new CoreChromePicker(containerRef.value, getCommonOptions(props, onChange, onCollapse));
+      picker = new CoreChromePicker(containerRef.value, getChromeOptions(props, onChange, onCollapse));
     });
 
     watch(() => props.value, (val) => {
@@ -206,10 +224,10 @@ export const ChromePicker = defineComponent({
         props.showAlphaSlider, props.coreSize, props.petalSize,
         props.showCoreColor, props.sliderPosition, props.adaptivePositioning,
         props.circularBarWidth, props.sliderWidth, props.sliderOffset,
-        props.collapsible,
+        props.collapsible, props.darkMode, props.darkModeColors,
       ],
       () => {
-        picker?.setOptions(getCommonOptions(props, onChange, onCollapse));
+        picker?.setOptions(getChromeOptions(props, onChange, onCollapse));
       },
     );
 

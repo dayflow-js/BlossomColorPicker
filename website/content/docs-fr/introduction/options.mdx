@@ -1,0 +1,79 @@
+---
+title: Options
+description: Référence des options de configuration et des valeurs par défaut de Blossom Color Picker.
+---
+
+# Options
+
+Le paquet cœur autonome et tous les wrappers de framework de Blossom Color Picker partagent le même ensemble d'options principales.
+
+`value` et `defaultValue` utilisent la structure `BlossomColorPickerValue`, tandis que `colors` accepte `ColorInput[]`. Pour plus de détails sur les types, consultez [Types et couleurs](/docs-fr/introduction/types-and-colors).
+
+## Référence de configuration
+
+| Option | Type | Par défaut | Description |
+| :--- | :--- | :--- | :--- |
+| `value` | `BlossomColorPickerValue` | - | Valeur contrôlée actuelle. |
+| `defaultValue` | `BlossomColorPickerValue` | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | Valeur initiale en mode non contrôlé. |
+| `colors` | `ColorInput[]` | `DEFAULT_COLORS` | Tableau de couleurs personnalisé. Le cœur les organise automatiquement en couches florales. |
+| `onChange` | `(color: BlossomColorPickerColor) => void` | - | Appelé à chaque changement de couleur. |
+| `onCollapse` | `(color: BlossomColorPickerColor) => void` | - | Appelé lorsque le sélecteur se replie. |
+| `disabled` | `boolean` | `false` | Désactive l'interaction. |
+| `openOnHover` | `boolean` | `false` | Ouvre le sélecteur au survol. |
+| `initialExpanded` | `boolean` | `false` | Ouvre le sélecteur dès l'initialisation. |
+| `animationDuration` | `number` | `300` | Durée de l'animation de floraison en millisecondes. |
+| `showAlphaSlider` | `boolean` | `true` | Affiche le curseur en arc externe. |
+| `coreSize` | `number` | `32` | Diamètre du bouton central en pixels. |
+| `petalSize` | `number` | `32` | Diamètre de chaque pétale en pixels. |
+| `showCoreColor` | `boolean` | `true` | Affiche la couleur sélectionnée dans le cœur. |
+| `sliderPosition` | `'top' \| 'bottom' \| 'left' \| 'right'` | `undefined` | Position fixe du curseur en arc. Sans valeur, il démarre à droite et peut se repositionner automatiquement. |
+| `adaptivePositioning` | `boolean` | `true` | Repositionne automatiquement le sélecteur ouvert et le curseur en arc pour rester visibles. |
+| `circularBarWidth` | `number` | `12` | Largeur de la barre circulaire de teinte en pixels. |
+| `sliderWidth` | `number` | `12` | Largeur de la piste et de la poignée du curseur en arc en pixels. |
+| `sliderOffset` | `number` | `30` | Distance entre les pétales et le curseur en arc externe. |
+| `collapsible` | `boolean` | `true` | Autorise le repli du sélecteur. |
+
+`ChromePicker` utilise le même ensemble d'options, sauf que `collapsible` vaut `false` par défaut.
+
+## Noms des événements selon le framework
+
+- **React** : `onChange`, `onCollapse`
+- **Vue** : `@change`, `@collapse`
+- **Svelte** : props de rappel `onchange` et `oncollapse`
+- **Angular** : `(colorChange)` et `(colorCollapse)`
+
+## Objet couleur renvoyé dans les callbacks
+
+```ts
+interface BlossomColorPickerColor {
+  hex: string;
+  hsl: string;
+  hsla: string;
+  rgb: string;
+  rgba: string;
+  r: number;
+  g: number;
+  b: number;
+  hue: number;
+  saturation: number;
+  lightness: number;
+  alpha: number;
+  layer: 'inner' | 'outer';
+}
+```
+
+## Couleurs personnalisées
+
+```tsx
+<BlossomColorPicker
+  colors={[
+    '#FF6B6B',
+    'rgb(107, 203, 119)',
+    'rgba(65, 105, 225, 0.9)',
+    'hsl(280, 70%, 55%)',
+    { h: 45, s: 90, l: 65 },
+  ]}
+/>
+```
+
+Pour plus d'informations sur les objets de valeur et les formats de couleur, consultez [Types et couleurs](/docs-fr/introduction/types-and-colors).

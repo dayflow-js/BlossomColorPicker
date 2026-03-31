@@ -1,0 +1,79 @@
+---
+title: 옵션
+description: Blossom Color Picker 설정 옵션과 기본값 참조입니다.
+---
+
+# 옵션
+
+Blossom Color Picker의 독립 코어 패키지와 모든 프레임워크 래퍼는 동일한 핵심 옵션 집합을 공유합니다.
+
+`value`와 `defaultValue`는 `BlossomColorPickerValue` 구조를 사용하고, `colors`는 `ColorInput[]`를 받습니다. 자세한 타입은 [타입과 색상](/docs-ko/introduction/types-and-colors)을 참고하세요.
+
+## 설정 참조
+
+| 옵션 | 타입 | 기본값 | 설명 |
+| :--- | :--- | :--- | :--- |
+| `value` | `BlossomColorPickerValue` | - | 제어 모드의 현재 값입니다. |
+| `defaultValue` | `BlossomColorPickerValue` | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | 비제어 모드의 초기값입니다. |
+| `colors` | `ColorInput[]` | `DEFAULT_COLORS` | 커스텀 색상 배열입니다. 코어가 이를 꽃잎 레이어로 자동 정렬합니다. |
+| `onChange` | `(color: BlossomColorPickerColor) => void` | - | 색상이 바뀔 때 호출됩니다. |
+| `onCollapse` | `(color: BlossomColorPickerColor) => void` | - | 피커가 접힐 때 호출됩니다. |
+| `disabled` | `boolean` | `false` | 상호작용을 비활성화합니다. |
+| `openOnHover` | `boolean` | `false` | 호버 시 펼칠지 여부입니다. |
+| `initialExpanded` | `boolean` | `false` | 초기 상태를 펼침으로 시작할지 여부입니다. |
+| `animationDuration` | `number` | `300` | 블루밍 애니메이션 시간(ms)입니다. |
+| `showAlphaSlider` | `boolean` | `true` | 꽃잎 바깥의 아크 슬라이더를 표시할지 여부입니다. |
+| `coreSize` | `number` | `32` | 중심 코어 버튼의 지름(px)입니다. |
+| `petalSize` | `number` | `32` | 각 꽃잎의 지름(px)입니다. |
+| `showCoreColor` | `boolean` | `true` | 코어에 선택된 색상을 표시할지 여부입니다. |
+| `sliderPosition` | `'top' \| 'bottom' \| 'left' \| 'right'` | `undefined` | 아크 슬라이더의 고정 위치입니다. 생략하면 오른쪽에서 시작하고 자동 조정될 수 있습니다. |
+| `adaptivePositioning` | `boolean` | `true` | 펼쳐진 피커와 아크 슬라이더가 뷰포트 안에 머물도록 자동 조정합니다. |
+| `circularBarWidth` | `number` | `12` | 원형 hue 바의 너비(px)입니다. |
+| `sliderWidth` | `number` | `12` | 바깥 아크 슬라이더 트랙과 핸들의 너비(px)입니다. |
+| `sliderOffset` | `number` | `30` | 꽃잎과 바깥 아크 슬라이더 사이 거리입니다. |
+| `collapsible` | `boolean` | `true` | 접기 기능 허용 여부입니다. |
+
+`ChromePicker`도 동일한 옵션을 사용하지만 `collapsible` 기본값은 `false`입니다.
+
+## 프레임워크별 이벤트 이름
+
+- **React**: `onChange`, `onCollapse`
+- **Vue**: `@change`, `@collapse`
+- **Svelte**: `onchange`, `oncollapse` 콜백 props
+- **Angular**: `(colorChange)`, `(colorCollapse)`
+
+## 콜백에서 받는 색상 객체
+
+```ts
+interface BlossomColorPickerColor {
+  hex: string;
+  hsl: string;
+  hsla: string;
+  rgb: string;
+  rgba: string;
+  r: number;
+  g: number;
+  b: number;
+  hue: number;
+  saturation: number;
+  lightness: number;
+  alpha: number;
+  layer: 'inner' | 'outer';
+}
+```
+
+## 커스텀 색상
+
+```tsx
+<BlossomColorPicker
+  colors={[
+    '#FF6B6B',
+    'rgb(107, 203, 119)',
+    'rgba(65, 105, 225, 0.9)',
+    'hsl(280, 70%, 55%)',
+    { h: 45, s: 90, l: 65 },
+  ]}
+/>
+```
+
+자세한 값 구조와 색상 형식은 [타입과 색상](/docs-ko/introduction/types-and-colors)을 참고하세요.

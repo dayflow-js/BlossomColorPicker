@@ -19,6 +19,7 @@ import {
   type BlossomColorPickerColor,
   type ColorInput,
   type SliderPosition,
+  type ChromePickerThemeColors,
 } from '@dayflow/blossom-color-picker';
 
 
@@ -49,6 +50,8 @@ export class ChromePickerComponent
   @Input() sliderWidth?: number;
   @Input() sliderOffset?: number;
   @Input() collapsible = false;
+  @Input() darkMode?: boolean;
+  @Input() darkModeColors?: Partial<ChromePickerThemeColors>;
 
   @Output() colorChange = new EventEmitter<BlossomColorPickerColor>();
   @Output() colorCollapse = new EventEmitter<BlossomColorPickerColor>();
@@ -105,6 +108,8 @@ export class ChromePickerComponent
       sliderWidth: this.sliderWidth,
       sliderOffset: this.sliderOffset,
       collapsible: this.collapsible,
+      darkMode: this.darkMode,
+      darkModeColors: this.darkModeColors,
       onChange: (color) => this.colorChange.emit(color),
       onCollapse: (color) => this.colorCollapse.emit(color),
     };

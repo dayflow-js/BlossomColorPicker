@@ -1,0 +1,163 @@
+---
+title: 시작하기
+description: Vanilla JavaScript, React, Vue, Svelte, Angular에서 Blossom Color Picker를 설치하고 사용하는 방법을 알아보세요.
+---
+
+# 시작하기
+
+Blossom Color Picker는 현대적인 웹 애플리케이션을 위한 블루밍 애니메이션 컬러 피커입니다. 독립적인 Vanilla JavaScript 클래스 형태로도, React, Vue, Svelte, Angular용 얇은 래퍼 형태로도 사용할 수 있습니다.
+
+## 설치
+
+### 프레임워크 래퍼
+
+프레임워크와 패키지 매니저를 선택하세요:
+
+<FrameworkInstall />
+
+### Vanilla JavaScript
+
+코어 패키지를 직접 사용하려면 `@dayflow/blossom-color-picker`를 설치하세요:
+
+<PackageTabs pkg="@dayflow/blossom-color-picker" />
+
+### 스타일 가져오기
+
+React, Vue, Svelte, Angular 래퍼는 공유 스타일시트를 자동으로 가져옵니다.
+
+Vanilla JavaScript 코어 패키지를 사용할 때는 직접 가져와야 합니다:
+
+```ts
+import '@dayflow/blossom-color-picker/styles.css';
+```
+
+## 기본 사용법
+
+### 프레임워크 래퍼
+
+프레임워크를 선택해 Blossom Color Picker를 통합하는 방법을 확인하세요:
+
+<FrameworkTabs>
+  <Tab>
+    ```tsx
+    import { useState } from 'react';
+    import { BlossomColorPicker } from '@dayflow/blossom-color-picker-react';
+
+    function App() {
+      const [color, setColor] = useState({
+        hue: 330,
+        saturation: 70,
+        alpha: 100,
+        layer: 'outer' as const,
+      });
+
+      return (
+        <BlossomColorPicker
+          value={color}
+          onChange={setColor}
+        />
+      );
+    }
+    ```
+  </Tab>
+  <Tab>
+    ```vue
+    <template>
+      <BlossomColorPicker
+        :value="color"
+        @change="handleChange"
+      />
+    </template>
+
+    <script setup>
+    import { ref } from 'vue';
+    import { BlossomColorPicker } from '@dayflow/blossom-color-picker-vue';
+
+    const color = ref({
+      hue: 330,
+      saturation: 70,
+      alpha: 100,
+      layer: 'outer',
+    });
+
+    function handleChange(nextColor) {
+      color.value = nextColor;
+    }
+    </script>
+    ```
+  </Tab>
+  <Tab>
+    ```typescript
+    import { Component } from '@angular/core';
+    import {
+      BlossomColorPickerComponent,
+      type BlossomColorPickerColor,
+    } from '@dayflow/blossom-color-picker-angular';
+
+    @Component({
+      selector: 'app-root',
+      standalone: true,
+      imports: [BlossomColorPickerComponent],
+      template: `
+        <blossom-color-picker
+          [value]="color"
+          (colorChange)="onColorChange($event)"
+        />
+      `
+    })
+    export class AppComponent {
+      color = {
+        hue: 330,
+        saturation: 70,
+        alpha: 100,
+        layer: 'outer' as const,
+      };
+
+      onColorChange(nextColor: BlossomColorPickerColor) {
+        this.color = nextColor;
+      }
+    }
+    ```
+  </Tab>
+  <Tab>
+    ```svelte
+    <script>
+    import { BlossomColorPicker } from '@dayflow/blossom-color-picker-svelte';
+
+    let color = {
+      hue: 330,
+      saturation: 70,
+      alpha: 100,
+      layer: 'outer',
+    };
+
+    function handleChange(nextColor) {
+      color = nextColor;
+    }
+    </script>
+
+    <BlossomColorPicker
+      value={color}
+      onchange={handleChange}
+    />
+    ```
+  </Tab>
+</FrameworkTabs>
+
+### Vanilla JavaScript
+
+```js
+import { BlossomColorPicker } from '@dayflow/blossom-color-picker';
+import '@dayflow/blossom-color-picker/styles.css';
+
+const picker = new BlossomColorPicker(document.getElementById('picker'), {
+  onChange: (color) => console.log(color.hex),
+});
+```
+
+## 다음 단계
+
+- [Vanilla JavaScript](/docs-ko/introduction/vanilla-js)
+- [Chrome 컬러 피커](/docs-ko/introduction/chrome-picker)
+- [옵션](/docs-ko/introduction/options)
+- [타입과 색상](/docs-ko/introduction/types-and-colors)

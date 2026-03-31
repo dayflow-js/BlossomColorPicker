@@ -5,7 +5,8 @@
     type BlossomColorPickerValue,
     type ColorInput,
     type SliderPosition,
-    type BlossomColorPickerColor
+    type BlossomColorPickerColor,
+    type ChromePickerThemeColors
   } from '@dayflow/blossom-color-picker';
   import { onMount } from 'svelte';
 
@@ -27,6 +28,8 @@
     sliderWidth?: number;
     sliderOffset?: number;
     collapsible?: boolean;
+    darkMode?: boolean;
+    darkModeColors?: Partial<ChromePickerThemeColors>;
     class?: string;
     onchange?: (color: BlossomColorPickerColor) => void;
     oncollapse?: (color: BlossomColorPickerColor) => void;
@@ -50,6 +53,8 @@
     sliderWidth = undefined,
     sliderOffset = undefined,
     collapsible = false,
+    darkMode = undefined,
+    darkModeColors = undefined,
     class: className = '',
     onchange = undefined,
     oncollapse = undefined,
@@ -77,6 +82,8 @@
       sliderWidth,
       sliderOffset,
       collapsible,
+      darkMode,
+      darkModeColors,
       onChange: onchange,
       onCollapse: oncollapse,
     };

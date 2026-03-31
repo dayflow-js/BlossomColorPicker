@@ -8,6 +8,7 @@ export type {
   ColorInput,
   SliderPosition,
   BlossomColorPickerOptions,
+  ChromePickerThemeColors,
 } from '@dayflow/blossom-color-picker';
 
 // Re-export utilities

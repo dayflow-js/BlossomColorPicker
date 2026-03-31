@@ -1,0 +1,88 @@
+---
+title: 原生 JavaScript
+description: 直接使用 Blossom Color Picker 的独立核心包。
+---
+
+# 原生 JavaScript
+
+独立核心包允许你不依赖任何框架，直接使用 `BlossomColorPicker` 和 `ChromePicker` 类。
+
+## 安装核心包
+
+<PackageTabs pkg="@dayflow/blossom-color-picker" />
+
+## 导入共享样式
+
+框架封装版本会自动引入共享样式表，而独立核心包需要你手动导入：
+
+```ts
+import '@dayflow/blossom-color-picker/styles.css';
+```
+
+## 基础用法
+
+```js
+import { BlossomColorPicker } from '@dayflow/blossom-color-picker';
+import '@dayflow/blossom-color-picker/styles.css';
+
+const root = document.getElementById('picker');
+
+const picker = new BlossomColorPicker(root, {
+  onChange: (color) => {
+    console.log('Selected color:', color.hex);
+  },
+});
+```
+
+## 运行时控制
+
+核心类提供了以下公开方法：
+
+| 方法 | 描述 |
+| :--- | :--- |
+| `setValue(value)` | 以编程方式设置当前值。 |
+| `getValue()` | 读取当前颜色，返回 `BlossomColorPickerColor` 对象。 |
+| `expand()` | 展开选择器。 |
+| `collapse()` | 折叠选择器。 |
+| `toggle()` | 切换展开/折叠状态。 |
+| `setOptions(options)` | 在初始化后更新任意支持的配置项。 |
+| `destroy()` | 清理由选择器创建的 DOM 节点和事件监听器。 |
+
+## 运行时示例
+
+```js
+import { BlossomColorPicker } from '@dayflow/blossom-color-picker';
+
+const picker = new BlossomColorPicker(document.getElementById('picker'));
+
+picker.expand();
+picker.setValue({
+  hue: 200,
+  saturation: 50,
+  alpha: 100,
+  layer: 'outer',
+});
+
+picker.setOptions({
+  disabled: true,
+  openOnHover: false,
+});
+```
+
+## 不使用封装时使用 `ChromePicker`
+
+同一个核心包还导出了更传统的面板式选择器：
+
+```js
+import { ChromePicker } from '@dayflow/blossom-color-picker';
+import '@dayflow/blossom-color-picker/styles.css';
+
+const picker = new ChromePicker(document.getElementById('picker'), {
+  onChange: (color) => console.log(color.rgba),
+});
+```
+
+## 相关参考
+
+- 查看 [选项](/docs-zh/introduction/options) 了解共享配置项。
+- 查看 [类型与颜色](/docs-zh/introduction/types-and-colors) 了解值对象和支持的颜色格式。

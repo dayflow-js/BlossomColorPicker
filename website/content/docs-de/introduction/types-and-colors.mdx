@@ -1,0 +1,100 @@
+---
+title: Typen & Farben
+description: Referenz für Wertobjekte, Callback-Rückgaben und unterstützte Farbformate.
+---
+
+# Typen & Farben
+
+Diese Seite beschreibt die von Blossom Color Picker verwendeten Wertobjekte und die unterstützten Formate für benutzerdefinierte Farben.
+
+## `BlossomColorPickerValue`
+
+Dieses Objekt wird für kontrollierte `value`-Props und `defaultValue` verwendet.
+
+| Feld | Typ | Beschreibung |
+| :--- | :--- | :--- |
+| `hue` | `number` | Farbwinkel von `0` bis `360`. |
+| `saturation` | `number` | Position des Bogensliders von `0` bis `100`. |
+| `lightness` | `number?` | Optionaler HSL-Lightness-Override. |
+| `originalSaturation` | `number?` | Ursprüngliche Sättigung des ausgewählten Blütenblatts. |
+| `alpha` | `number` | Alpha-Wert von `0` bis `100`. |
+| `layer` | `'inner' \| 'outer'` | Ebene des ausgewählten Blütenblatts. |
+
+## `BlossomColorPickerColor`
+
+Dieses Objekt wird von `onChange`, `onCollapse` und `getValue()` zurückgegeben.
+
+| Feld | Typ | Beschreibung |
+| :--- | :--- | :--- |
+| `hex` | `string` | Hex-Farbstring. |
+| `hsl` | `string` | HSL-String. |
+| `hsla` | `string` | HSLA-String. |
+| `rgb` | `string` | RGB-String. |
+| `rgba` | `string` | RGBA-String. |
+| `r` | `number` | Rot-Kanalwert. |
+| `g` | `number` | Grün-Kanalwert. |
+| `b` | `number` | Blau-Kanalwert. |
+| `hue` | `number` | Farbwinkel von `0` bis `360`. |
+| `saturation` | `number` | Position des Bogensliders von `0` bis `100`. |
+| `lightness` | `number` | Berechnete Lightness. |
+| `alpha` | `number` | Alpha-Wert von `0` bis `100`. |
+| `layer` | `'inner' \| 'outer'` | Ausgewählte Ebene. |
+
+## Alpha-Skala
+
+Ja, der dokumentierte `alpha`-Bereich von `0-100` ist korrekt und entspricht dem tatsächlichen öffentlichen Werteformat des Pickers.
+
+- `value.alpha`, `defaultValue.alpha` und Callback-Rückgaben verwenden alle die Skala `0-100`
+- Erzeugte `rgba`- und `hsla`-Strings werden für CSS auf `0-1` normalisiert
+
+## `ColorInput`
+
+Die Option `colors` akzeptiert CSS-Farbstrings oder HSL-Objekte.
+
+```ts
+type ColorInput = string | { h: number; s: number; l: number };
+```
+
+## Unterstützte Farbformate
+
+- `#RRGGBB`
+- `rgb(...)`
+- `rgba(...)`
+- `hsl(...)`
+- `hsla(...)`
+- HSL-Objekte wie `{ h: 45, s: 90, l: 65 }`
+
+## Beispiel für benutzerdefinierte Farben
+
+```tsx
+<BlossomColorPicker
+  colors={[
+    '#FF6B6B',
+    'rgb(107, 203, 119)',
+    'rgba(65, 105, 225, 0.9)',
+    'hsl(280, 70%, 55%)',
+    'hsla(200, 80%, 60%, 0.7)',
+    { h: 45, s: 90, l: 65 },
+  ]}
+/>
+```
+
+## Wie eigene Farben angeordnet werden
+
+Wenn Sie ein flaches `colors`-Array übergeben, organisiert der Kern automatisch:
+
+- hellere Farben näher am Zentrum,
+- die Liste in dichte Blütenebenen,
+- jede Ebene nach Farbwinkel für einen natürlicheren Verlauf.
+
+## Nützliche Utility-Exporte
+
+- `DEFAULT_COLORS`
+- `INNER_COLORS`
+- `OUTER_COLORS`
+- `hexToHsl`
+- `hslToHex`
+- `rgbToHsl`
+- `parseColor`
+- `lightnessToSliderValue`
+- `sliderValueToLightness`

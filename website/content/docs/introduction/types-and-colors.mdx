@@ -1,0 +1,104 @@
+---
+title: Types & Colors
+description: Reference for value objects, callback payloads, and accepted color formats.
+---
+
+# Types & Colors
+
+This page describes the value objects used by Blossom Color Picker and the supported formats for custom colors.
+
+## `BlossomColorPickerValue`
+
+Use this object for controlled `value` props and `defaultValue`:
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `hue` | `number` | Hue angle from `0` to `360`. |
+| `saturation` | `number` | Arc slider position from `0` to `100`. |
+| `lightness` | `number?` | Optional HSL lightness override. |
+| `originalSaturation` | `number?` | Intrinsic saturation of the selected petal. |
+| `alpha` | `number` | Alpha from `0` to `100`. |
+| `layer` | `'inner' \| 'outer'` | The petal layer currently selected. |
+
+## `BlossomColorPickerColor`
+
+This object is returned by `onChange`, `onCollapse`, and `getValue()`:
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `hex` | `string` | Hex color string, for example `"#6586E5"`. |
+| `hsl` | `string` | HSL string. |
+| `hsla` | `string` | HSLA string. |
+| `rgb` | `string` | RGB string. |
+| `rgba` | `string` | RGBA string. |
+| `r` | `number` | Red channel value. |
+| `g` | `number` | Green channel value. |
+| `b` | `number` | Blue channel value. |
+| `hue` | `number` | Hue angle from `0` to `360`. |
+| `saturation` | `number` | Arc slider position from `0` to `100`. |
+| `lightness` | `number` | Computed lightness value. |
+| `alpha` | `number` | Alpha from `0` to `100`. |
+| `layer` | `'inner' \| 'outer'` | The selected petal layer. |
+
+## Alpha Scale
+
+Yes, the documented `alpha` range of `0-100` is correct for the public value objects used by the picker.
+
+- `value.alpha`, `defaultValue.alpha`, and callback payloads all use a `0-100` scale
+- Generated `rgba` and `hsla` strings are normalized to CSS-style `0-1` alpha values
+
+## `ColorInput`
+
+The `colors` option accepts either CSS color strings or HSL objects:
+
+```ts
+type ColorInput = string | { h: number; s: number; l: number };
+```
+
+## Supported Color Formats
+
+The parser currently accepts:
+
+- Hex strings in `#RRGGBB` format
+- `rgb(...)`
+- `rgba(...)`
+- `hsl(...)`
+- `hsla(...)`
+- HSL objects like `{ h: 45, s: 90, l: 65 }`
+
+## Custom Color Example
+
+```tsx
+<BlossomColorPicker
+  colors={[
+    '#FF6B6B',
+    'rgb(107, 203, 119)',
+    'rgba(65, 105, 225, 0.9)',
+    'hsl(280, 70%, 55%)',
+    'hsla(200, 80%, 60%, 0.7)',
+    { h: 45, s: 90, l: 65 },
+  ]}
+/>
+```
+
+## How Custom Colors Are Arranged
+
+When you pass a flat `colors` array, the core package automatically:
+
+- Sorts colors by lightness so lighter tones can sit closer to the center
+- Splits the list into dense blossom layers
+- Sorts each layer by hue for a rainbow-like flow around the picker
+
+## Useful Utility Exports
+
+The core package also exports a few helpers for advanced integrations:
+
+- `DEFAULT_COLORS`
+- `INNER_COLORS`
+- `OUTER_COLORS`
+- `hexToHsl`
+- `hslToHex`
+- `rgbToHsl`
+- `parseColor`
+- `lightnessToSliderValue`
+- `sliderValueToLightness`

@@ -33,7 +33,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@dayflow/blossom-color-picker": "^2.1.0"
+    "@dayflow/blossom-color-picker": "workspace:*"
   },
   "peerDependencies": {
     "vue": ">=3.3.0"

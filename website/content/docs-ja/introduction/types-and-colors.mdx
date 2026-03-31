@@ -1,0 +1,100 @@
+---
+title: 型と色
+description: 値オブジェクト、コールバックの戻り値、対応する色フォーマットのリファレンスです。
+---
+
+# 型と色
+
+このページでは、Blossom Color Picker が使う値オブジェクトと、カスタムカラーで利用できるフォーマットを説明します。
+
+## `BlossomColorPickerValue`
+
+制御された `value` や `defaultValue` で使うオブジェクトです。
+
+| フィールド | 型 | 説明 |
+| :--- | :--- | :--- |
+| `hue` | `number` | `0` から `360` の色相角。 |
+| `saturation` | `number` | `0` から `100` のアークスライダー位置。 |
+| `lightness` | `number?` | 任意の HSL 明度上書き値。 |
+| `originalSaturation` | `number?` | 選択中の花びらが持つ元の彩度。 |
+| `alpha` | `number` | `0` から `100` の透明度。 |
+| `layer` | `'inner' \| 'outer'` | 選択された花びらのレイヤー。 |
+
+## `BlossomColorPickerColor`
+
+`onChange`、`onCollapse`、`getValue()` が返すオブジェクトです。
+
+| フィールド | 型 | 説明 |
+| :--- | :--- | :--- |
+| `hex` | `string` | 16 進カラー文字列。 |
+| `hsl` | `string` | HSL 文字列。 |
+| `hsla` | `string` | HSLA 文字列。 |
+| `rgb` | `string` | RGB 文字列。 |
+| `rgba` | `string` | RGBA 文字列。 |
+| `r` | `number` | 赤チャンネル値。 |
+| `g` | `number` | 緑チャンネル値。 |
+| `b` | `number` | 青チャンネル値。 |
+| `hue` | `number` | `0` から `360` の色相角。 |
+| `saturation` | `number` | `0` から `100` のアークスライダー位置。 |
+| `lightness` | `number` | 計算済みの明度。 |
+| `alpha` | `number` | `0` から `100` の透明度。 |
+| `layer` | `'inner' \| 'outer'` | 選択中のレイヤー。 |
+
+## Alpha のスケール
+
+ドキュメントにある `alpha` の範囲 `0-100` は正しく、公開されている値オブジェクトでもそのスケールを使います。
+
+- `value.alpha`、`defaultValue.alpha`、各コールバックの戻り値はすべて `0-100`
+- 生成される `rgba` / `hsla` 文字列では CSS と同じ `0-1` に正規化されます
+
+## `ColorInput`
+
+`colors` には CSS カラー文字列か HSL オブジェクトを渡せます。
+
+```ts
+type ColorInput = string | { h: number; s: number; l: number };
+```
+
+## 対応する色フォーマット
+
+- `#RRGGBB`
+- `rgb(...)`
+- `rgba(...)`
+- `hsl(...)`
+- `hsla(...)`
+- `{ h: 45, s: 90, l: 65 }` のような HSL オブジェクト
+
+## カスタムカラーの例
+
+```tsx
+<BlossomColorPicker
+  colors={[
+    '#FF6B6B',
+    'rgb(107, 203, 119)',
+    'rgba(65, 105, 225, 0.9)',
+    'hsl(280, 70%, 55%)',
+    'hsla(200, 80%, 60%, 0.7)',
+    { h: 45, s: 90, l: 65 },
+  ]}
+/>
+```
+
+## カスタムカラーの並び方
+
+`colors` にフラットな配列を渡すと、コアパッケージは自動的に：
+
+- 明度順に並べ替え、明るい色が中心に近づくようにする
+- 配列を高密度な blossom レイヤーに分割する
+- 各レイヤー内を色相順に並べて自然なグラデーションを作る
+
+## よく使うユーティリティ
+
+- `DEFAULT_COLORS`
+- `INNER_COLORS`
+- `OUTER_COLORS`
+- `hexToHsl`
+- `hslToHex`
+- `rgbToHsl`
+- `parseColor`
+- `lightnessToSliderValue`
+- `sliderValueToLightness`

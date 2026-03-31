@@ -1,0 +1,84 @@
+---
+title: Vanilla JavaScript
+description: Verwenden Sie Blossom Color Picker direkt aus dem eigenständigen Kernpaket.
+---
+
+# Vanilla JavaScript
+
+Mit dem eigenständigen Kernpaket können Sie `BlossomColorPicker` und `ChromePicker` ohne Framework direkt verwenden.
+
+## Kernpaket installieren
+
+<PackageTabs pkg="@dayflow/blossom-color-picker" />
+
+## Gemeinsames Stylesheet importieren
+
+Die Wrapper importieren das Stylesheet automatisch, das Kernpaket jedoch nicht.
+
+```ts
+import '@dayflow/blossom-color-picker/styles.css';
+```
+
+## Grundlegende Verwendung
+
+```js
+import { BlossomColorPicker } from '@dayflow/blossom-color-picker';
+import '@dayflow/blossom-color-picker/styles.css';
+
+const root = document.getElementById('picker');
+
+const picker = new BlossomColorPicker(root, {
+  onChange: (color) => {
+    console.log('Selected color:', color.hex);
+  },
+});
+```
+
+## Laufzeitsteuerung
+
+| Methode | Beschreibung |
+| :--- | :--- |
+| `setValue(value)` | Setzt den aktuellen Wert per Code. |
+| `getValue()` | Liest die aktuelle Farbe als `BlossomColorPickerColor`. |
+| `expand()` | Öffnet den Picker. |
+| `collapse()` | Schließt den Picker. |
+| `toggle()` | Wechselt zwischen offen und geschlossen. |
+| `setOptions(options)` | Aktualisiert Optionen nach der Initialisierung. |
+| `destroy()` | Entfernt erzeugte DOM-Knoten und Event-Listener. |
+
+## Laufzeitbeispiel
+
+```js
+import { BlossomColorPicker } from '@dayflow/blossom-color-picker';
+
+const picker = new BlossomColorPicker(document.getElementById('picker'));
+
+picker.expand();
+picker.setValue({
+  hue: 200,
+  saturation: 50,
+  alpha: 100,
+  layer: 'outer',
+});
+
+picker.setOptions({
+  disabled: true,
+  openOnHover: false,
+});
+```
+
+## `ChromePicker` ohne Wrapper verwenden
+
+```js
+import { ChromePicker } from '@dayflow/blossom-color-picker';
+import '@dayflow/blossom-color-picker/styles.css';
+
+const picker = new ChromePicker(document.getElementById('picker'), {
+  onChange: (color) => console.log(color.rgba),
+});
+```
+
+## Verwandte Referenz
+
+- [Optionen](/docs-de/introduction/options)
+- [Typen & Farben](/docs-de/introduction/types-and-colors)

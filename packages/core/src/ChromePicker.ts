@@ -13,8 +13,24 @@ import {
 } from './utils';
 import { createElement, setStyles } from './dom-helpers';
 
+export interface ChromePickerThemeColors {
+  containerBackground?: string;
+  topBackground?: string;
+  bottomBackground?: string;
+  borderColor?: string;
+  inputBackground?: string;
+  inputBorderColor?: string;
+  inputTextColor?: string;
+  labelColor?: string;
+  sliderHandleBackground?: string;
+  sliderHandleBorderColor?: string;
+  toggleColor?: string;
+  shadow?: string;
+}
+
 export interface ChromePickerOptions extends BlossomColorPickerOptions {
-  // Extra options if needed
+  darkMode?: boolean;
+  darkModeColors?: Partial<ChromePickerThemeColors>;
 }
 
 type ColorMode = 'HEX' | 'RGBA' | 'HSLA';
@@ -33,6 +49,9 @@ export class ChromePicker {
   private picker: BlossomColorPicker;
   private mode: ColorMode = 'HSLA';
   private opts: ChromePickerOptions;
+  private themeMediaQuery: MediaQueryList | null = null;
+  private themeObserver: MutationObserver | null = null;
+  private boundThemeChange: () => void;
 
   // Track if we are currently updating from inputs to avoid feedback loops
   private isInternalUpdate = false;
@@ -43,12 +62,19 @@ export class ChromePicker {
       ...options,
       collapsible: options?.collapsible ?? false, // Default to expanded for ChromePicker
     };
+    this.boundThemeChange = () => {
+      if (this.opts.darkMode === undefined) {
+        this.applyTheme();
+      }
+    };
 
     this.render();
+    this.bindThemeListeners();
+    this.applyTheme();
     
     // Initialize picker in the top element
     this.picker = new BlossomColorPicker(this.topEl, {
-      ...this.opts,
+      ...this.getPickerOptions(),
       onChange: (color) => this.handlePickerChange(color),
     });
 
@@ -98,8 +124,8 @@ export class ChromePicker {
     
     this.toggleBtn.innerHTML = `
       <svg width="12" height="15" viewBox="0 0 12 15" fill="none">
-        <path d="M6 0L10.3301 4.5H1.66987L6 0Z" fill="#333" />
-        <path d="M6 15L1.66987 10.5L10.3301 10.5L6 15Z" fill="#333" />
+        <path d="M6 0L10.3301 4.5H1.66987L6 0Z" fill="currentColor" />
+        <path d="M6 15L1.66987 10.5L10.3301 10.5L6 15Z" fill="currentColor" />
       </svg>
     `;
 
@@ -280,12 +306,104 @@ export class ChromePicker {
 
   public setOptions(options: Partial<ChromePickerOptions>): void {
     this.opts = { ...this.opts, ...options };
-    this.picker.setOptions(options);
+    this.picker.setOptions(this.getPickerOptions());
+    this.applyTheme();
     this.updateInputs();
   }
 
   public destroy(): void {
+    this.themeMediaQuery?.removeEventListener?.('change', this.boundThemeChange);
+    this.themeObserver?.disconnect();
     this.picker.destroy();
     this.rootEl.remove();
+  }
+
+  private getPickerOptions(): Partial<BlossomColorPickerOptions> {
+    return {
+      value: this.opts.value,
+      defaultValue: this.opts.defaultValue,
+      colors: this.opts.colors,
+      onChange: this.opts.onChange,
+      onCollapse: this.opts.onCollapse,
+      disabled: this.opts.disabled,
+      openOnHover: this.opts.openOnHover,
+      initialExpanded: this.opts.initialExpanded,
+      animationDuration: this.opts.animationDuration,
+      showAlphaSlider: this.opts.showAlphaSlider,
+      coreSize: this.opts.coreSize,
+      petalSize: this.opts.petalSize,
+      showCoreColor: this.opts.showCoreColor,
+      sliderPosition: this.opts.sliderPosition,
+      adaptivePositioning: this.opts.adaptivePositioning,
+      circularBarWidth: this.opts.circularBarWidth,
+      sliderWidth: this.opts.sliderWidth,
+      sliderOffset: this.opts.sliderOffset,
+      collapsible: this.opts.collapsible,
+    };
+  }
+
+  private bindThemeListeners(): void {
+    if (typeof window === 'undefined') return;
+
+    this.themeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    this.themeMediaQuery.addEventListener?.('change', this.boundThemeChange);
+
+    this.themeObserver = new MutationObserver(this.boundThemeChange);
+    this.themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class', 'data-theme'],
+    });
+  }
+
+  private isDarkMode(): boolean {
+    if (typeof this.opts.darkMode === 'boolean') {
+      return this.opts.darkMode;
+    }
+
+    if (typeof window === 'undefined') {
+      return false;
+    }
+
+    return (
+      this.container.closest('.dark') !== null ||
+      document.documentElement.classList.contains('dark') ||
+      this.themeMediaQuery?.matches === true
+    );
+  }
+
+  private applyTheme(): void {
+    const isDark = this.isDarkMode();
+    this.rootEl.classList.toggle('bcp-dark', isDark);
+    this.rootEl.classList.toggle('bcp-force-light', this.opts.darkMode === false);
+
+    const variableMap: Record<keyof ChromePickerThemeColors, string> = {
+      containerBackground: '--bcp-chrome-container-bg',
+      topBackground: '--bcp-chrome-top-bg',
+      bottomBackground: '--bcp-chrome-bottom-bg',
+      borderColor: '--bcp-chrome-border',
+      inputBackground: '--bcp-chrome-input-bg',
+      inputBorderColor: '--bcp-chrome-input-border',
+      inputTextColor: '--bcp-chrome-input-text',
+      labelColor: '--bcp-chrome-label',
+      sliderHandleBackground: '--bcp-chrome-slider-handle-bg',
+      sliderHandleBorderColor: '--bcp-chrome-slider-handle-border',
+      toggleColor: '--bcp-chrome-toggle-color',
+      shadow: '--bcp-chrome-shadow',
+    };
+
+    for (const cssVar of Object.values(variableMap)) {
+      this.rootEl.style.removeProperty(cssVar);
+    }
+
+    if (!isDark || !this.opts.darkModeColors) {
+      return;
+    }
+
+    for (const [key, value] of Object.entries(this.opts.darkModeColors) as Array<
+      [keyof ChromePickerThemeColors, string | undefined]
+    >) {
+      if (!value) continue;
+      this.rootEl.style.setProperty(variableMap[key], value);
+    }
   }
 }

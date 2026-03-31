@@ -36,6 +36,8 @@ function propsToOptions(props: ChromePickerProps): Partial<ChromePickerOptions> 
   if (props.sliderWidth !== undefined) opts.sliderWidth = props.sliderWidth;
   if (props.sliderOffset !== undefined) opts.sliderOffset = props.sliderOffset;
   if (props.collapsible !== undefined) opts.collapsible = props.collapsible;
+  if (props.darkMode !== undefined) opts.darkMode = props.darkMode;
+  if (props.darkModeColors !== undefined) opts.darkModeColors = props.darkModeColors;
 
   return opts;
 }
@@ -73,7 +75,7 @@ export const ChromePicker = forwardRef(function ChromePicker(
     props.showAlphaSlider, props.coreSize, props.petalSize,
     props.showCoreColor, props.sliderPosition, props.adaptivePositioning,
     props.circularBarWidth, props.sliderWidth, props.sliderOffset,
-    props.collapsible,
+    props.collapsible, props.darkMode, props.darkModeColors,
   ]);
 
   // Forward ref

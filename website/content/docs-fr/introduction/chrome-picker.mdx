@@ -1,0 +1,158 @@
+---
+title: Sélecteur Chrome
+description: Sélecteur de couleurs professionnel avec prise en charge de HEX, RGBA et HSLA.
+---
+
+# Sélecteur Chrome
+
+`ChromePicker` est un sélecteur de couleurs professionnel conçu pour des workflows de sélection plus classiques. Sa disposition compacte prend entièrement en charge HEX, RGBA et HSLA, ce qui le rend adapté aux outils de design, panneaux de réglages et interfaces d'administration.
+
+## Fonctionnalités
+
+- **Formats multiples** : basculez entre HEX, RGBA et HSLA.
+- **Cœur intégré** : repose sur le cœur de Blossom Color Picker.
+- **Support alpha** : curseur de transparence intégré.
+- **Multi-framework** : wrappers pour React, Vue, Svelte et Angular.
+
+## Vanilla JavaScript
+
+`ChromePicker` peut aussi être utilisé directement depuis le paquet cœur :
+
+<PackageTabs pkg="@dayflow/blossom-color-picker" />
+
+```js
+import { ChromePicker } from '@dayflow/blossom-color-picker';
+import '@dayflow/blossom-color-picker/styles.css';
+
+const picker = new ChromePicker(document.getElementById('picker'), {
+  onChange: (color) => console.log(color.hex),
+});
+```
+
+## Utilisation
+
+<FrameworkTabs>
+  <Tab>
+    ```tsx
+    import { useState } from 'react';
+    import { ChromePicker } from '@dayflow/blossom-color-picker-react';
+
+    function App() {
+      const [color, setColor] = useState({
+        hue: 330,
+        saturation: 70,
+        alpha: 100,
+        layer: 'outer' as const,
+      });
+
+      return (
+        <ChromePicker
+          value={color}
+          onChange={setColor}
+        />
+      );
+    }
+    ```
+  </Tab>
+  <Tab>
+    ```vue
+    <template>
+      <ChromePicker
+        :value="color"
+        @change="handleChange"
+      />
+    </template>
+
+    <script setup>
+    import { ref } from 'vue';
+    import { ChromePicker } from '@dayflow/blossom-color-picker-vue';
+
+    const color = ref({
+      hue: 330,
+      saturation: 70,
+      alpha: 100,
+      layer: 'outer',
+    });
+
+    function handleChange(nextColor) {
+      color.value = nextColor;
+    }
+    </script>
+    ```
+  </Tab>
+  <Tab>
+    ```typescript
+    import { Component } from '@angular/core';
+    import {
+      ChromePickerComponent,
+      type BlossomColorPickerColor,
+    } from '@dayflow/blossom-color-picker-angular';
+
+    @Component({
+      selector: 'app-root',
+      standalone: true,
+      imports: [ChromePickerComponent],
+      template: `
+        <chrome-picker
+          [value]="color"
+          (colorChange)="onColorChange($event)"
+        />
+      `
+    })
+    export class AppComponent {
+      color = {
+        hue: 330,
+        saturation: 70,
+        alpha: 100,
+        layer: 'outer' as const,
+      };
+
+      onColorChange(nextColor: BlossomColorPickerColor) {
+        this.color = nextColor;
+      }
+    }
+    ```
+  </Tab>
+  <Tab>
+    ```svelte
+    <script>
+    import { ChromePicker } from '@dayflow/blossom-color-picker-svelte';
+
+    let color = {
+      hue: 330,
+      saturation: 70,
+      alpha: 100,
+      layer: 'outer',
+    };
+
+    function handleChange(nextColor) {
+      color = nextColor;
+    }
+    </script>
+
+    <ChromePicker
+      value={color}
+      onchange={handleChange}
+    />
+    ```
+  </Tab>
+</FrameworkTabs>
+
+## Options de configuration
+
+`ChromePicker` partage presque toutes les options du `BlossomColorPicker` standard.
+
+| Option | Type | Par défaut | Description |
+| :--- | :--- | :--- | :--- |
+| `value` | `BlossomColorPickerValue` | - | Valeur contrôlée actuelle. |
+| `defaultValue` | `BlossomColorPickerValue` | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | Valeur initiale en mode non contrôlé. |
+| `colors` | `ColorInput[]` | `DEFAULT_COLORS` | Couleurs affichées comme pétales dans la zone blossom. |
+| `onChange` | `(color: BlossomColorPickerColor) => void` | - | Appelé lors d'un changement de couleur. |
+| `onCollapse` | `(color: BlossomColorPickerColor) => void` | - | Appelé lors du repli. |
+| `disabled` | `boolean` | `false` | Désactive l'interaction. |
+| `showAlphaSlider` | `boolean` | `true` | Affiche la ligne du curseur alpha. |
+| `coreSize` | `number` | `32` | Taille du bouton cœur en pixels. |
+| `petalSize` | `number` | `32` | Taille des pétales en pixels. |
+| `collapsible` | `boolean` | `false` | Détermine si la zone blossom peut être repliée. `ChromePicker` utilise `false` par défaut. |
+
+Pour la liste complète des options communes, consultez [Options](/docs-fr/introduction/options).

@@ -1,0 +1,5 @@
+{
+  "title": "Introduction",
+  "defaultOpen": true,
+  "pages": ["index", "vanilla-js", "chrome-picker", "options", "types-and-colors"]
+}

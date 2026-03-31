@@ -1,0 +1,160 @@
+---
+title: Chrome 选择器
+description: 支持 HEX、RGBA 和 HSLA 的专业级颜色选择器。
+---
+
+# Chrome 选择器
+
+`ChromePicker` 是一款为传统配色工作流设计的专业级颜色选择器。它采用紧凑而实用的布局，完整支持 HEX、RGBA 和 HSLA 颜色格式，非常适合设计工具、设置面板和管理后台界面。
+
+## 特性
+
+- **多格式支持**：可在 HEX、RGBA 和 HSLA 之间切换。
+- **集成核心**：基于 Blossom Color Picker 核心构建，颜色选择体验流畅。
+- **Alpha 支持**：内置透明度滑块，适合精细调节。
+- **多框架支持**：提供 React、Vue、Svelte 和 Angular 封装。
+
+## 原生 JavaScript
+
+`ChromePicker` 也可以直接从核心包中使用：
+
+<PackageTabs pkg="@dayflow/blossom-color-picker" />
+
+```js
+import { ChromePicker } from '@dayflow/blossom-color-picker';
+import '@dayflow/blossom-color-picker/styles.css';
+
+const picker = new ChromePicker(document.getElementById('picker'), {
+  onChange: (color) => console.log(color.hex),
+});
+```
+
+## 用法
+
+选择你的框架，查看如何集成 `ChromePicker`：
+
+<FrameworkTabs>
+  <Tab>
+    ```tsx
+    import { useState } from 'react';
+    import { ChromePicker } from '@dayflow/blossom-color-picker-react';
+
+    function App() {
+      const [color, setColor] = useState({
+        hue: 330,
+        saturation: 70,
+        alpha: 100,
+        layer: 'outer' as const,
+      });
+
+      return (
+        <ChromePicker
+          value={color}
+          onChange={setColor}
+        />
+      );
+    }
+    ```
+  </Tab>
+  <Tab>
+    ```vue
+    <template>
+      <ChromePicker
+        :value="color"
+        @change="handleChange"
+      />
+    </template>
+
+    <script setup>
+    import { ref } from 'vue';
+    import { ChromePicker } from '@dayflow/blossom-color-picker-vue';
+
+    const color = ref({
+      hue: 330,
+      saturation: 70,
+      alpha: 100,
+      layer: 'outer',
+    });
+
+    function handleChange(nextColor) {
+      color.value = nextColor;
+    }
+    </script>
+    ```
+  </Tab>
+  <Tab>
+    ```typescript
+    import { Component } from '@angular/core';
+    import {
+      ChromePickerComponent,
+      type BlossomColorPickerColor,
+    } from '@dayflow/blossom-color-picker-angular';
+
+    @Component({
+      selector: 'app-root',
+      standalone: true,
+      imports: [ChromePickerComponent],
+      template: `
+        <chrome-picker
+          [value]="color"
+          (colorChange)="onColorChange($event)"
+        />
+      `
+    })
+    export class AppComponent {
+      color = {
+        hue: 330,
+        saturation: 70,
+        alpha: 100,
+        layer: 'outer' as const,
+      };
+
+      onColorChange(nextColor: BlossomColorPickerColor) {
+        this.color = nextColor;
+      }
+    }
+    ```
+  </Tab>
+  <Tab>
+    ```svelte
+    <script>
+    import { ChromePicker } from '@dayflow/blossom-color-picker-svelte';
+
+    let color = {
+      hue: 330,
+      saturation: 70,
+      alpha: 100,
+      layer: 'outer',
+    };
+
+    function handleChange(nextColor) {
+      color = nextColor;
+    }
+    </script>
+
+    <ChromePicker
+      value={color}
+      onchange={handleChange}
+    />
+    ```
+  </Tab>
+</FrameworkTabs>
+
+## 配置选项
+
+`ChromePicker` 与标准 `BlossomColorPicker` 共享大部分配置项。
+
+| 选项 | 类型 | 默认值 | 描述 |
+| :--- | :--- | :--- | :--- |
+| `value` | `BlossomColorPickerValue` | - | 受控模式下的当前值。 |
+| `defaultValue` | `BlossomColorPickerValue` | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | 非受控模式下的初始值。 |
+| `colors` | `ColorInput[]` | `DEFAULT_COLORS` | 在 blossom 区域中显示的花瓣颜色列表。 |
+| `onChange` | `(color: BlossomColorPickerColor) => void` | - | 颜色变化时触发。 |
+| `onCollapse` | `(color: BlossomColorPickerColor) => void` | - | 选择器折叠时触发。 |
+| `disabled` | `boolean` | `false` | 是否禁用交互。 |
+| `showAlphaSlider` | `boolean` | `true` | 是否显示透明度滑块行。 |
+| `coreSize` | `number` | `32` | blossom 核心按钮大小，单位为像素。 |
+| `petalSize` | `number` | `32` | blossom 花瓣大小，单位为像素。 |
+| `collapsible` | `boolean` | `false` | 是否允许折叠 blossom 区域。`ChromePicker` 默认值为 `false`。 |
+
+完整共享配置请参考 [选项](/docs-zh/introduction/options)。

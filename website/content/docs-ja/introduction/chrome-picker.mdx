@@ -1,0 +1,158 @@
+---
+title: Chrome カラーピッカー
+description: HEX、RGBA、HSLA をサポートするプロフェッショナル向けカラーピッカーです。
+---
+
+# Chrome カラーピッカー
+
+`ChromePicker` は、より一般的なカラー選択ワークフロー向けに設計されたプロフェッショナルグレードのカラーピッカーです。コンパクトで実用的なレイアウトを備え、HEX、RGBA、HSLA の各形式を完全にサポートしているため、デザインツール、設定パネル、管理画面に適しています。
+
+## 特徴
+
+- **複数フォーマット対応**: HEX、RGBA、HSLA を切り替えて利用できます。
+- **統合コア**: Blossom Color Picker コアをベースにしています。
+- **Alpha 対応**: 透明度スライダーを内蔵しています。
+- **マルチフレームワーク**: React、Vue、Svelte、Angular に対応します。
+
+## Vanilla JavaScript
+
+`ChromePicker` はコアパッケージから直接利用することもできます：
+
+<PackageTabs pkg="@dayflow/blossom-color-picker" />
+
+```js
+import { ChromePicker } from '@dayflow/blossom-color-picker';
+import '@dayflow/blossom-color-picker/styles.css';
+
+const picker = new ChromePicker(document.getElementById('picker'), {
+  onChange: (color) => console.log(color.hex),
+});
+```
+
+## 使い方
+
+<FrameworkTabs>
+  <Tab>
+    ```tsx
+    import { useState } from 'react';
+    import { ChromePicker } from '@dayflow/blossom-color-picker-react';
+
+    function App() {
+      const [color, setColor] = useState({
+        hue: 330,
+        saturation: 70,
+        alpha: 100,
+        layer: 'outer' as const,
+      });
+
+      return (
+        <ChromePicker
+          value={color}
+          onChange={setColor}
+        />
+      );
+    }
+    ```
+  </Tab>
+  <Tab>
+    ```vue
+    <template>
+      <ChromePicker
+        :value="color"
+        @change="handleChange"
+      />
+    </template>
+
+    <script setup>
+    import { ref } from 'vue';
+    import { ChromePicker } from '@dayflow/blossom-color-picker-vue';
+
+    const color = ref({
+      hue: 330,
+      saturation: 70,
+      alpha: 100,
+      layer: 'outer',
+    });
+
+    function handleChange(nextColor) {
+      color.value = nextColor;
+    }
+    </script>
+    ```
+  </Tab>
+  <Tab>
+    ```typescript
+    import { Component } from '@angular/core';
+    import {
+      ChromePickerComponent,
+      type BlossomColorPickerColor,
+    } from '@dayflow/blossom-color-picker-angular';
+
+    @Component({
+      selector: 'app-root',
+      standalone: true,
+      imports: [ChromePickerComponent],
+      template: `
+        <chrome-picker
+          [value]="color"
+          (colorChange)="onColorChange($event)"
+        />
+      `
+    })
+    export class AppComponent {
+      color = {
+        hue: 330,
+        saturation: 70,
+        alpha: 100,
+        layer: 'outer' as const,
+      };
+
+      onColorChange(nextColor: BlossomColorPickerColor) {
+        this.color = nextColor;
+      }
+    }
+    ```
+  </Tab>
+  <Tab>
+    ```svelte
+    <script>
+    import { ChromePicker } from '@dayflow/blossom-color-picker-svelte';
+
+    let color = {
+      hue: 330,
+      saturation: 70,
+      alpha: 100,
+      layer: 'outer',
+    };
+
+    function handleChange(nextColor) {
+      color = nextColor;
+    }
+    </script>
+
+    <ChromePicker
+      value={color}
+      onchange={handleChange}
+    />
+    ```
+  </Tab>
+</FrameworkTabs>
+
+## 設定オプション
+
+`ChromePicker` は標準の `BlossomColorPicker` とほぼ同じオプションを共有します。
+
+| オプション | 型 | デフォルト | 説明 |
+| :--- | :--- | :--- | :--- |
+| `value` | `BlossomColorPickerValue` | - | 制御された現在値。 |
+| `defaultValue` | `BlossomColorPickerValue` | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | 非制御時の初期値。 |
+| `colors` | `ColorInput[]` | `DEFAULT_COLORS` | blossom セクションに表示する花びらカラー。 |
+| `onChange` | `(color: BlossomColorPickerColor) => void` | - | 色変更時に呼び出されます。 |
+| `onCollapse` | `(color: BlossomColorPickerColor) => void` | - | ピッカーが閉じたときに呼び出されます。 |
+| `disabled` | `boolean` | `false` | 操作を無効化します。 |
+| `showAlphaSlider` | `boolean` | `true` | 透明度スライダー行を表示します。 |
+| `coreSize` | `number` | `32` | blossom コアボタンのサイズ（px）。 |
+| `petalSize` | `number` | `32` | blossom 花びらのサイズ（px）。 |
+| `collapsible` | `boolean` | `false` | blossom セクションを折りたためるかどうか。`ChromePicker` では `false` が既定です。 |
+
+共有オプション全体については [オプション](/docs-ja/introduction/options) を参照してください。

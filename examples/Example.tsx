@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { BlossomColorPicker } from '@dayflow/blossom-color-picker-react';
+import { BlossomColorPicker, ChromePicker } from '@dayflow/blossom-color-picker-react';
 import type { BlossomColorPickerValue } from '@dayflow/blossom-color-picker-react';
 
 const colorPalette = [
@@ -64,6 +64,14 @@ const Example = () => {
     layer: 'outer',
   });
 
+  const [chromeColor, setChromeColor] = useState<BlossomColorPickerValue>({
+    hue: 210,
+    saturation: 50,
+    lightness: 50,
+    alpha: 80,
+    layer: 'outer',
+  });
+
   const [activePos, setActivePos] = useState<
     'top' | 'bottom' | 'left' | 'right'
   >('left');
@@ -86,7 +94,8 @@ const Example = () => {
   );
 
   return (
-    <div className="fixed inset-0 bg-gray-50 dark:bg-slate-950 flex flex-col items-center justify-center pt-14 px-6 gap-6 overflow-hidden transition-colors duration-300">
+    <div className="fixed inset-0 bg-gray-50 dark:bg-slate-950 flex flex-col items-center pt-24 md:pt-48 px-6 md:px-24 gap-6 overflow-y-auto overflow-x-hidden transition-colors duration-300 pb-20">
+
       <header className="fixed top-0 left-0 right-0 h-14 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md z-50 border-b border-gray-200 dark:border-slate-800 px-4">
         <div className="relative h-full flex items-center justify-between w-full">
           {/* Left side icon */}
@@ -113,126 +122,130 @@ const Example = () => {
         </div>
       </header>
 
-      {/* Basic Example */}
-      <div className="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-xl dark:shadow-2xl/20 w-full max-w-sm border border-gray-100 dark:border-slate-800 transition-all">
-        <div className="flex items-center justify-between">
-          <div className="flex flex-col">
-            <span className="text-lg font-semibold text-gray-800 dark:text-gray-100 tracking-tight">
-              Color
-            </span>
-          </div>
-          <BlossomColorPicker
-            value={color}
-            onChange={(newColor) => setColor(newColor)}
-            coreSize={36}
-            petalSize={36}
-            sliderWidth={24}
-            adaptivePositioning={false}
-          />
-        </div>
-      </div>
-
-      {/* Multi-Layer Example with Dynamic Controls */}
-
-      <div className="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-xl dark:shadow-2xl/20 w-full max-w-sm border border-gray-100 dark:border-slate-800 transition-all">
-        <div className="flex flex-col">
-          <div className="flex items-center justify-between mb-24">
-            <div className="flex flex-col">
-              <span className="text-lg font-semibold text-gray-800 dark:text-gray-100 tracking-tight">
-                Multi-Layer Bloom
-              </span>
-
-              <span className="text-xs text-gray-400 dark:text-gray-500">
-                {colorCount} colors auto-distributed
-              </span>
-              <span className="text-xs text-gray-400 dark:text-gray-500">
-                Adaptive Positioning on mobile
-              </span>
-            </div>
-
-            <BlossomColorPicker
-              colors={dynamicPalette}
-              value={multiLayerColor}
-              onChange={(newColor) => setMultiLayerColor(newColor)}
-              sliderPosition={activePos}
-              initialExpanded={isPickerExpanded}
-              coreSize={40}
-              petalSize={32}
-              sliderWidth={18}
-              onCollapse={() => setIsPickerExpanded(false)}
-            />
-          </div>
-
-          <div className="space-y-4">
-            {/* Color Count Control */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full max-w-5xl items-start">
+        <div className="flex flex-col gap-8">
+          <div className="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-xl dark:shadow-2xl/20 border border-gray-100 dark:border-slate-800 transition-all">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                Color Count
-              </span>
+              <div className="flex flex-col">
+                <span className="text-lg font-semibold text-gray-800 dark:text-gray-100 tracking-tight">
+                  Basic Bloom
+                </span>
+              </div>
+              <BlossomColorPicker
+                value={color}
+                onChange={(newColor) => setColor(newColor)}
+                coreSize={36}
+                petalSize={36}
+                sliderWidth={24}
+                adaptivePositioning={false}
+              />
+            </div>
+          </div>
 
-              <div className="flex items-center space-x-2">
-                <div className="flex items-center bg-gray-100 dark:bg-slate-800 rounded-lg p-1">
-                  <button
-                    onClick={() => {
-                      setColorCount((prev) => Math.max(1, prev - 1));
+          {/* Multi-Layer Example */}
+          <div className="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-xl dark:shadow-2xl/20 border border-gray-100 dark:border-slate-800 transition-all">
+            <div className="flex flex-col">
+              <div className="flex items-center justify-between mb-24">
+                <div className="flex flex-col">
+                  <span className="text-lg font-semibold text-gray-800 dark:text-gray-100 tracking-tight">
+                    Multi-Layer Bloom
+                  </span>
 
-                      setIsPickerExpanded(true);
-                    }}
-                    className="px-3 py-1 text-lg font-bold text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                  >
-                    -
-                  </button>
+                  <span className="text-xs text-gray-400 dark:text-gray-500">
+                    {colorCount} colors auto-distributed
+                  </span>
+                  <span className="text-xs text-gray-400 dark:text-gray-500">
+                    Adaptive Positioning on mobile
+                  </span>
+                </div>
 
-                  <input
-                    type="number"
-                    value={colorCount}
-                    onChange={(e) => {
-                      const val = parseInt(e.target.value);
+                <BlossomColorPicker
+                  colors={dynamicPalette}
+                  value={multiLayerColor}
+                  onChange={(newColor) => setMultiLayerColor(newColor)}
+                  sliderPosition={activePos}
+                  initialExpanded={isPickerExpanded}
+                  coreSize={40}
+                  petalSize={32}
+                  sliderWidth={18}
+                  onCollapse={() => setIsPickerExpanded(false)}
+                />
+              </div>
 
-                      if (!isNaN(val)) {
-                        setColorCount(
-                          Math.max(1, Math.min(colorPalette.length, val))
-                        );
+              <div className="space-y-4">
+                {/* Color Count Control */}
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    Color Count
+                  </span>
 
+                  <div className="flex items-center bg-gray-100 dark:bg-slate-800 rounded-lg p-1">
+                    <button
+                      onClick={() => {
+                        setColorCount((prev) => Math.max(1, prev - 1));
                         setIsPickerExpanded(true);
-                      }
-                    }}
-                    className="w-12 bg-transparent text-center text-sm font-mono dark:text-gray-200 focus:outline-none appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                  />
+                      }}
+                      className="px-3 py-1 text-lg font-bold text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                    >
+                      -
+                    </button>
+                    <input
+                      type="number"
+                      value={colorCount}
+                      onChange={(e) => {
+                        const val = parseInt(e.target.value);
+                        if (!isNaN(val)) {
+                          setColorCount(Math.max(1, Math.min(colorPalette.length, val)));
+                          setIsPickerExpanded(true);
+                        }
+                      }}
+                      className="w-12 bg-transparent text-center text-sm font-mono dark:text-gray-200 focus:outline-none appearance-none"
+                    />
+                    <button
+                      onClick={() => {
+                        setColorCount((prev) => Math.min(colorPalette.length, prev + 1));
+                        setIsPickerExpanded(true);
+                      }}
+                      className="px-3 py-1 text-lg font-bold text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
 
-                  <button
-                    onClick={() => {
-                      setColorCount((prev) =>
-                        Math.min(colorPalette.length, prev + 1)
-                      );
-
-                      setIsPickerExpanded(true);
-                    }}
-                    className="px-3 py-1 text-lg font-bold text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                  >
-                    +
-                  </button>
+                {/* Position Tabs */}
+                <div className="flex bg-gray-100 dark:bg-slate-800 p-1 rounded-xl">
+                  {(['top', 'bottom', 'left', 'right'] as const).map((pos) => (
+                    <button
+                      key={pos}
+                      onClick={() => {
+                        setActivePos(pos);
+                        setIsPickerExpanded(true);
+                      }}
+                      className={`flex-1 py-1.5 text-xs font-medium rounded-lg transition-all ${activePos === pos
+                        ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm'
+                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
+                        }`}
+                    >
+                      {pos.toUpperCase()}
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
-            {/* Position Tabs */}
-            <div className="flex bg-gray-100 dark:bg-slate-800 p-1 rounded-xl">
-              {(['top', 'bottom', 'left', 'right'] as const).map((pos) => (
-                <button
-                  key={pos}
-                  onClick={() => {
-                    setActivePos(pos);
+          </div>
+        </div>
 
-                    setIsPickerExpanded(true);
-                  }}
-                  className={`flex-1 py-1.5 text-xs font-medium rounded-lg transition-all ${activePos === pos
-                    ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm'
-                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
-                    }`}
-                >
-                  {pos.toUpperCase()}
-                </button>
-              ))}
+        <div className="flex flex-col gap-8">
+          <div className="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-xl dark:shadow-2xl/20 border border-gray-100 dark:border-slate-800 transition-all flex flex-col">
+            <span className="text-lg font-semibold text-gray-800 dark:text-gray-100 tracking-tight mb-5">
+              {`<ChromePicker/>`}
+            </span>
+            <div className="flex justify-center">
+              <ChromePicker
+                value={chromeColor}
+                onChange={(newColor) => setChromeColor(newColor)}
+              />
             </div>
           </div>
         </div>

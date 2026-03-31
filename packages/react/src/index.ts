@@ -17,6 +17,7 @@ export type {
   BlossomColorPickerColor,
   ColorInput,
   SliderPosition,
+  ChromePickerThemeColors,
 } from '@dayflow/blossom-color-picker';
 
 export type { BlossomColorPickerOptions } from '@dayflow/blossom-color-picker';
@@ -29,6 +30,7 @@ export {
   rgbToHsl,
   parseColor,
   lightnessToSliderValue,
+  sliderValueToLightness,
 } from '@dayflow/blossom-color-picker';
 
 export interface BlossomColorPickerProps extends BlossomColorPickerOptions {

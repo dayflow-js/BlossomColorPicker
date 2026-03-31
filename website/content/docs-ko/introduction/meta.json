@@ -1,0 +1,5 @@
+{
+  "title": "소개",
+  "defaultOpen": true,
+  "pages": ["index", "vanilla-js", "chrome-picker", "options", "types-and-colors"]
+}
