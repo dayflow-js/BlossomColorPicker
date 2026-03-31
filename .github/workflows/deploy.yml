@@ -36,6 +36,9 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - run: pnpm --filter @dayflow/blossom-color-picker build
+      - run: pnpm --filter @dayflow/blossom-color-picker-react build
+
       - run: pnpm --dir website build
 
       - uses: actions/configure-pages@v5
