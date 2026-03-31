@@ -1,8 +1,9 @@
-name: Deploy Website to GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -11,50 +12,58 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: 'pages'
   cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      BASE_PATH: /BlossomColorPicker
-      NEXT_PUBLIC_BASE_PATH: /BlossomColorPicker
-      NEXT_PUBLIC_SITE_URL: https://dayflow-js.github.io/BlossomColorPicker
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          version: 10
+          node-version: '20'
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
+      - name: Install deps
+        run: |
+          cd website
+          npm install
 
-      - run: pnpm install --frozen-lockfile
+      - name: Build website
+        run: |
+          cd website
+          npm run build
+        env:
+          BASE_PATH: /BlossomColorPicker
+          NEXT_PUBLIC_BASE_PATH: /BlossomColorPicker
+          NEXT_PUBLIC_SITE_URL: https://dayflow-js.github.io/BlossomColorPicker
 
-      - run: pnpm --filter @dayflow/blossom-color-picker build
-      - run: pnpm --filter @dayflow/blossom-color-picker-react build
+      - name: Disable Jekyll and verify output
+        run: |
+          ls -la website/
+          if [ -d "website/out" ]; then
+            touch website/out/.nojekyll
+            echo "Created .nojekyll in website/out"
+          else
+            echo "Error: website/out directory not found!"
+            exit 1
+          fi
 
-      - run: pnpm --dir website build
-
-      - run: touch website/out/.nojekyll
-
-      - uses: actions/configure-pages@v5
-
-      - uses: actions/upload-pages-artifact@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
           path: website/out
 
   deploy:
-    needs: build
-    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
     steps:
-      - id: deployment
+      - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
