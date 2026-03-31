@@ -6,7 +6,7 @@ import { BlossomColorPickerShowcase } from './BlossomColorPickerShowcase';
 
 export function LiveDemo() {
   return (
-    <div className='live-demo-container mx-auto overflow-x-hidden'>
+    <div className='live-demo-container mx-auto overflow-x-clip'>
       <section className='space-y-12 py-8'>
         <div className='mx-auto text-center'>
           <span className='inline-flex items-center rounded-full bg-pink-50 px-3 py-1 text-xs font-medium tracking-wide text-pink-600 uppercase dark:bg-pink-500/10 dark:text-pink-300'>

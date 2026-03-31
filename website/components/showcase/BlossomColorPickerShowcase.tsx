@@ -93,17 +93,14 @@ export function BlossomColorPickerShowcase() {
   );
 
   return (
-    <div className='grid w-full max-w-5xl grid-cols-1 items-start gap-8 overflow-x-hidden py-8 lg:grid-cols-2'>
+    <div className='grid w-full max-w-5xl grid-cols-1 items-start gap-8 py-8 lg:grid-cols-2'>
       <div className='flex flex-col gap-8'>
         {/* Basic Bloom */}
-        <div className='rounded-2xl border border-gray-100 bg-white p-8 shadow-xl transition-all dark:border-slate-800 dark:bg-slate-900 dark:shadow-2xl/20'>
+        <div className='rounded-2xl border border-gray-100 bg-white p-6 shadow-xl transition-all dark:border-slate-800 dark:bg-slate-900 dark:shadow-2xl/20'>
           <div className='flex items-center justify-between'>
             <div className='flex flex-col'>
               <span className='text-lg font-semibold tracking-tight text-gray-800 dark:text-gray-100'>
                 Basic
-              </span>
-              <span className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
-                Standard interactive blossom
               </span>
             </div>
             <BlossomColorPicker
@@ -127,6 +124,9 @@ export function BlossomColorPickerShowcase() {
                 </span>
                 <span className='mt-1 text-xs text-gray-400 dark:text-gray-500'>
                   {colorCount} colors auto-distributed
+                </span>
+                <span className='text-xs text-gray-400 dark:text-gray-500'>
+                  Adaptive Positioning on mobile
                 </span>
               </div>
 
@@ -215,7 +215,7 @@ export function BlossomColorPickerShowcase() {
 
       <div className='flex flex-col gap-8'>
         {/* ChromePicker Example */}
-        <div className='flex h-full flex-col rounded-2xl border border-gray-100 bg-white px-8 py-11 shadow-xl transition-all dark:border-slate-800 dark:bg-slate-900 dark:shadow-2xl/20'>
+        <div className='flex h-full flex-col rounded-2xl border border-gray-100 bg-white px-8 py-10 shadow-xl transition-all dark:border-slate-800 dark:bg-slate-900 dark:shadow-2xl/20'>
           <span className='mb-8 text-lg font-semibold tracking-tight text-gray-800 dark:text-gray-100'>
             Chrome Picker
           </span>

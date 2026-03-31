@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { createMDX } from 'fumadocs-mdx/next';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const monorepoRoot = path.resolve(__dirname, '..');
 const websiteNodeModules = path.resolve(__dirname, 'node_modules');
 
 const withMDX = createMDX();
@@ -11,7 +12,7 @@ const withMDX = createMDX();
 /** @type {import('next').NextConfig} */
 const config = {
   turbopack: {
-    root: __dirname,
+    root: monorepoRoot,
     resolveAlias: {
       'fumadocs-ui': path.resolve(websiteNodeModules, 'fumadocs-ui'),
       'fumadocs-core': path.resolve(websiteNodeModules, 'fumadocs-core'),
