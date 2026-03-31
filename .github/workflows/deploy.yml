@@ -18,9 +18,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      BASE_PATH: /blossomColorPicker
-      NEXT_PUBLIC_BASE_PATH: /blossomColorPicker
-      NEXT_PUBLIC_SITE_URL: https://dayflow-js.github.io/blossomColorPicker
+      BASE_PATH: /BlossomColorPicker
+      NEXT_PUBLIC_BASE_PATH: /BlossomColorPicker
+      NEXT_PUBLIC_SITE_URL: https://dayflow-js.github.io/BlossomColorPicker
     steps:
       - uses: actions/checkout@v4
 
@@ -40,6 +40,8 @@ jobs:
       - run: pnpm --filter @dayflow/blossom-color-picker-react build
 
       - run: pnpm --dir website build
+
+      - run: touch website/out/.nojekyll
 
       - uses: actions/configure-pages@v5
 
