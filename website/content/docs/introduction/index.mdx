@@ -1,0 +1,168 @@
+---
+title: Getting Started
+description: Learn how to install Blossom Color Picker and use it in vanilla JavaScript, React, Vue, Svelte, or Angular.
+---
+
+# Getting Started
+
+Blossom Color Picker is a blooming, animated color picker for modern web applications. It is available as a standalone vanilla JavaScript class and as thin wrappers for React, Vue, Svelte, and Angular.
+
+## Installation
+
+### Framework Wrappers
+
+Select your framework and package manager:
+
+<FrameworkInstall />
+
+### Vanilla JavaScript
+
+If you want to use the standalone core package directly, install `@dayflow/blossom-color-picker`:
+
+<PackageTabs pkg='@dayflow/blossom-color-picker' />
+
+### Import Styles
+
+The React, Vue, Svelte, and Angular packages already import the shared stylesheet for you.
+
+If you are using the standalone vanilla JavaScript package, import the styles manually:
+
+```ts
+// In App.tsx, main.ts, or your entry file
+import '@dayflow/blossom-color-picker/styles.css';
+```
+
+## Basic Usage
+
+### Framework Wrappers
+
+Select your framework to see how to integrate Blossom Color Picker into your application:
+
+<FrameworkTabs>
+  <Tab>
+    ```tsx
+    import { useState } from 'react';
+    import { BlossomColorPicker } from '@dayflow/blossom-color-picker-react';
+
+    function App() {
+      const [color, setColor] = useState({
+        hue: 330,
+        saturation: 70,
+        alpha: 100,
+        layer: 'outer' as const,
+      });
+
+      return (
+        <BlossomColorPicker
+          value={color}
+          onChange={setColor}
+        />
+      );
+    }
+    ```
+
+  </Tab>
+  <Tab>
+    ```vue
+    <template>
+      <BlossomColorPicker
+        :value="color"
+        @change="handleChange"
+      />
+    </template>
+
+    <script setup>
+    import { ref } from 'vue';
+    import { BlossomColorPicker } from '@dayflow/blossom-color-picker-vue';
+
+    const color = ref({
+      hue: 330,
+      saturation: 70,
+      alpha: 100,
+      layer: 'outer',
+    });
+
+    function handleChange(nextColor) {
+      color.value = nextColor;
+    }
+    </script>
+    ```
+
+  </Tab>
+  <Tab>
+    ```typescript
+    import { Component } from '@angular/core';
+    import {
+      BlossomColorPickerComponent,
+      type BlossomColorPickerColor,
+    } from '@dayflow/blossom-color-picker-angular';
+
+    @Component({
+      selector: 'app-root',
+      standalone: true,
+      imports: [BlossomColorPickerComponent],
+      template: `
+        <blossom-color-picker
+          [value]="color"
+          (colorChange)="onColorChange($event)"
+        />
+      `
+    })
+    export class AppComponent {
+      color = {
+        hue: 330,
+        saturation: 70,
+        alpha: 100,
+        layer: 'outer' as const,
+      };
+
+      onColorChange(nextColor: BlossomColorPickerColor) {
+        this.color = nextColor;
+      }
+    }
+    ```
+
+  </Tab>
+  <Tab>
+    ```svelte
+    <script>
+    import { BlossomColorPicker } from '@dayflow/blossom-color-picker-svelte';
+
+    let color = {
+      hue: 330,
+      saturation: 70,
+      alpha: 100,
+      layer: 'outer',
+    };
+
+    function handleChange(nextColor) {
+      color = nextColor;
+    }
+    </script>
+
+    <BlossomColorPicker
+      value={color}
+      onchange={handleChange}
+    />
+    ```
+
+  </Tab>
+</FrameworkTabs>
+
+### Vanilla JavaScript
+
+```js
+import { BlossomColorPicker } from '@dayflow/blossom-color-picker';
+import '@dayflow/blossom-color-picker/styles.css';
+
+const picker = new BlossomColorPicker(document.getElementById('picker'), {
+  onChange: color => console.log(color.hex),
+});
+```
+
+## Next Steps
+
+- Read [Vanilla JavaScript](/docs/introduction/vanilla-js) for the standalone API and public methods.
+- Read [Chrome Picker](/docs/introduction/chrome-picker) for the panel-style alternative UI.
+- Read [Options](/docs/introduction/options) for the shared configuration reference.
+- Read [Types & Colors](/docs/introduction/types-and-colors) for value objects and accepted color formats.

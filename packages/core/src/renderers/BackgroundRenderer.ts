@@ -1,6 +1,6 @@
 import { BLOOM_EASING } from '../constants';
-import { hslaToString } from '../utils';
 import { createElement, setStyles } from '../dom-helpers';
+import { hslaToString } from '../utils';
 
 export class BackgroundRenderer {
   public el: HTMLDivElement;
@@ -50,12 +50,8 @@ export class BackgroundRenderer {
     hue: number,
     saturation: number,
     lightness: number,
-    isExpanded: boolean,
-    isCoreHovered: boolean,
-    mousePos?: { x: number; y: number } | null
+    isExpanded: boolean
   ): void {
-    const duration = this.animationDuration;
-
     setStyles(this.solidBg, {
       transform: isExpanded ? 'scale(0.9)' : 'scale(0.98)',
       opacity: isExpanded ? '1' : '0',

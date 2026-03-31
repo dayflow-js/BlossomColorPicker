@@ -1,8 +1,16 @@
 import './styles.css';
 
+console.log('BlossomColorPicker Entry Loaded');
+
 // Main class
 export { BlossomColorPicker } from './BlossomColorPicker';
 export type { BlossomColorPickerOptions } from './BlossomColorPicker';
+
+export { ChromePicker } from './ChromePicker';
+export type {
+  ChromePickerOptions,
+  ChromePickerThemeColors,
+} from './ChromePicker';
 
 // Types
 export type {
@@ -17,6 +25,8 @@ export {
   hexToHsl,
   hslToHex,
   rgbToHsl,
+  hslToRgb,
+  rgbaToString,
   parseColor,
   lightnessToSliderValue,
   sliderValueToLightness,
@@ -27,11 +37,7 @@ export {
   organizeColorsIntoLayers,
 } from './utils';
 
-export {
-  DEFAULT_COLORS,
-  OUTER_COLORS,
-  INNER_COLORS,
-} from './constants';
+export { DEFAULT_COLORS, OUTER_COLORS, INNER_COLORS } from './constants';
 
 export {
   calculateLayerRadii,

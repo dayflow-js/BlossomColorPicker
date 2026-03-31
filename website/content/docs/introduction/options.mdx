@@ -1,0 +1,83 @@
+---
+title: Options
+description: Reference for Blossom Color Picker configuration options and defaults.
+---
+
+# Options
+
+Blossom Color Picker exposes the same core option set across the standalone package and all framework wrappers.
+
+`value` and `defaultValue` use the `BlossomColorPickerValue` shape, while `colors` accepts `ColorInput[]`. See [Types & Colors](/docs/introduction/types-and-colors) for the full value reference.
+
+## Configuration Reference
+
+| Option                | Type                                       | Default                                                   | Description                                                                                                            |
+| :-------------------- | :----------------------------------------- | :-------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------- |
+| `value`               | `BlossomColorPickerValue`                  | -                                                         | Controlled value for the picker.                                                                                       |
+| `defaultValue`        | `BlossomColorPickerValue`                  | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | Initial value used when the picker is uncontrolled.                                                                    |
+| `colors`              | `ColorInput[]`                             | `DEFAULT_COLORS`                                          | Custom color set. The core automatically organizes these colors into blossom layers.                                   |
+| `onChange`            | `(color: BlossomColorPickerColor) => void` | -                                                         | Called whenever the selected color changes.                                                                            |
+| `onCollapse`          | `(color: BlossomColorPickerColor) => void` | -                                                         | Called when the picker collapses.                                                                                      |
+| `disabled`            | `boolean`                                  | `false`                                                   | Disables user interaction.                                                                                             |
+| `openOnHover`         | `boolean`                                  | `false`                                                   | Expands the picker on hover.                                                                                           |
+| `initialExpanded`     | `boolean`                                  | `false`                                                   | Starts with the picker expanded.                                                                                       |
+| `animationDuration`   | `number`                                   | `300`                                                     | Duration of the bloom animation in milliseconds.                                                                       |
+| `showAlphaSlider`     | `boolean`                                  | `true`                                                    | Shows the outer arc slider around the petals.                                                                          |
+| `coreSize`            | `number`                                   | `32`                                                      | Diameter of the center core button in pixels.                                                                          |
+| `petalSize`           | `number`                                   | `32`                                                      | Diameter of each petal in pixels.                                                                                      |
+| `showCoreColor`       | `boolean`                                  | `true`                                                    | Displays the selected color in the core.                                                                               |
+| `sliderPosition`      | `'top' \| 'bottom' \| 'left' \| 'right'`   | `undefined`                                               | Fixed position for the arc slider. If omitted, the picker starts from the right side and may reposition automatically. |
+| `adaptivePositioning` | `boolean`                                  | `true`                                                    | Automatically shifts the expanded picker and arc slider to keep them visible inside the viewport.                      |
+| `circularBarWidth`    | `number`                                   | `12`                                                      | Width of the circular hue bar in pixels.                                                                               |
+| `sliderWidth`         | `number`                                   | `12`                                                      | Width of the outer arc slider track and handle in pixels.                                                              |
+| `sliderOffset`        | `number`                                   | `30`                                                      | Space between the petals and the outer arc slider.                                                                     |
+| `collapsible`         | `boolean`                                  | `true`                                                    | Allows the picker to collapse.                                                                                         |
+
+`ChromePicker` uses the same options, except `collapsible` defaults to `false`.
+
+## Framework Event Names
+
+- **React**: `onChange` and `onCollapse`
+- **Vue**: `@change` and `@collapse`
+- **Svelte**: `onchange` and `oncollapse` callback props
+- **Angular**: `(colorChange)` and `(colorCollapse)`
+
+## Returned Color Object
+
+The `onChange` and `onCollapse` callbacks receive a `BlossomColorPickerColor` object:
+
+```ts
+interface BlossomColorPickerColor {
+  hex: string;
+  hsl: string;
+  hsla: string;
+  rgb: string;
+  rgba: string;
+  r: number;
+  g: number;
+  b: number;
+  hue: number;
+  saturation: number;
+  lightness: number;
+  alpha: number;
+  layer: 'inner' | 'outer';
+}
+```
+
+## Custom Colors
+
+You can provide your own set of colors to display as petals:
+
+```tsx
+<BlossomColorPicker
+  colors={[
+    '#FF6B6B',
+    'rgb(107, 203, 119)',
+    'rgba(65, 105, 225, 0.9)',
+    'hsl(280, 70%, 55%)',
+    { h: 45, s: 90, l: 65 },
+  ]}
+/>
+```
+
+For the full value shape and supported `colors` formats, see [Types & Colors](/docs/introduction/types-and-colors).

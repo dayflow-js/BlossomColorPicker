@@ -1,0 +1,8 @@
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="100%" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+  <path fill="#EC4899" d="M50,50c0-10,15-25,25-25s15,15,15,25s-15,25-25,25S50,60,50,50z"/>
+  <path fill="#F472B6" d="M50,50c10,0,25,15,25,25s-15,15-25,15s-25-15-25-15S40,50,50,50z"/>
+  <path fill="#DB2777" d="M50,50c0,10-15,25-25,25s-15-15-15-25s15-25,25-25S50,40,50,50z"/>
+  <path fill="#FB923C" d="M50,50c-10,0-25-15-25-15s15-15,25-15s25,15,25,15S60,50,50,50z"/>
+  <circle fill="#FDE047" cx="50" cy="50" r="10"/>
+</svg>

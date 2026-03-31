@@ -1,0 +1,79 @@
+---
+title: 選項
+description: Blossom Color Picker 配置項與預設值參考。
+---
+
+# 選項
+
+Blossom Color Picker 的獨立核心套件與所有框架封裝都共用同一套核心配置項。
+
+其中 `value` 與 `defaultValue` 使用 `BlossomColorPickerValue` 結構，`colors` 則接受 `ColorInput[]`。完整型別可參考 [型別與顏色](/docs-zh-hant/introduction/types-and-colors)。
+
+## 配置參考
+
+| 選項                  | 型別                                       | 預設值                                                    | 說明                                                         |
+| :-------------------- | :----------------------------------------- | :-------------------------------------------------------- | :----------------------------------------------------------- |
+| `value`               | `BlossomColorPickerValue`                  | -                                                         | 受控模式下的目前值。                                         |
+| `defaultValue`        | `BlossomColorPickerValue`                  | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | 非受控模式下的初始值。                                       |
+| `colors`              | `ColorInput[]`                             | `DEFAULT_COLORS`                                          | 自訂顏色集合。核心會自動將這些顏色整理成花瓣層級。           |
+| `onChange`            | `(color: BlossomColorPickerColor) => void` | -                                                         | 顏色變化時觸發。                                             |
+| `onCollapse`          | `(color: BlossomColorPickerColor) => void` | -                                                         | 選擇器收合時觸發。                                           |
+| `disabled`            | `boolean`                                  | `false`                                                   | 是否停用互動。                                               |
+| `openOnHover`         | `boolean`                                  | `false`                                                   | 是否在滑鼠懸停時展開。                                       |
+| `initialExpanded`     | `boolean`                                  | `false`                                                   | 初始是否展開。                                               |
+| `animationDuration`   | `number`                                   | `300`                                                     | 綻放動畫時長，單位為毫秒。                                   |
+| `showAlphaSlider`     | `boolean`                                  | `true`                                                    | 是否顯示花瓣外側的弧形滑桿。                                 |
+| `coreSize`            | `number`                                   | `32`                                                      | 中心核心按鈕直徑，單位為像素。                               |
+| `petalSize`           | `number`                                   | `32`                                                      | 單個花瓣直徑，單位為像素。                                   |
+| `showCoreColor`       | `boolean`                                  | `true`                                                    | 是否在核心區域顯示目前選中顏色。                             |
+| `sliderPosition`      | `'top' \| 'bottom' \| 'left' \| 'right'`   | `undefined`                                               | 固定弧形滑桿位置。若未傳入，初始會從右側開始，並可自動調整。 |
+| `adaptivePositioning` | `boolean`                                  | `true`                                                    | 自動調整展開後的選擇器與弧形滑桿位置，使其盡量保持在視口內。 |
+| `circularBarWidth`    | `number`                                   | `12`                                                      | 圓形色相條寬度，單位為像素。                                 |
+| `sliderWidth`         | `number`                                   | `12`                                                      | 外側弧形滑桿軌道與手柄寬度，單位為像素。                     |
+| `sliderOffset`        | `number`                                   | `30`                                                      | 花瓣與外側弧形滑桿之間的距離。                               |
+| `collapsible`         | `boolean`                                  | `true`                                                    | 是否允許收合。                                               |
+
+`ChromePicker` 使用相同的選項集合，只是 `collapsible` 的預設值為 `false`。
+
+## 各框架事件名稱
+
+- **React**：`onChange`、`onCollapse`
+- **Vue**：`@change`、`@collapse`
+- **Svelte**：`onchange`、`oncollapse` 回呼屬性
+- **Angular**：`(colorChange)`、`(colorCollapse)`
+
+## 回呼回傳的顏色物件
+
+```ts
+interface BlossomColorPickerColor {
+  hex: string;
+  hsl: string;
+  hsla: string;
+  rgb: string;
+  rgba: string;
+  r: number;
+  g: number;
+  b: number;
+  hue: number;
+  saturation: number;
+  lightness: number;
+  alpha: number;
+  layer: 'inner' | 'outer';
+}
+```
+
+## 自訂顏色
+
+```tsx
+<BlossomColorPicker
+  colors={[
+    '#FF6B6B',
+    'rgb(107, 203, 119)',
+    'rgba(65, 105, 225, 0.9)',
+    'hsl(280, 70%, 55%)',
+    { h: 45, s: 90, l: 65 },
+  ]}
+/>
+```
+
+完整的值物件與顏色格式說明請參考 [型別與顏色](/docs-zh-hant/introduction/types-and-colors)。

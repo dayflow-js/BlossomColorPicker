@@ -1,0 +1,84 @@
+---
+title: Vanilla JavaScript
+description: 単体コアパッケージから Blossom Color Picker を直接使います。
+---
+
+# Vanilla JavaScript
+
+単体コアパッケージを使うと、`BlossomColorPicker` と `ChromePicker` をフレームワークなしで直接利用できます。
+
+## コアパッケージのインストール
+
+<PackageTabs pkg='@dayflow/blossom-color-picker' />
+
+## 共有スタイルの読み込み
+
+ラッパーパッケージは共有スタイルを自動で読み込みますが、単体コアパッケージでは手動で読み込む必要があります。
+
+```ts
+import '@dayflow/blossom-color-picker/styles.css';
+```
+
+## 基本的な使い方
+
+```js
+import { BlossomColorPicker } from '@dayflow/blossom-color-picker';
+import '@dayflow/blossom-color-picker/styles.css';
+
+const root = document.getElementById('picker');
+
+const picker = new BlossomColorPicker(root, {
+  onChange: color => {
+    console.log('Selected color:', color.hex);
+  },
+});
+```
+
+## ランタイム制御
+
+| メソッド              | 説明                                                    |
+| :-------------------- | :------------------------------------------------------ |
+| `setValue(value)`     | 現在値をプログラムから設定します。                      |
+| `getValue()`          | 現在の色を `BlossomColorPickerColor` として取得します。 |
+| `expand()`            | ピッカーを展開します。                                  |
+| `collapse()`          | ピッカーを閉じます。                                    |
+| `toggle()`            | 展開と折りたたみを切り替えます。                        |
+| `setOptions(options)` | 初期化後に各種オプションを更新します。                  |
+| `destroy()`           | 生成した DOM とイベントリスナーを破棄します。           |
+
+## ランタイム例
+
+```js
+import { BlossomColorPicker } from '@dayflow/blossom-color-picker';
+
+const picker = new BlossomColorPicker(document.getElementById('picker'));
+
+picker.expand();
+picker.setValue({
+  hue: 200,
+  saturation: 50,
+  alpha: 100,
+  layer: 'outer',
+});
+
+picker.setOptions({
+  disabled: true,
+  openOnHover: false,
+});
+```
+
+## ラッパーなしで `ChromePicker` を使う
+
+```js
+import { ChromePicker } from '@dayflow/blossom-color-picker';
+import '@dayflow/blossom-color-picker/styles.css';
+
+const picker = new ChromePicker(document.getElementById('picker'), {
+  onChange: color => console.log(color.rgba),
+});
+```
+
+## 関連リファレンス
+
+- [オプション](/docs-ja/introduction/options)
+- [型と色](/docs-ja/introduction/types-and-colors)

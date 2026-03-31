@@ -1,0 +1,167 @@
+---
+title: 快速开始
+description: 了解如何在原生 JavaScript、React、Vue、Svelte 或 Angular 中安装和使用 Blossom Color Picker。
+---
+
+# 快速开始
+
+Blossom Color Picker 是一款面向现代 Web 应用的绽放动画颜色选择器。你既可以直接使用独立的原生 JavaScript 核心，也可以使用 React、Vue、Svelte 和 Angular 封装版本。
+
+## 安装
+
+### 框架封装
+
+选择你的框架和包管理器：
+
+<FrameworkInstall />
+
+### 原生 JavaScript
+
+如果你想直接使用核心包，请安装 `@dayflow/blossom-color-picker`：
+
+<PackageTabs pkg='@dayflow/blossom-color-picker' />
+
+### 导入样式
+
+React、Vue、Svelte 和 Angular 封装版本已经自动引入了共享样式表。
+
+如果你使用的是原生 JavaScript 核心包，则需要手动导入样式：
+
+```ts
+import '@dayflow/blossom-color-picker/styles.css';
+```
+
+## 基础用法
+
+### 框架封装
+
+选择你的框架，查看如何集成 Blossom Color Picker：
+
+<FrameworkTabs>
+  <Tab>
+    ```tsx
+    import { useState } from 'react';
+    import { BlossomColorPicker } from '@dayflow/blossom-color-picker-react';
+
+    function App() {
+      const [color, setColor] = useState({
+        hue: 330,
+        saturation: 70,
+        alpha: 100,
+        layer: 'outer' as const,
+      });
+
+      return (
+        <BlossomColorPicker
+          value={color}
+          onChange={setColor}
+        />
+      );
+    }
+    ```
+
+  </Tab>
+  <Tab>
+    ```vue
+    <template>
+      <BlossomColorPicker
+        :value="color"
+        @change="handleChange"
+      />
+    </template>
+
+    <script setup>
+    import { ref } from 'vue';
+    import { BlossomColorPicker } from '@dayflow/blossom-color-picker-vue';
+
+    const color = ref({
+      hue: 330,
+      saturation: 70,
+      alpha: 100,
+      layer: 'outer',
+    });
+
+    function handleChange(nextColor) {
+      color.value = nextColor;
+    }
+    </script>
+    ```
+
+  </Tab>
+  <Tab>
+    ```typescript
+    import { Component } from '@angular/core';
+    import {
+      BlossomColorPickerComponent,
+      type BlossomColorPickerColor,
+    } from '@dayflow/blossom-color-picker-angular';
+
+    @Component({
+      selector: 'app-root',
+      standalone: true,
+      imports: [BlossomColorPickerComponent],
+      template: `
+        <blossom-color-picker
+          [value]="color"
+          (colorChange)="onColorChange($event)"
+        />
+      `
+    })
+    export class AppComponent {
+      color = {
+        hue: 330,
+        saturation: 70,
+        alpha: 100,
+        layer: 'outer' as const,
+      };
+
+      onColorChange(nextColor: BlossomColorPickerColor) {
+        this.color = nextColor;
+      }
+    }
+    ```
+
+  </Tab>
+  <Tab>
+    ```svelte
+    <script>
+    import { BlossomColorPicker } from '@dayflow/blossom-color-picker-svelte';
+
+    let color = {
+      hue: 330,
+      saturation: 70,
+      alpha: 100,
+      layer: 'outer',
+    };
+
+    function handleChange(nextColor) {
+      color = nextColor;
+    }
+    </script>
+
+    <BlossomColorPicker
+      value={color}
+      onchange={handleChange}
+    />
+    ```
+
+  </Tab>
+</FrameworkTabs>
+
+### 原生 JavaScript
+
+```js
+import { BlossomColorPicker } from '@dayflow/blossom-color-picker';
+import '@dayflow/blossom-color-picker/styles.css';
+
+const picker = new BlossomColorPicker(document.getElementById('picker'), {
+  onChange: color => console.log(color.hex),
+});
+```
+
+## 下一步
+
+- 查看 [原生 JavaScript](/docs-zh/introduction/vanilla-js) 了解核心包 API 和公开方法。
+- 查看 [Chrome 选择器](/docs-zh/introduction/chrome-picker) 了解面板式替代 UI。
+- 查看 [选项](/docs-zh/introduction/options) 了解共享配置项。
+- 查看 [类型与颜色](/docs-zh/introduction/types-and-colors) 了解值对象与支持的颜色格式。

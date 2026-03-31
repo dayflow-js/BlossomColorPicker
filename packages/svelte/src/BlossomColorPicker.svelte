@@ -26,6 +26,7 @@
     circularBarWidth?: number;
     sliderWidth?: number;
     sliderOffset?: number;
+    collapsible?: boolean;
     class?: string;
     onchange?: (color: BlossomColorPickerColor) => void;
     oncollapse?: (color: BlossomColorPickerColor) => void;
@@ -48,6 +49,7 @@
     circularBarWidth = undefined,
     sliderWidth = undefined,
     sliderOffset = undefined,
+    collapsible = true,
     class: className = '',
     onchange = undefined,
     oncollapse = undefined,
@@ -74,6 +76,7 @@
       circularBarWidth,
       sliderWidth,
       sliderOffset,
+      collapsible,
       onChange: onchange,
       onCollapse: oncollapse,
     };

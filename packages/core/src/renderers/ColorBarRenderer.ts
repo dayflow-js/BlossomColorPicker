@@ -1,6 +1,6 @@
 import { BLOOM_EASING } from '../constants';
-import { hslaToString } from '../utils';
 import { createSVGElement, setStyles } from '../dom-helpers';
+import { hslaToString } from '../utils';
 
 export class ColorBarRenderer {
   public el: SVGSVGElement;

@@ -1,6 +1,6 @@
 import { BLOOM_EASING } from '../constants';
-import { hslToString, hslaToString } from '../utils';
 import { createElement, setStyles } from '../dom-helpers';
+import { hslToString, hslaToString } from '../utils';
 
 export interface PetalConfig {
   hue: number;
@@ -63,7 +63,10 @@ export class PetalRenderer {
   private lastExpanded = false;
 
   private applyBaseStyles(): void {
-    const { petalSize, config: c } = { petalSize: this.config.petalSize, config: this.config };
+    const { petalSize, config: c } = {
+      petalSize: this.config.petalSize,
+      config: this.config,
+    };
     setStyles(this.el, {
       position: 'absolute',
       width: `${petalSize}px`,
@@ -82,18 +85,26 @@ export class PetalRenderer {
     if (c.clip === 'left') {
       this.el.style.clipPath = 'polygon(0% -50%, 50% -50%, 50% 150%, 0% 150%)';
     } else if (c.clip === 'right') {
-      this.el.style.clipPath = 'polygon(50% -50%, 100% -50%, 100% 150%, 50% 150%)';
+      this.el.style.clipPath =
+        'polygon(50% -50%, 100% -50%, 100% 150%, 50% 150%)';
     }
   }
 
-  update(isExpanded: boolean, externalHover?: boolean, mousePos?: { x: number; y: number } | null): void {
+  update(
+    isExpanded: boolean,
+    externalHover?: boolean,
+    mousePos?: { x: number; y: number } | null
+  ): void {
     if (externalHover !== undefined) {
       this.isHovered = externalHover;
     }
     this.updateStyles(isExpanded, mousePos);
   }
 
-  private updateStyles(isExpanded: boolean, mousePos?: { x: number; y: number } | null): void {
+  private updateStyles(
+    isExpanded: boolean,
+    mousePos?: { x: number; y: number } | null
+  ): void {
     const isExpanding = isExpanded && !this.lastExpanded;
     const c = this.config;
     const isHovered = this.isHovered;
@@ -111,7 +122,7 @@ export class PetalRenderer {
       const dy = y - mousePos.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
       const minDistance = 60;
-      
+
       if (dist < minDistance) {
         const pushStrength = (1 - dist / minDistance) * 6;
         const pushAngle = Math.atan2(dy, dx);
@@ -131,9 +142,10 @@ export class PetalRenderer {
     // 1. Picker already expanded (not currently expanding)
     // 2. Mouse is active (mousePos exists)
     // 3. Not hovering this specific petal
-    const transformTransition = isExpanded && !isExpanding && mousePos && !isHovered 
-      ? 'transform 150ms ease-out' 
-      : `transform ${c.animationDuration}ms ${BLOOM_EASING} ${isExpanded && !isHovered ? c.staggerDelay : 0}ms`;
+    const transformTransition =
+      isExpanded && !isExpanding && mousePos && !isHovered
+        ? 'transform 150ms ease-out'
+        : `transform ${c.animationDuration}ms ${BLOOM_EASING} ${isExpanded && !isHovered ? c.staggerDelay : 0}ms`;
 
     setStyles(this.el, {
       backgroundColor: color,
@@ -141,8 +153,7 @@ export class PetalRenderer {
         ? `translate(${x}px, ${y}px) scale(${scale})`
         : 'translate(0, 0) scale(0)',
       opacity: isExpanded ? '1' : '0',
-      filter:
-        isHovered && !isInvisible ? 'brightness(1.1)' : 'brightness(1)',
+      filter: isHovered && !isInvisible ? 'brightness(1.1)' : 'brightness(1)',
       transition: `${transformTransition},
                    opacity ${c.animationDuration}ms ${BLOOM_EASING} ${isExpanded && !isHovered ? c.staggerDelay : 0}ms,
                    background-color 200ms ease,

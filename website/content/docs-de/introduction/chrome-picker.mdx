@@ -1,0 +1,162 @@
+---
+title: Chrome-Farbwähler
+description: Professioneller Farbwähler mit Unterstützung für HEX, RGBA und HSLA.
+---
+
+# Chrome-Farbwähler
+
+`ChromePicker` ist ein professioneller Farbwähler für klassische Farbwahl-Workflows. Das kompakte Layout unterstützt HEX, RGBA und HSLA vollständig und eignet sich gut für Design-Tools, Einstellungsseiten und Admin-Oberflächen.
+
+## Funktionen
+
+- **Mehrere Formate**: Wechsel zwischen HEX, RGBA und HSLA.
+- **Integrierter Kern**: Basiert auf dem Blossom-Color-Picker-Kern.
+- **Alpha-Unterstützung**: Eingebauter Transparenz-Slider.
+- **Mehrere Frameworks**: Wrapper für React, Vue, Svelte und Angular.
+
+## Vanilla JavaScript
+
+`ChromePicker` kann auch direkt aus dem Kernpaket verwendet werden:
+
+<PackageTabs pkg='@dayflow/blossom-color-picker' />
+
+```js
+import { ChromePicker } from '@dayflow/blossom-color-picker';
+import '@dayflow/blossom-color-picker/styles.css';
+
+const picker = new ChromePicker(document.getElementById('picker'), {
+  onChange: color => console.log(color.hex),
+});
+```
+
+## Verwendung
+
+<FrameworkTabs>
+  <Tab>
+    ```tsx
+    import { useState } from 'react';
+    import { ChromePicker } from '@dayflow/blossom-color-picker-react';
+
+    function App() {
+      const [color, setColor] = useState({
+        hue: 330,
+        saturation: 70,
+        alpha: 100,
+        layer: 'outer' as const,
+      });
+
+      return (
+        <ChromePicker
+          value={color}
+          onChange={setColor}
+        />
+      );
+    }
+    ```
+
+  </Tab>
+  <Tab>
+    ```vue
+    <template>
+      <ChromePicker
+        :value="color"
+        @change="handleChange"
+      />
+    </template>
+
+    <script setup>
+    import { ref } from 'vue';
+    import { ChromePicker } from '@dayflow/blossom-color-picker-vue';
+
+    const color = ref({
+      hue: 330,
+      saturation: 70,
+      alpha: 100,
+      layer: 'outer',
+    });
+
+    function handleChange(nextColor) {
+      color.value = nextColor;
+    }
+    </script>
+    ```
+
+  </Tab>
+  <Tab>
+    ```typescript
+    import { Component } from '@angular/core';
+    import {
+      ChromePickerComponent,
+      type BlossomColorPickerColor,
+    } from '@dayflow/blossom-color-picker-angular';
+
+    @Component({
+      selector: 'app-root',
+      standalone: true,
+      imports: [ChromePickerComponent],
+      template: `
+        <chrome-picker
+          [value]="color"
+          (colorChange)="onColorChange($event)"
+        />
+      `
+    })
+    export class AppComponent {
+      color = {
+        hue: 330,
+        saturation: 70,
+        alpha: 100,
+        layer: 'outer' as const,
+      };
+
+      onColorChange(nextColor: BlossomColorPickerColor) {
+        this.color = nextColor;
+      }
+    }
+    ```
+
+  </Tab>
+  <Tab>
+    ```svelte
+    <script>
+    import { ChromePicker } from '@dayflow/blossom-color-picker-svelte';
+
+    let color = {
+      hue: 330,
+      saturation: 70,
+      alpha: 100,
+      layer: 'outer',
+    };
+
+    function handleChange(nextColor) {
+      color = nextColor;
+    }
+    </script>
+
+    <ChromePicker
+      value={color}
+      onchange={handleChange}
+    />
+    ```
+
+  </Tab>
+</FrameworkTabs>
+
+## Konfigurationsoptionen
+
+`ChromePicker` teilt fast alle Optionen mit dem normalen `BlossomColorPicker`.
+
+| Option            | Typ                                        | Standard                                                  | Beschreibung                                                                                       |
+| :---------------- | :----------------------------------------- | :-------------------------------------------------------- | :------------------------------------------------------------------------------------------------- |
+| `value`           | `BlossomColorPickerValue`                  | -                                                         | Kontrollierter aktueller Wert.                                                                     |
+| `defaultValue`    | `BlossomColorPickerValue`                  | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | Startwert im unkontrollierten Modus.                                                               |
+| `colors`          | `ColorInput[]`                             | `DEFAULT_COLORS`                                          | Farben der Blütenblätter im Blossom-Bereich.                                                       |
+| `onChange`        | `(color: BlossomColorPickerColor) => void` | -                                                         | Wird bei Farbänderungen aufgerufen.                                                                |
+| `onCollapse`      | `(color: BlossomColorPickerColor) => void` | -                                                         | Wird beim Einklappen aufgerufen.                                                                   |
+| `disabled`        | `boolean`                                  | `false`                                                   | Deaktiviert die Interaktion.                                                                       |
+| `showAlphaSlider` | `boolean`                                  | `true`                                                    | Zeigt die Alpha-Slider-Zeile an.                                                                   |
+| `coreSize`        | `number`                                   | `32`                                                      | Größe des Core-Buttons in Pixeln.                                                                  |
+| `petalSize`       | `number`                                   | `32`                                                      | Größe der Blütenblätter in Pixeln.                                                                 |
+| `collapsible`     | `boolean`                                  | `false`                                                   | Legt fest, ob der Blossom-Bereich einklappbar ist. `ChromePicker` verwendet standardmäßig `false`. |
+
+Die vollständige gemeinsame Optionsliste finden Sie unter [Optionen](/docs-de/introduction/options).

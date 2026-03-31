@@ -1,4 +1,4 @@
-name: Deploy Demo to GitHub Pages
+name: Deploy Website to GitHub Pages
 
 on:
   push:
@@ -12,26 +12,37 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      BASE_PATH: /blossomColorPicker
+      NEXT_PUBLIC_BASE_PATH: /blossomColorPicker
+      NEXT_PUBLIC_SITE_URL: https://dayflow-js.github.io/blossomColorPicker
     steps:
       - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
 
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: yarn
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
 
-      - run: yarn install --frozen-lockfile
+      - run: pnpm install --frozen-lockfile
 
-      - run: yarn build:demo
+      - run: pnpm --dir website build
+
+      - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist-demo
+          path: website/out
 
   deploy:
     needs: build

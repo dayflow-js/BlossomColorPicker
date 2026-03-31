@@ -1,0 +1,100 @@
+---
+title: 타입과 색상
+description: 값 객체, 콜백 반환값, 지원되는 색상 형식에 대한 참고 자료입니다.
+---
+
+# 타입과 색상
+
+이 페이지는 Blossom Color Picker에서 사용하는 값 객체와 커스텀 색상에 지원되는 형식을 설명합니다.
+
+## `BlossomColorPickerValue`
+
+제어형 `value`와 `defaultValue`에 사용하는 객체입니다.
+
+| 필드                 | 타입                 | 설명                                          |
+| :------------------- | :------------------- | :-------------------------------------------- |
+| `hue`                | `number`             | `0`부터 `360`까지의 hue 각도입니다.           |
+| `saturation`         | `number`             | `0`부터 `100`까지의 아크 슬라이더 위치입니다. |
+| `lightness`          | `number?`            | 선택적인 HSL lightness 오버라이드 값입니다.   |
+| `originalSaturation` | `number?`            | 선택된 꽃잎의 원래 채도입니다.                |
+| `alpha`              | `number`             | `0`부터 `100`까지의 알파 값입니다.            |
+| `layer`              | `'inner' \| 'outer'` | 선택된 꽃잎의 레이어입니다.                   |
+
+## `BlossomColorPickerColor`
+
+이 객체는 `onChange`, `onCollapse`, `getValue()`에서 반환됩니다.
+
+| 필드         | 타입                 | 설명                                          |
+| :----------- | :------------------- | :-------------------------------------------- |
+| `hex`        | `string`             | 16진수 색상 문자열입니다.                     |
+| `hsl`        | `string`             | HSL 문자열입니다.                             |
+| `hsla`       | `string`             | HSLA 문자열입니다.                            |
+| `rgb`        | `string`             | RGB 문자열입니다.                             |
+| `rgba`       | `string`             | RGBA 문자열입니다.                            |
+| `r`          | `number`             | Red 채널 값입니다.                            |
+| `g`          | `number`             | Green 채널 값입니다.                          |
+| `b`          | `number`             | Blue 채널 값입니다.                           |
+| `hue`        | `number`             | `0`부터 `360`까지의 hue 각도입니다.           |
+| `saturation` | `number`             | `0`부터 `100`까지의 아크 슬라이더 위치입니다. |
+| `lightness`  | `number`             | 계산된 lightness 값입니다.                    |
+| `alpha`      | `number`             | `0`부터 `100`까지의 알파 값입니다.            |
+| `layer`      | `'inner' \| 'outer'` | 선택된 레이어입니다.                          |
+
+## Alpha 스케일
+
+문서에 적힌 `alpha` 범위 `0-100`은 맞습니다. 이것이 피커의 공개 값 객체에서 실제로 사용하는 범위입니다.
+
+- `value.alpha`, `defaultValue.alpha`, 콜백 반환값은 모두 `0-100` 범위를 사용합니다
+- 생성되는 `rgba` / `hsla` 문자열은 CSS 형식에 맞게 `0-1` 값으로 변환됩니다
+
+## `ColorInput`
+
+`colors` 옵션은 CSS 색상 문자열 또는 HSL 객체를 받을 수 있습니다.
+
+```ts
+type ColorInput = string | { h: number; s: number; l: number };
+```
+
+## 지원되는 색상 형식
+
+- `#RRGGBB`
+- `rgb(...)`
+- `rgba(...)`
+- `hsl(...)`
+- `hsla(...)`
+- `{ h: 45, s: 90, l: 65 }` 형태의 HSL 객체
+
+## 커스텀 색상 예제
+
+```tsx
+<BlossomColorPicker
+  colors={[
+    '#FF6B6B',
+    'rgb(107, 203, 119)',
+    'rgba(65, 105, 225, 0.9)',
+    'hsl(280, 70%, 55%)',
+    'hsla(200, 80%, 60%, 0.7)',
+    { h: 45, s: 90, l: 65 },
+  ]}
+/>
+```
+
+## 커스텀 색상이 배치되는 방식
+
+평평한 `colors` 배열을 넘기면 코어 패키지는 자동으로:
+
+- 밝은 색이 중심에 더 가깝도록 lightness 기준으로 정렬하고
+- 배열을 촘촘한 blossom 레이어로 나누고
+- 각 레이어 내부를 hue 순으로 정렬해 자연스러운 흐름을 만듭니다
+
+## 자주 쓰는 유틸리티
+
+- `DEFAULT_COLORS`
+- `INNER_COLORS`
+- `OUTER_COLORS`
+- `hexToHsl`
+- `hslToHex`
+- `rgbToHsl`
+- `parseColor`
+- `lightnessToSliderValue`
+- `sliderValueToLightness`

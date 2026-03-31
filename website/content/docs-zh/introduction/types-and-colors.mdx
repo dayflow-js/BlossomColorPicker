@@ -1,0 +1,104 @@
+---
+title: 类型与颜色
+description: 值对象、回调返回值以及支持的颜色格式参考。
+---
+
+# 类型与颜色
+
+本页介绍 Blossom Color Picker 使用的值对象，以及自定义颜色支持的格式。
+
+## `BlossomColorPickerValue`
+
+受控 `value` 和 `defaultValue` 都使用这个对象：
+
+| 字段                 | 类型                 | 描述                          |
+| :------------------- | :------------------- | :---------------------------- |
+| `hue`                | `number`             | `0` 到 `360` 的色相角。       |
+| `saturation`         | `number`             | `0` 到 `100` 的弧形滑块位置。 |
+| `lightness`          | `number?`            | 可选的 HSL 明度覆盖值。       |
+| `originalSaturation` | `number?`            | 当前选中花瓣的固有饱和度。    |
+| `alpha`              | `number`             | `0` 到 `100` 的透明度。       |
+| `layer`              | `'inner' \| 'outer'` | 当前选中花瓣所在层级。        |
+
+## Alpha 取值范围
+
+文档中写的 `alpha` 范围为 `0-100` 是正确的，这也是选择器公开值对象使用的真实范围。
+
+- `value.alpha`、`defaultValue.alpha` 和回调返回值都使用 `0-100`
+- 生成的 `rgba` 与 `hsla` 字符串会转换成 CSS 常见的 `0-1` 透明度表示
+
+## `BlossomColorPickerColor`
+
+这个对象会由 `onChange`、`onCollapse` 和 `getValue()` 返回：
+
+| 字段         | 类型                 | 描述                                   |
+| :----------- | :------------------- | :------------------------------------- |
+| `hex`        | `string`             | 十六进制颜色字符串，例如 `"#6586E5"`。 |
+| `hsl`        | `string`             | HSL 字符串。                           |
+| `hsla`       | `string`             | HSLA 字符串。                          |
+| `rgb`        | `string`             | RGB 字符串。                           |
+| `rgba`       | `string`             | RGBA 字符串。                          |
+| `r`          | `number`             | 红色通道值。                           |
+| `g`          | `number`             | 绿色通道值。                           |
+| `b`          | `number`             | 蓝色通道值。                           |
+| `hue`        | `number`             | `0` 到 `360` 的色相角。                |
+| `saturation` | `number`             | `0` 到 `100` 的弧形滑块位置。          |
+| `lightness`  | `number`             | 计算后的明度值。                       |
+| `alpha`      | `number`             | `0` 到 `100` 的透明度。                |
+| `layer`      | `'inner' \| 'outer'` | 当前选中花瓣所在层级。                 |
+
+## `ColorInput`
+
+`colors` 选项支持 CSS 颜色字符串和 HSL 对象：
+
+```ts
+type ColorInput = string | { h: number; s: number; l: number };
+```
+
+## 支持的颜色格式
+
+当前解析器支持：
+
+- `#RRGGBB` 格式的十六进制颜色
+- `rgb(...)`
+- `rgba(...)`
+- `hsl(...)`
+- `hsla(...)`
+- 形如 `{ h: 45, s: 90, l: 65 }` 的 HSL 对象
+
+## 自定义颜色示例
+
+```tsx
+<BlossomColorPicker
+  colors={[
+    '#FF6B6B',
+    'rgb(107, 203, 119)',
+    'rgba(65, 105, 225, 0.9)',
+    'hsl(280, 70%, 55%)',
+    'hsla(200, 80%, 60%, 0.7)',
+    { h: 45, s: 90, l: 65 },
+  ]}
+/>
+```
+
+## 自定义颜色如何排列
+
+当你传入扁平的 `colors` 数组时，核心包会自动：
+
+- 按明度排序，让更亮的颜色更接近中心
+- 将颜色拆分成紧凑的 blossom 层级
+- 在每一层内部按色相排序，形成更自然的环形渐变效果
+
+## 常用工具导出
+
+核心包还导出了一些适合高级用法的工具：
+
+- `DEFAULT_COLORS`
+- `INNER_COLORS`
+- `OUTER_COLORS`
+- `hexToHsl`
+- `hslToHex`
+- `rgbToHsl`
+- `parseColor`
+- `lightnessToSliderValue`
+- `sliderValueToLightness`

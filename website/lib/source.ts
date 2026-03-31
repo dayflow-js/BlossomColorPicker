@@ -1,0 +1,71 @@
+import { loader } from 'fumadocs-core/source';
+import type { InferPageType } from 'fumadocs-core/source';
+import { lucideIconsPlugin } from 'fumadocs-core/source/lucide-icons';
+import {
+  docs,
+  docsZh,
+  docsZhHant,
+  docsJa,
+  docsKo,
+  docsDe,
+  docsFr,
+} from 'fumadocs-mdx:collections/server';
+
+export const source = loader({
+  baseUrl: '/docs',
+  source: docs.toFumadocsSource(),
+  plugins: [lucideIconsPlugin()],
+});
+
+export const sourceZh = loader({
+  baseUrl: '/docs-zh',
+  source: docsZh.toFumadocsSource(),
+  plugins: [lucideIconsPlugin()],
+});
+
+export const sourceZhHant = loader({
+  baseUrl: '/docs-zh-hant',
+  source: docsZhHant.toFumadocsSource(),
+  plugins: [lucideIconsPlugin()],
+});
+
+export const sourceJa = loader({
+  baseUrl: '/docs-ja',
+  source: docsJa.toFumadocsSource(),
+  plugins: [lucideIconsPlugin()],
+});
+
+export const sourceKo = loader({
+  baseUrl: '/docs-ko',
+  source: docsKo.toFumadocsSource(),
+  plugins: [lucideIconsPlugin()],
+});
+
+export const sourceDe = loader({
+  baseUrl: '/docs-de',
+  source: docsDe.toFumadocsSource(),
+  plugins: [lucideIconsPlugin()],
+});
+
+export const sourceFr = loader({
+  baseUrl: '/docs-fr',
+  source: docsFr.toFumadocsSource(),
+  plugins: [lucideIconsPlugin()],
+});
+
+export function getPageImage(page: InferPageType<typeof source>) {
+  const segments = [...page.slugs, 'image.png'];
+
+  return {
+    segments,
+    url: `/og/docs/${segments.join('/')}`,
+  };
+}
+
+export async function getLLMText(page: InferPageType<typeof source>) {
+  const processed = await page.data.getText('processed');
+
+  return `# ${page.data.title}
+
+${processed}`;
+}

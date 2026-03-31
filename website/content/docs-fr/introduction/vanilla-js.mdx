@@ -1,0 +1,84 @@
+---
+title: Vanilla JavaScript
+description: Utilisez directement Blossom Color Picker depuis le paquet cœur autonome.
+---
+
+# Vanilla JavaScript
+
+Le paquet cœur autonome vous permet d'utiliser `BlossomColorPicker` et `ChromePicker` sans framework.
+
+## Installer le paquet cœur
+
+<PackageTabs pkg='@dayflow/blossom-color-picker' />
+
+## Importer la feuille de styles partagée
+
+Les wrappers importent automatiquement les styles, mais pas le paquet cœur autonome.
+
+```ts
+import '@dayflow/blossom-color-picker/styles.css';
+```
+
+## Utilisation de base
+
+```js
+import { BlossomColorPicker } from '@dayflow/blossom-color-picker';
+import '@dayflow/blossom-color-picker/styles.css';
+
+const root = document.getElementById('picker');
+
+const picker = new BlossomColorPicker(root, {
+  onChange: color => {
+    console.log('Selected color:', color.hex);
+  },
+});
+```
+
+## Contrôle à l'exécution
+
+| Méthode               | Description                                                      |
+| :-------------------- | :--------------------------------------------------------------- |
+| `setValue(value)`     | Définit la valeur actuelle par code.                             |
+| `getValue()`          | Lit la couleur actuelle sous forme de `BlossomColorPickerColor`. |
+| `expand()`            | Ouvre le sélecteur.                                              |
+| `collapse()`          | Replie le sélecteur.                                             |
+| `toggle()`            | Alterne entre ouvert et replié.                                  |
+| `setOptions(options)` | Met à jour les options après l'initialisation.                   |
+| `destroy()`           | Supprime le DOM généré et les écouteurs d'événements.            |
+
+## Exemple d'exécution
+
+```js
+import { BlossomColorPicker } from '@dayflow/blossom-color-picker';
+
+const picker = new BlossomColorPicker(document.getElementById('picker'));
+
+picker.expand();
+picker.setValue({
+  hue: 200,
+  saturation: 50,
+  alpha: 100,
+  layer: 'outer',
+});
+
+picker.setOptions({
+  disabled: true,
+  openOnHover: false,
+});
+```
+
+## Utiliser `ChromePicker` sans wrapper
+
+```js
+import { ChromePicker } from '@dayflow/blossom-color-picker';
+import '@dayflow/blossom-color-picker/styles.css';
+
+const picker = new ChromePicker(document.getElementById('picker'), {
+  onChange: color => console.log(color.rgba),
+});
+```
+
+## Références associées
+
+- [Options](/docs-fr/introduction/options)
+- [Types et couleurs](/docs-fr/introduction/types-and-colors)

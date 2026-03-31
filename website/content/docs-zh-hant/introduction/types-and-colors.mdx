@@ -1,0 +1,100 @@
+---
+title: 型別與顏色
+description: 值物件、回呼回傳值與支援的顏色格式參考。
+---
+
+# 型別與顏色
+
+本頁介紹 Blossom Color Picker 使用的值物件，以及自訂顏色支援的格式。
+
+## `BlossomColorPickerValue`
+
+受控 `value` 與 `defaultValue` 都使用這個物件：
+
+| 欄位                 | 型別                 | 說明                          |
+| :------------------- | :------------------- | :---------------------------- |
+| `hue`                | `number`             | `0` 到 `360` 的色相角。       |
+| `saturation`         | `number`             | `0` 到 `100` 的弧形滑桿位置。 |
+| `lightness`          | `number?`            | 可選的 HSL 明度覆寫值。       |
+| `originalSaturation` | `number?`            | 目前選中花瓣的固有飽和度。    |
+| `alpha`              | `number`             | `0` 到 `100` 的透明度。       |
+| `layer`              | `'inner' \| 'outer'` | 目前選中花瓣所在層級。        |
+
+## `BlossomColorPickerColor`
+
+這個物件會由 `onChange`、`onCollapse` 與 `getValue()` 回傳：
+
+| 欄位         | 型別                 | 說明                          |
+| :----------- | :------------------- | :---------------------------- |
+| `hex`        | `string`             | 十六進位顏色字串。            |
+| `hsl`        | `string`             | HSL 字串。                    |
+| `hsla`       | `string`             | HSLA 字串。                   |
+| `rgb`        | `string`             | RGB 字串。                    |
+| `rgba`       | `string`             | RGBA 字串。                   |
+| `r`          | `number`             | 紅色通道值。                  |
+| `g`          | `number`             | 綠色通道值。                  |
+| `b`          | `number`             | 藍色通道值。                  |
+| `hue`        | `number`             | `0` 到 `360` 的色相角。       |
+| `saturation` | `number`             | `0` 到 `100` 的弧形滑桿位置。 |
+| `lightness`  | `number`             | 計算後的明度值。              |
+| `alpha`      | `number`             | `0` 到 `100` 的透明度。       |
+| `layer`      | `'inner' \| 'outer'` | 目前選中層級。                |
+
+## Alpha 範圍
+
+文件中標示的 `alpha` 範圍 `0-100` 是正確的，這也是選擇器公開值物件實際使用的範圍。
+
+- `value.alpha`、`defaultValue.alpha` 與回呼回傳值都使用 `0-100`
+- 產生的 `rgba` 與 `hsla` 字串會轉換成 CSS 常見的 `0-1` 透明度表示
+
+## `ColorInput`
+
+`colors` 選項支援 CSS 顏色字串與 HSL 物件：
+
+```ts
+type ColorInput = string | { h: number; s: number; l: number };
+```
+
+## 支援的顏色格式
+
+- `#RRGGBB`
+- `rgb(...)`
+- `rgba(...)`
+- `hsl(...)`
+- `hsla(...)`
+- 像 `{ h: 45, s: 90, l: 65 }` 這樣的 HSL 物件
+
+## 自訂顏色範例
+
+```tsx
+<BlossomColorPicker
+  colors={[
+    '#FF6B6B',
+    'rgb(107, 203, 119)',
+    'rgba(65, 105, 225, 0.9)',
+    'hsl(280, 70%, 55%)',
+    'hsla(200, 80%, 60%, 0.7)',
+    { h: 45, s: 90, l: 65 },
+  ]}
+/>
+```
+
+## 自訂顏色如何排列
+
+當你傳入扁平的 `colors` 陣列時，核心套件會自動：
+
+- 依明度排序，讓較亮的顏色更靠近中心
+- 將顏色拆分為緊密的 blossom 層級
+- 在每一層中依色相排序，形成更自然的環狀漸變
+
+## 常用工具匯出
+
+- `DEFAULT_COLORS`
+- `INNER_COLORS`
+- `OUTER_COLORS`
+- `hexToHsl`
+- `hslToHex`
+- `rgbToHsl`
+- `parseColor`
+- `lightnessToSliderValue`
+- `sliderValueToLightness`

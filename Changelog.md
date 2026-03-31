@@ -1,5 +1,37 @@
 # Changelog
 
+## v2.2.0 (2026-03-31)
+
+### New Features
+
+- **ChromePicker Across All Packages**
+  - Added `ChromePicker` to the vanilla JS core package.
+  - Exposed `ChromePicker` for React, Vue, Svelte, and Angular wrappers.
+  - Added direct RGBA / HSLA / HEX editing support for more precise color input workflows.
+
+### Website & Docs
+
+- **New Documentation Site**
+  - Migrated the docs site to Fumadocs and refreshed the overall documentation structure.
+  - Added built-in docs search and static export support for GitHub Pages deployment.
+  - Added localized documentation for English, Chinese, Traditional Chinese, Japanese, Korean, French, and German.
+- **Examples & Guides Refresh**
+  - Updated demos, framework install guidance, and ChromePicker docs across packages and the website.
+
+### Tooling & Release
+
+- **Release Workflow Improvements**
+  - Added `oxlint`, `oxfmt`, and `lefthook` for more consistent local checks.
+  - Added `scripts/bump_all.sh` to bump package versions together and keep wrapper core dependencies in sync.
+  - Bumped package versions for this release:
+    - `@dayflow/blossom-color-picker` -> `2.2.0`
+    - `@dayflow/blossom-color-picker-react` -> `1.2.0`
+    - `@dayflow/blossom-color-picker-vue` -> `1.2.0`
+    - `@dayflow/blossom-color-picker-svelte` -> `1.2.0`
+    - `@dayflow/blossom-color-picker-angular` -> `1.2.0`
+
+---
+
 ## v2.1.0 (2026-03-04)
 
 ### New Features

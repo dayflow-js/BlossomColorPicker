@@ -11,6 +11,11 @@ export interface BlossomColorPickerColor extends BlossomColorPickerValue {
   hex: string;
   hsl: string;
   hsla: string;
+  rgb: string;
+  rgba: string;
+  r: number;
+  g: number;
+  b: number;
 }
 
 /** Accepts HSL object, hex string, rgb()/rgba() string, or hsl()/hsla() string. */

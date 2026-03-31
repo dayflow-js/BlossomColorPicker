@@ -1,0 +1,79 @@
+---
+title: Optionen
+description: Referenz der Konfigurationsoptionen und Standardwerte von Blossom Color Picker.
+---
+
+# Optionen
+
+Das eigenständige Kernpaket und alle Framework-Wrapper von Blossom Color Picker teilen dieselben Kernoptionen.
+
+`value` und `defaultValue` verwenden die Struktur `BlossomColorPickerValue`, während `colors` ein `ColorInput[]` akzeptiert. Weitere Typdetails finden Sie unter [Typen & Farben](/docs-de/introduction/types-and-colors).
+
+## Konfigurationsreferenz
+
+| Option                | Typ                                        | Standard                                                  | Beschreibung                                                                                           |
+| :-------------------- | :----------------------------------------- | :-------------------------------------------------------- | :----------------------------------------------------------------------------------------------------- |
+| `value`               | `BlossomColorPickerValue`                  | -                                                         | Kontrollierter aktueller Wert.                                                                         |
+| `defaultValue`        | `BlossomColorPickerValue`                  | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | Startwert im unkontrollierten Modus.                                                                   |
+| `colors`              | `ColorInput[]`                             | `DEFAULT_COLORS`                                          | Eigenes Farbarray. Der Kern organisiert diese Farben automatisch in Blütenebenen.                      |
+| `onChange`            | `(color: BlossomColorPickerColor) => void` | -                                                         | Wird bei Farbänderungen aufgerufen.                                                                    |
+| `onCollapse`          | `(color: BlossomColorPickerColor) => void` | -                                                         | Wird beim Einklappen des Pickers aufgerufen.                                                           |
+| `disabled`            | `boolean`                                  | `false`                                                   | Deaktiviert die Interaktion.                                                                           |
+| `openOnHover`         | `boolean`                                  | `false`                                                   | Öffnet den Picker beim Hover.                                                                          |
+| `initialExpanded`     | `boolean`                                  | `false`                                                   | Startet den Picker geöffnet.                                                                           |
+| `animationDuration`   | `number`                                   | `300`                                                     | Dauer der Bloom-Animation in Millisekunden.                                                            |
+| `showAlphaSlider`     | `boolean`                                  | `true`                                                    | Zeigt den äußeren Bogenslider an.                                                                      |
+| `coreSize`            | `number`                                   | `32`                                                      | Durchmesser des Kernbuttons in Pixeln.                                                                 |
+| `petalSize`           | `number`                                   | `32`                                                      | Durchmesser jedes Blütenblatts in Pixeln.                                                              |
+| `showCoreColor`       | `boolean`                                  | `true`                                                    | Zeigt die aktuelle Farbe im Kern an.                                                                   |
+| `sliderPosition`      | `'top' \| 'bottom' \| 'left' \| 'right'`   | `undefined`                                               | Feste Position des Bogensliders. Ohne Angabe startet er rechts und kann automatisch verschoben werden. |
+| `adaptivePositioning` | `boolean`                                  | `true`                                                    | Verschiebt den geöffneten Picker und den Bogenslider automatisch in den sichtbaren Bereich.            |
+| `circularBarWidth`    | `number`                                   | `12`                                                      | Breite des kreisförmigen Hue-Balkens in Pixeln.                                                        |
+| `sliderWidth`         | `number`                                   | `12`                                                      | Breite von Spur und Griff des äußeren Bogensliders in Pixeln.                                          |
+| `sliderOffset`        | `number`                                   | `30`                                                      | Abstand zwischen Blütenblättern und äußerem Bogenslider.                                               |
+| `collapsible`         | `boolean`                                  | `true`                                                    | Erlaubt das Einklappen des Pickers.                                                                    |
+
+Für `ChromePicker` gilt dieselbe Optionsmenge, allerdings mit `collapsible = false` als Standard.
+
+## Ereignisnamen je Framework
+
+- **React**: `onChange`, `onCollapse`
+- **Vue**: `@change`, `@collapse`
+- **Svelte**: Callback-Props `onchange` und `oncollapse`
+- **Angular**: `(colorChange)` und `(colorCollapse)`
+
+## Farbobjekt in Callbacks
+
+```ts
+interface BlossomColorPickerColor {
+  hex: string;
+  hsl: string;
+  hsla: string;
+  rgb: string;
+  rgba: string;
+  r: number;
+  g: number;
+  b: number;
+  hue: number;
+  saturation: number;
+  lightness: number;
+  alpha: number;
+  layer: 'inner' | 'outer';
+}
+```
+
+## Eigene Farben
+
+```tsx
+<BlossomColorPicker
+  colors={[
+    '#FF6B6B',
+    'rgb(107, 203, 119)',
+    'rgba(65, 105, 225, 0.9)',
+    'hsl(280, 70%, 55%)',
+    { h: 45, s: 90, l: 65 },
+  ]}
+/>
+```
+
+Weitere Informationen zu Wertobjekten und Farbformaten finden Sie unter [Typen & Farben](/docs-de/introduction/types-and-colors).
