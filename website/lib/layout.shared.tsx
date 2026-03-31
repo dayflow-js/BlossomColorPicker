@@ -1,5 +1,4 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
-import Image from 'next/image';
 
 function GithubButton() {
   return (
@@ -20,8 +19,6 @@ export const gitConfig = {
   repo: 'BlossomColorPicker',
   branch: 'main',
 };
-
-const BASE = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
 const NavTitle = (
   <span className='flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-white'>

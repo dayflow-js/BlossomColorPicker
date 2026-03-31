@@ -2,6 +2,8 @@
 
 import { useOnChange } from 'fumadocs-core/utils/use-on-change';
 import {
+  Charset,
+  Document,
   SearchDialog,
   SearchDialogClose,
   SearchDialogContent,
@@ -15,7 +17,6 @@ import {
   TagsListItem,
 } from 'fumadocs-ui/components/dialog/search';
 import { useI18n } from 'fumadocs-ui/contexts/i18n';
-import Search from 'flexsearch';
 import { useEffect, useMemo, useState } from 'react';
 
 type SearchLink = [name: string, href: string];
@@ -51,13 +52,18 @@ interface DocsSearchDialogProps {
 }
 
 function isCjkLocale(locale: string) {
-  return locale === 'zh' || locale === 'zh-hant' || locale === 'ja' || locale === 'ko';
+  return (
+    locale === 'zh' ||
+    locale === 'zh-hant' ||
+    locale === 'ja' ||
+    locale === 'ko'
+  );
 }
 
 function createSearchDocument(locale: string) {
-  return new Search.Document<SearchDocument>({
+  return new Document<SearchDocument>({
     tokenize: 'full',
-    ...(isCjkLocale(locale) ? { encoder: Search.Charset.CJK } : {}),
+    ...(isCjkLocale(locale) ? { encoder: Charset.CJK } : {}),
     document: {
       id: 'id',
       index: ['content'],
@@ -82,9 +88,7 @@ async function loadSearchDatabases(from = '/api/search') {
     const response = await fetch(from);
 
     if (!response.ok) {
-      throw new Error(
-        `failed to fetch exported search indexes from ${from}`
-      );
+      throw new Error(`failed to fetch exported search indexes from ${from}`);
     }
 
     const data = await response.json();

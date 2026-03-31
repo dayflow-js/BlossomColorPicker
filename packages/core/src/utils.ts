@@ -193,7 +193,11 @@ export function hslaToString(
   return `hsla(${Math.round(h)}, ${Math.round(s)}%, ${Math.round(l)}%, ${(a / 100).toFixed(2)})`;
 }
 
-export function hslToRgb(h: number, s: number, l: number): { r: number, g: number, b: number } {
+export function hslToRgb(
+  h: number,
+  s: number,
+  l: number
+): { r: number; g: number; b: number } {
   const sNorm = s / 100;
   const lNorm = l / 100;
   const k = (n: number) => (n + h / 30) % 12;
@@ -208,7 +212,12 @@ export function hslToRgb(h: number, s: number, l: number): { r: number, g: numbe
   };
 }
 
-export function rgbaToString(r: number, g: number, b: number, a: number): string {
+export function rgbaToString(
+  r: number,
+  g: number,
+  b: number,
+  a: number
+): string {
   return `rgba(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)}, ${(a / 100).toFixed(2)})`;
 }
 
@@ -256,7 +265,7 @@ export function organizeColorsIntoLayers(
   if (!colors || colors.length === 0) return [];
 
   // 1. Sort by Lightness Descending (Lightest first -> Inner)
-  const sortedByLightness = [...colors].sort((a, b) => b.l - a.l);
+  const sortedByLightness = colors.toSorted((a, b) => b.l - a.l);
   const total = sortedByLightness.length;
 
   // 2. Adaptive Layering Strategy

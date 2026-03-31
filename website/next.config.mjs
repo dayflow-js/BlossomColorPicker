@@ -1,10 +1,4 @@
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
 import { createMDX } from 'fumadocs-mdx/next';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const websiteNodeModules = path.resolve(__dirname, 'node_modules');
 
 const withMDX = createMDX();
 

@@ -1,6 +1,14 @@
 import { defineI18n } from 'fumadocs-core/i18n';
 
-export const languageCodes = ['en', 'zh', 'zh-hant', 'ja', 'ko', 'de', 'fr'] as const;
+export const languageCodes = [
+  'en',
+  'zh',
+  'zh-hant',
+  'ja',
+  'ko',
+  'de',
+  'fr',
+] as const;
 
 export type LanguageCode = (typeof languageCodes)[number];
 
@@ -29,7 +37,7 @@ export const localeItems = languages.map(language => ({
 export function getLanguageFromPathname(pathname: string) {
   return (
     [...languages]
-      .sort((a, b) => b.prefix.length - a.prefix.length)
+      .toSorted((a, b) => b.prefix.length - a.prefix.length)
       .find(
         language =>
           pathname === language.prefix ||
