@@ -13,9 +13,7 @@ const BASE = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_BASE_PATH
-      ? `https://dayflow-js.github.io/blossomColorPicker/`
-      : 'http://localhost:3000'
+    process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
   ),
   title: {
     template: '%s | Blossom Color Picker',

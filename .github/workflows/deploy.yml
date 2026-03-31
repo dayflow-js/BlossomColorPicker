@@ -37,16 +37,17 @@ jobs:
           cd website
           npm run build
         env:
-          BASE_PATH: /BlossomColorPicker
-          NEXT_PUBLIC_BASE_PATH: /BlossomColorPicker
-          NEXT_PUBLIC_SITE_URL: https://dayflow-js.github.io/BlossomColorPicker
+          BASE_PATH: ''
+          NEXT_PUBLIC_BASE_PATH: ''
+          NEXT_PUBLIC_SITE_URL: https://blossom.dayflow.studio
 
       - name: Disable Jekyll and verify output
         run: |
           ls -la website/
           if [ -d "website/out" ]; then
             touch website/out/.nojekyll
-            echo "Created .nojekyll in website/out"
+            echo "blossom.dayflow.studio" > website/out/CNAME
+            echo "Created .nojekyll and CNAME in website/out"
           else
             echo "Error: website/out directory not found!"
             exit 1
