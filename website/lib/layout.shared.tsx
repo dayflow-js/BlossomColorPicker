@@ -1,4 +1,5 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
+import { Calendar } from 'lucide-react';
 
 function GithubButton() {
   return (
@@ -37,6 +38,11 @@ export function baseOptions(): BaseLayoutProps {
       title: NavTitle,
     },
     links: [
+      {
+        text: 'Dayflow Calendar',
+        url: 'https://calendar.dayflow.studio',
+        external: true,
+      },
       {
         type: 'icon',
         text: 'GitHub',

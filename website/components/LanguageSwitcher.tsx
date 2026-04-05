@@ -78,7 +78,7 @@ export function LanguageSwitcher() {
   }, [pathname]);
 
   return (
-    <div ref={containerRef} className='relative mr-4'>
+    <div ref={containerRef} className='relative'>
       <button
         type='button'
         aria-label='Switch language'

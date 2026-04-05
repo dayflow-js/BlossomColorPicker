@@ -2,10 +2,11 @@
 
 import { SidebarTrigger } from 'fumadocs-ui/components/sidebar/base';
 import { buttonVariants } from 'fumadocs-ui/components/ui/button';
-import { Sidebar } from 'lucide-react';
+import { Sidebar, Calendar } from 'lucide-react';
 import Link from 'next/link';
 
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { cn } from '@/lib/utils';
 
 function GithubIcon({ className }: { className?: string }) {
   return (
@@ -44,10 +45,22 @@ export function DocsHeader({ githubUrl }: DocsHeaderProps) {
 
             {/* Spacer */}
             <div className='flex-1 max-lg:hidden' />
-            <LanguageSwitcher />
 
-            {/* Desktop right: github */}
+            {/* Desktop right: calendar and github */}
             <div className='flex flex-row items-center gap-1.5 max-lg:hidden'>
+              <a
+                href='https://calendar.dayflow.studio'
+                target='_blank'
+                rel='noopener noreferrer'
+                className={cn(
+                  buttonVariants({ color: 'ghost' }),
+                  'text-sm font-medium text-slate-600 dark:text-slate-400'
+                )}
+              >
+                Dayflow Calendar
+              </a>
+              <LanguageSwitcher />
+
               {githubUrl && (
                 <a
                   href={githubUrl}
@@ -61,8 +74,17 @@ export function DocsHeader({ githubUrl }: DocsHeaderProps) {
               )}
             </div>
 
-            {/* Mobile right: sidebar trigger */}
+            {/* Mobile right: calendar and sidebar trigger */}
             <div className='ms-auto flex flex-row items-center gap-1 lg:hidden'>
+              <a
+                href='https://calendar.dayflow.studio'
+                target='_blank'
+                rel='noopener noreferrer'
+                aria-label='Calendar'
+                className={buttonVariants({ size: 'icon-sm', color: 'ghost' })}
+              >
+                <Calendar className='size-3.5' />
+              </a>
               {githubUrl && (
                 <a
                   href={githubUrl}

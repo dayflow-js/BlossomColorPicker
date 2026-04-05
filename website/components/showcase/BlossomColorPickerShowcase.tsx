@@ -109,7 +109,6 @@ export function BlossomColorPickerShowcase() {
               coreSize={44}
               petalSize={44}
               sliderWidth={24}
-              adaptivePositioning={false}
             />
           </div>
         </div>
