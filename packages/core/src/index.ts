@@ -1,7 +1,5 @@
 import './styles.css';
 
-console.log('BlossomColorPicker Entry Loaded');
-
 // Main class
 export { BlossomColorPicker } from './BlossomColorPicker';
 export type { BlossomColorPickerOptions } from './BlossomColorPicker';
