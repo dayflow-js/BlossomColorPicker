@@ -54,7 +54,7 @@ importers:
   packages/angular:
     dependencies:
       '@dayflow/blossom-color-picker':
-        specifier: ^2.2.0
+        specifier: ^2.2.1
         version: link:../core
     devDependencies:
       '@angular/common':
@@ -100,7 +100,7 @@ importers:
   packages/react:
     dependencies:
       '@dayflow/blossom-color-picker':
-        specifier: ^2.2.0
+        specifier: ^2.2.1
         version: link:../core
     devDependencies:
       '@types/react':
@@ -128,7 +128,7 @@ importers:
   packages/svelte:
     dependencies:
       '@dayflow/blossom-color-picker':
-        specifier: ^2.2.0
+        specifier: ^2.2.1
         version: link:../core
     devDependencies:
       '@sveltejs/vite-plugin-svelte':
@@ -156,7 +156,7 @@ importers:
   packages/vue:
     dependencies:
       '@dayflow/blossom-color-picker':
-        specifier: ^2.2.0
+        specifier: ^2.2.1
         version: link:../core
     devDependencies:
       typescript:
@@ -175,19 +175,19 @@ importers:
   website:
     dependencies:
       '@dayflow/blossom-color-picker':
-        specifier: workspace:*
+        specifier: latest
         version: link:../packages/core
       '@dayflow/blossom-color-picker-angular':
-        specifier: workspace:*
+        specifier: latest
         version: link:../packages/angular
       '@dayflow/blossom-color-picker-react':
-        specifier: workspace:*
+        specifier: latest
         version: link:../packages/react
       '@dayflow/blossom-color-picker-svelte':
-        specifier: workspace:*
+        specifier: latest
         version: link:../packages/svelte
       '@dayflow/blossom-color-picker-vue':
-        specifier: workspace:*
+        specifier: latest
         version: link:../packages/vue
       '@radix-ui/react-checkbox':
         specifier: ^1.3.3

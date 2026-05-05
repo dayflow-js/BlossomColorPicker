@@ -1,5 +1,6 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
 import { Calendar } from 'lucide-react';
+import Image from 'next/image';
 
 function GithubButton() {
   return (
@@ -31,6 +32,39 @@ const NavTitle = (
 );
 
 const githubUrl = `https://github.com/${gitConfig.user}/${gitConfig.repo}`;
+
+const BASE = process.env.BASE_PATH || '';
+
+export const sidebarTabs = [
+  {
+    title: 'Blossom Color Picker',
+    url: '/docs',
+    icon: (
+      <span
+        className='from-fd-background to-fd-secondary flex size-6 items-center justify-center rounded-md border bg-gradient-to-b text-xs shadow-sm'
+        role='img'
+        aria-label='Blossom'
+      >
+        🌸
+      </span>
+    ),
+  },
+  {
+    title: 'Calendar',
+    url: 'https://calendar.dayflow.studio',
+    icon: (
+      <div className='from-fd-background to-fd-secondary flex size-6 items-center justify-center rounded-md border bg-gradient-to-b shadow-sm'>
+        <Image
+          src={`${BASE}/logo.png`}
+          alt='Dayflow'
+          width={16}
+          height={16}
+          className='size-3.5'
+        />
+      </div>
+    ),
+  },
+];
 
 export function baseOptions(): BaseLayoutProps {
   return {
