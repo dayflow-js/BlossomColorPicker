@@ -2,11 +2,19 @@
 
 import { SidebarTrigger } from 'fumadocs-ui/components/sidebar/base';
 import { buttonVariants } from 'fumadocs-ui/components/ui/button';
-import { Sidebar, Calendar } from 'lucide-react';
+import { Sidebar } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { Badge } from '@/components/ui/badge';
+import { calendarUrl, proUrl, schedulerUrl } from '@/lib/ecosystem';
 import { cn } from '@/lib/utils';
+
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH || '';
+const CALENDAR_URL = calendarUrl('docs_nav');
+const PRO_URL = proUrl('docs_nav');
+const SCHEDULER_URL = schedulerUrl('docs_nav');
 
 function GithubIcon({ className }: { className?: string }) {
   return (
@@ -46,18 +54,71 @@ export function DocsHeader({ githubUrl }: DocsHeaderProps) {
             {/* Spacer */}
             <div className='flex-1 max-lg:hidden' />
 
-            {/* Desktop right: calendar and github */}
+            {/* Desktop right: DayFlow products and GitHub */}
             <div className='flex flex-row items-center gap-1.5 max-lg:hidden'>
               <a
-                href='https://calendar.dayflow.studio'
+                href={CALENDAR_URL}
                 target='_blank'
                 rel='noopener noreferrer'
                 className={cn(
                   buttonVariants({ color: 'ghost' }),
-                  'text-sm font-medium text-slate-600 dark:text-slate-400'
+                  'gap-2 px-2 text-sm font-medium text-slate-600 dark:text-slate-400'
                 )}
               >
-                Dayflow Calendar
+                <Image
+                  src={`${BASE}/logo.png`}
+                  alt='DayFlow Calendar logo'
+                  width={486}
+                  height={424}
+                  className='h-6 w-auto'
+                />
+                Calendar
+              </a>
+              <a
+                href={PRO_URL}
+                target='_blank'
+                rel='noopener noreferrer'
+                className={cn(
+                  buttonVariants({ color: 'ghost' }),
+                  'gap-2 px-2 text-sm font-medium text-slate-600 dark:text-slate-400'
+                )}
+              >
+                <Image
+                  src={`${BASE}/pro-logo.png`}
+                  alt='DayFlow Pro logo'
+                  width={1254}
+                  height={1254}
+                  className='h-6 w-auto'
+                />
+                <Badge
+                  variant='outline'
+                  className='border-amber-200 bg-amber-50 px-1.5 py-0 text-[10px] font-bold tracking-[0.16em] text-amber-700 uppercase dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-200'
+                >
+                  Pro
+                </Badge>
+              </a>
+              <a
+                href={SCHEDULER_URL}
+                target='_blank'
+                rel='noopener noreferrer'
+                className={cn(
+                  buttonVariants({ color: 'ghost' }),
+                  'gap-2 px-2 text-sm font-medium text-slate-600 dark:text-slate-400'
+                )}
+              >
+                <Image
+                  src={`${BASE}/schedule-logo.png`}
+                  alt='Dayflow Scheduler logo'
+                  width={1254}
+                  height={1254}
+                  className='h-6 w-auto'
+                />
+                <Badge
+                  variant='outline'
+                  className='border-sky-200 bg-sky-50 px-1.5 py-0 text-[10px] font-bold tracking-[0.12em] text-sky-700 uppercase dark:border-sky-400/30 dark:bg-sky-400/10 dark:text-sky-200'
+                >
+                  Scheduler
+                </Badge>
               </a>
               <LanguageSwitcher />
 
@@ -74,16 +135,52 @@ export function DocsHeader({ githubUrl }: DocsHeaderProps) {
               )}
             </div>
 
-            {/* Mobile right: calendar and sidebar trigger */}
+            {/* Mobile right: DayFlow products and sidebar trigger */}
             <div className='ms-auto flex flex-row items-center gap-1 lg:hidden'>
               <a
-                href='https://calendar.dayflow.studio'
+                href={CALENDAR_URL}
                 target='_blank'
                 rel='noopener noreferrer'
                 aria-label='Calendar'
                 className={buttonVariants({ size: 'icon-sm', color: 'ghost' })}
               >
-                <Calendar className='size-3.5' />
+                <Image
+                  src={`${BASE}/logo.png`}
+                  alt=''
+                  width={486}
+                  height={424}
+                  className='h-4 w-auto'
+                />
+              </a>
+              <a
+                href={PRO_URL}
+                target='_blank'
+                rel='noopener noreferrer'
+                aria-label='DayFlow Pro'
+                className={buttonVariants({ size: 'icon-sm', color: 'ghost' })}
+              >
+                <Image
+                  src={`${BASE}/pro-logo.png`}
+                  alt=''
+                  width={1254}
+                  height={1254}
+                  className='size-4'
+                />
+              </a>
+              <a
+                href={SCHEDULER_URL}
+                target='_blank'
+                rel='noopener noreferrer'
+                aria-label='Dayflow Scheduler'
+                className={buttonVariants({ size: 'icon-sm', color: 'ghost' })}
+              >
+                <Image
+                  src={`${BASE}/schedule-logo.png`}
+                  alt=''
+                  width={1254}
+                  height={1254}
+                  className='size-4'
+                />
               </a>
               {githubUrl && (
                 <a

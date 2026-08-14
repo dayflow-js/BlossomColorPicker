@@ -1,6 +1,8 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
-import { Calendar } from 'lucide-react';
 import Image from 'next/image';
+
+import { Badge } from '@/components/ui/badge';
+import { calendarUrl, proUrl, schedulerUrl } from '@/lib/ecosystem';
 
 function GithubButton() {
   return (
@@ -34,6 +36,73 @@ const NavTitle = (
 const githubUrl = `https://github.com/${gitConfig.user}/${gitConfig.repo}`;
 
 const BASE = process.env.BASE_PATH || '';
+const CALENDAR_URL = calendarUrl('nav');
+const PRO_URL = proUrl('nav');
+const SCHEDULER_URL = schedulerUrl('nav');
+
+const CalendarLink = (
+  <a
+    href={CALENDAR_URL}
+    target='_blank'
+    rel='noopener noreferrer'
+    className='inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+  >
+    <Image
+      src={`${BASE}/logo.png`}
+      alt='DayFlow Calendar logo'
+      width={486}
+      height={424}
+      className='h-6 w-auto'
+    />
+    Calendar
+  </a>
+);
+
+const ProLink = (
+  <a
+    href={PRO_URL}
+    target='_blank'
+    rel='noopener noreferrer'
+    className='inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+  >
+    <Image
+      src={`${BASE}/pro-logo.png`}
+      alt='DayFlow Pro logo'
+      width={1254}
+      height={1254}
+      className='h-6 w-auto'
+    />
+    <Badge
+      variant='outline'
+      className='border-amber-200 bg-amber-50 px-1.5 py-0 text-[10px] font-bold tracking-[0.16em] text-amber-700 uppercase dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-200'
+    >
+      Pro
+    </Badge>
+  </a>
+);
+
+const SchedulerLink = (
+  <a
+    href={SCHEDULER_URL}
+    target='_blank'
+    rel='noopener noreferrer'
+    className='inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+  >
+    <Image
+      src={`${BASE}/schedule-logo.png`}
+      alt='Dayflow Scheduler logo'
+      width={1254}
+      height={1254}
+      className='h-6 w-auto'
+    />
+    <Badge
+      variant='outline'
+      className='border-sky-200 bg-sky-50 px-1.5 py-0 text-[10px] font-bold tracking-[0.12em] text-sky-700 uppercase dark:border-sky-400/30 dark:bg-sky-400/10 dark:text-sky-200'
+    >
+      Scheduler
+    </Badge>
+  </a>
+);
 
 export const sidebarTabs = [
   {
@@ -51,12 +120,42 @@ export const sidebarTabs = [
   },
   {
     title: 'Calendar',
-    url: 'https://calendar.dayflow.studio',
+    url: calendarUrl('docs_sidebar'),
     icon: (
       <div className='from-fd-background to-fd-secondary flex size-6 items-center justify-center rounded-md border bg-gradient-to-b shadow-sm'>
         <Image
           src={`${BASE}/logo.png`}
           alt='Dayflow'
+          width={16}
+          height={16}
+          className='size-3.5'
+        />
+      </div>
+    ),
+  },
+  {
+    title: 'Calendar Pro',
+    url: proUrl('docs_sidebar'),
+    icon: (
+      <div className='from-fd-background to-fd-secondary flex size-6 items-center justify-center rounded-md border bg-gradient-to-b shadow-sm'>
+        <Image
+          src={`${BASE}/pro-logo.png`}
+          alt='DayFlow Pro'
+          width={16}
+          height={16}
+          className='size-3.5'
+        />
+      </div>
+    ),
+  },
+  {
+    title: 'Scheduler',
+    url: schedulerUrl('docs_sidebar'),
+    icon: (
+      <div className='from-fd-background to-fd-secondary flex size-6 items-center justify-center rounded-md border bg-gradient-to-b shadow-sm'>
+        <Image
+          src={`${BASE}/schedule-logo.png`}
+          alt='Dayflow Scheduler'
           width={16}
           height={16}
           className='size-3.5'
@@ -73,9 +172,16 @@ export function baseOptions(): BaseLayoutProps {
     },
     links: [
       {
-        text: 'Dayflow Calendar',
-        url: 'https://calendar.dayflow.studio',
-        external: true,
+        type: 'custom',
+        children: CalendarLink,
+      },
+      {
+        type: 'custom',
+        children: ProLink,
+      },
+      {
+        type: 'custom',
+        children: SchedulerLink,
       },
       {
         type: 'icon',

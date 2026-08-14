@@ -43,7 +43,7 @@ export function LiveDemo() {
       </section>
 
       <footer className='py-8 text-center text-sm text-slate-500 dark:text-slate-400'>
-        MIT {new Date().getFullYear()} © Blossom.
+        MIT {new Date().getFullYear()} © Blossom Color Picker.
       </footer>
     </div>
   );
