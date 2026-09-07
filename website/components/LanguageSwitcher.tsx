@@ -9,7 +9,7 @@ import { getLanguageFromPathname, languages } from '@/lib/i18n';
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
-function switchTo(code: string, currentPath: string) {
+export function switchTo(code: string, currentPath: string) {
   const currentLanguage = getLanguageFromPathname(currentPath);
   const nextLanguage = languages.find(language => language.code === code);
 
@@ -73,9 +73,11 @@ export function LanguageSwitcher() {
     };
   }, [open]);
 
-  useEffect(() => {
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
     setOpen(false);
-  }, [pathname]);
+  }
 
   return (
     <div ref={containerRef} className='relative'>

@@ -119,6 +119,8 @@ function handleChange(c) {
 
 ### Angular
 
+The current Angular wrapper requires Angular 22.
+
 ```typescript
 import { Component } from '@angular/core';
 import {
@@ -242,6 +244,10 @@ const picker = new BlossomColorPicker(el, {
 ```
 
 ## Project Structure
+
+For local development, use Node.js 24 (see `.nvmrc`) and install dependencies with `pnpm install --frozen-lockfile`. From the repository root, run `npm run dev` to build the required component packages and start the full website at `http://localhost:5177`, including `/docs/introduction`.
+
+Use `npm run dev:demo` for the standalone component demo instead. Run `pnpm dev:packages` in a separate terminal to watch component package changes.
 
 This is a monorepo with five packages:
 

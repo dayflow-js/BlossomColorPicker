@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.3.0 (2026-09-07)
+
+- Upgrade to Vite 8, Next.js 16.3, Svelte 5.57, and current Fumadocs and Tailwind releases.
+- **Breaking (Angular wrapper):** require Angular 22 and build with TypeScript 6.0. Release this wrapper change as a new major version.
+- Standardize development and CI on Node.js 24 and pnpm 10 with a frozen lockfile.
+- Preserve React 18 support in the React wrapper and use React 19 in the documentation site.
+- Add CSS import declarations for TypeScript 6 and include the ChromePicker declaration in the Svelte package.
+- Keep newly introduced React compiler lint diagnostics as warnings for follow-up review.
+
 ## v2.2.0 (2026-03-31)
 
 ### New Features

@@ -16,7 +16,7 @@ import {
   TagsListItem,
 } from 'fumadocs-ui/components/dialog/search';
 import { useI18n } from 'fumadocs-ui/contexts/i18n';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 
 type SearchLink = [name: string, href: string];
 
@@ -46,7 +46,7 @@ interface DocsSearchDialogProps {
   tags?: TagItem[];
   api?: string;
   delayMs?: number;
-  footer?: React.ReactNode;
+  footer?: ReactNode;
   allowClear?: boolean;
 }
 
@@ -225,7 +225,7 @@ export function DocsSearchDialog({
 
   useEffect(() => {
     let active = true;
-    const timeoutId = window.setTimeout(async () => {
+    const timeoutId = window.setTimeout(() => {
       if (search.length === 0) {
         if (active) {
           setResults('empty');
@@ -236,22 +236,22 @@ export function DocsSearchDialog({
 
       setIsLoading(true);
 
-      try {
-        const nextResults = await searchStaticDocs({
-          from: api,
-          locale,
-          query: search,
-          tag,
+      void searchStaticDocs({
+        from: api,
+        locale,
+        query: search,
+        tag,
+      })
+        .then(nextResults => {
+          if (active) {
+            setResults(nextResults);
+          }
+        })
+        .finally(() => {
+          if (active) {
+            setIsLoading(false);
+          }
         });
-
-        if (active) {
-          setResults(nextResults);
-        }
-      } finally {
-        if (active) {
-          setIsLoading(false);
-        }
-      }
     }, delayMs ?? 100);
 
     return () => {

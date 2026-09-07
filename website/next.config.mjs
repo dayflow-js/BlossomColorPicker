@@ -5,7 +5,6 @@ import { createMDX } from 'fumadocs-mdx/next';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const monorepoRoot = path.resolve(__dirname, '..');
-const isDev = process.env.NODE_ENV === 'development';
 const websiteNodeModules = path.resolve(__dirname, 'node_modules');
 
 const withMDX = createMDX();

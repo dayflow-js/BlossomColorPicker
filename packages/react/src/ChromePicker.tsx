@@ -2,13 +2,7 @@ import {
   ChromePicker as CorePicker,
   type ChromePickerOptions,
 } from '@dayflow/blossom-color-picker';
-import {
-  useRef,
-  useEffect,
-  forwardRef,
-  createElement,
-  type ForwardedRef,
-} from 'react';
+import { useRef, useEffect, forwardRef, type ForwardedRef } from 'react';
 
 export interface ChromePickerProps extends ChromePickerOptions {
   className?: string;
@@ -112,10 +106,7 @@ export const ChromePicker = forwardRef(function ChromePicker(
     }
   }, [ref]);
 
-  return createElement('div', {
-    ref: containerRef,
-    className: props.className,
-  });
+  return <div ref={containerRef} className={props.className} />;
 });
 
 export default ChromePicker;

@@ -24,7 +24,7 @@ usage() {
   echo "  ./scripts/publish.sh angular  Publish angular only"
   echo ""
   echo "Options:"
-  echo "  --dry-run    Run npm publish with --dry-run (no actual publish)"
+  echo "  --dry-run    Run pnpm publish with --dry-run (no actual publish)"
   echo "  --skip-build Skip the build step"
   exit 0
 }
@@ -73,7 +73,7 @@ build_main() {
   for pkg in "${MAIN_PKGS[@]}"; do
     step "$STEP" "Building packages/$pkg"
     STEP=$((STEP + 1))
-    if ! npm run build --workspace="packages/$pkg" 2>&1; then
+    if ! pnpm --filter "./packages/$pkg" build 2>&1; then
       err "Build failed for packages/$pkg"
     fi
     ok "packages/$pkg built"
@@ -83,7 +83,7 @@ build_main() {
 build_angular() {
   step "$STEP" "Building packages/angular"
   STEP=$((STEP + 1))
-  if ! npm run build --workspace="packages/angular" 2>&1; then
+  if ! pnpm --filter "./packages/angular" build 2>&1; then
     err "Build failed for packages/angular"
   fi
   cp "$ROOT/packages/angular/README.md" "$ROOT/packages/angular/LICENSE" "$ROOT/packages/angular/dist/" 2>/dev/null || true
@@ -107,7 +107,7 @@ publish_pkg() {
     return 0
   fi
 
-  if ! (cd "$dir" && npm publish --access public $DRY_RUN 2>&1); then
+  if ! (cd "$dir" && pnpm publish --access public $DRY_RUN 2>&1); then
     err "Failed to publish $name"
   fi
   ok "$name@$version published"

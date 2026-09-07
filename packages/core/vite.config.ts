@@ -9,6 +9,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   plugins: [
     dts({
+      copyDtsFiles: true,
       insertTypesEntry: true,
       include: ['src'],
     }),
@@ -18,15 +19,12 @@ export default defineConfig({
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'BlossomColorPicker',
       formats: ['es', 'umd'],
+      cssFileName: 'styles',
       fileName: format => `index.${format === 'es' ? 'esm.js' : 'js'}`,
     },
-    rollupOptions: {
+    rolldownOptions: {
       output: {
         exports: 'named',
-        assetFileNames: assetInfo => {
-          if (assetInfo.name === 'style.css') return 'styles.css';
-          return assetInfo.name!;
-        },
       },
     },
     sourcemap: true,

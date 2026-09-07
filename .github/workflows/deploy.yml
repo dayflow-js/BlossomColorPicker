@@ -22,20 +22,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
 
       - name: Install deps
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm --filter './packages/**' build
+
+      - name: Check types and lint
         run: |
-          cd website
-          npm install
+          pnpm typecheck
+          pnpm lint
 
       - name: Build website
-        run: |
-          cd website
-          npm run build
+        run: pnpm --filter website build
         env:
           BASE_PATH: ''
           NEXT_PUBLIC_BASE_PATH: ''

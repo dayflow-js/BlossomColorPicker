@@ -30,6 +30,13 @@
     "style": "off"
   },
   "rules": {
+    // React wrappers use intentional mount lifecycles and createElement ref forwarding.
+    "react/exhaustive-effect-dependencies": "off",
+    "react/refs": "off",
+    "react/set-state-in-effect": "warn",
+    // Inline SVG icons and emojis intentionally expose an accessible image role.
+    "jsx-a11y/prefer-tag-over-role": "off",
+    "no-underscore-dangle": ["error", { "allow": ["__dirname"] }],
     "complexity": "off",
     "no-await-in-loop": "off",
     "require-await": "off",
@@ -66,7 +73,6 @@
     "import/exports-last": "off",
     "import/no-named-export": "off",
     "import/max-dependencies": "off",
-    "import/no-unresolved": "off",
     "import/extensions": "off",
     "import/no-namespace": "off",
     "import/no-anonymous-default-export": "off",

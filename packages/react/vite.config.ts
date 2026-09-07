@@ -20,7 +20,7 @@ export default defineConfig({
       formats: ['es', 'umd'],
       fileName: format => `index.${format === 'es' ? 'esm.js' : 'js'}`,
     },
-    rollupOptions: {
+    rolldownOptions: {
       external: [
         'react',
         'react-dom',
