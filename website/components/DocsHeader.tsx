@@ -6,7 +6,6 @@ import { Sidebar } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { Badge } from '@/components/ui/badge';
 import { calendarUrl, proUrl, schedulerUrl } from '@/lib/ecosystem';
 import { cn } from '@/lib/utils';
@@ -120,7 +119,6 @@ export function DocsHeader({ githubUrl }: DocsHeaderProps) {
                   Scheduler
                 </Badge>
               </a>
-              <LanguageSwitcher />
 
               {githubUrl && (
                 <a

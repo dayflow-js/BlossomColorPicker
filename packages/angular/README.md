@@ -119,6 +119,8 @@ function handleChange(c) {
 
 ### Angular
 
+The current Angular wrapper requires Angular 22. Its build tooling uses Node.js 24 and TypeScript 6.0.
+
 ```typescript
 import { Component } from '@angular/core';
 import {

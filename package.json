@@ -13,20 +13,19 @@
     "type": "git",
     "url": "git+https://github.com/dayflow-js/BlossomColorPicker.git"
   },
-  "workspaces": [
-    "packages/*"
-  ],
   "type": "module",
   "scripts": {
     "build": "pnpm -r build",
     "build:demo": "vite build --config vite.config.demo.ts",
     "bump:all": "./scripts/bump_all.sh",
-    "dev": "vite --host --port 5177",
-    "dev:packages": "pnpm -r dev",
+    "dev": "pnpm --filter website dev --port 5177",
+    "dev:demo": "vite --host --port 5177",
+    "dev:packages": "pnpm --filter './packages/**' --parallel dev",
     "format": "oxfmt .",
     "format:check": "oxfmt . --check",
     "lint": "oxlint .",
     "lint:fix": "oxlint . --fix",
+    "predev": "pnpm --filter @dayflow/blossom-color-picker-react... build",
     "prepare": "lefthook install",
     "publish:all": "./scripts/publish.sh all",
     "publish:angular": "./scripts/publish.sh angular",
@@ -35,19 +34,24 @@
     "typecheck": "pnpm -r typecheck"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.1.18",
-    "@types/node": "^25.2.1",
-    "@types/react": "^18.2.66",
-    "@types/react-dom": "^18.2.22",
-    "@vitejs/plugin-react": "^4.7.0",
-    "lefthook": "2.1.4",
-    "oxfmt": "0.42.0",
-    "oxlint": "1.57.0",
+    "@microsoft/api-extractor": "^7.59.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^24.13.3",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "lefthook": "2.1.12",
+    "oxfmt": "0.66.0",
+    "oxlint": "1.81.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "tailwindcss": "^4.1.18",
-    "typescript": "^5.7.2",
-    "vite": "^5.4.20",
-    "vite-plugin-dts": "^4.5.4"
-  }
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.9.3",
+    "vite": "^8.2.2",
+    "vite-plugin-dts": "^5.1.0"
+  },
+  "engines": {
+    "node": "^24.15.0"
+  },
+  "packageManager": "pnpm@10.34.5"
 }

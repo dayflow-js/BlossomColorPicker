@@ -4,3 +4,5 @@ dist-demo
 packages/*/dist
 *.log
 .DS_Store
+
+/.idea/

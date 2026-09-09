@@ -1,3 +1,9 @@
 packages:
   - 'packages/*'
   - 'website'
+
+onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - esbuild
+  - lefthook
+  - unrs-resolver

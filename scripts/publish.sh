@@ -24,8 +24,9 @@ usage() {
   echo "  ./scripts/publish.sh angular  Publish angular only"
   echo ""
   echo "Options:"
-  echo "  --dry-run    Run npm publish with --dry-run (no actual publish)"
+  echo "  --dry-run    Run pnpm publish with --dry-run (no actual publish)"
   echo "  --skip-build Skip the build step"
+  echo "  -y, --yes    Don't prompt about uncommitted changes — publish anyway"
   exit 0
 }
 
@@ -33,14 +34,20 @@ usage() {
 MODE="all"
 DRY_RUN=""
 SKIP_BUILD=false
+ASSUME_YES=false
+# `pnpm publish` refuses to run on a dirty tree. A dry run only validates
+# packaging, and for a real publish the user can opt in below; either way we
+# pass --no-git-checks so pnpm doesn't abort on its own.
+PUBLISH_FLAGS=""
 
 for arg in "$@"; do
   case "$arg" in
     main)      MODE="main" ;;
     angular)   MODE="angular" ;;
     all)       MODE="all" ;;
-    --dry-run) DRY_RUN="--dry-run" ;;
+    --dry-run) DRY_RUN="--dry-run"; PUBLISH_FLAGS="--no-git-checks" ;;
     --skip-build) SKIP_BUILD=true ;;
+    -y|--yes)  ASSUME_YES=true ;;
     -h|--help) usage ;;
     *) echo -e "${RED}Unknown argument: $arg${NC}"; usage ;;
   esac
@@ -62,8 +69,37 @@ ok "Logged in as ${BOLD}$NPM_USER${NC}"
 
 # Clean working tree
 cd "$ROOT"
-if [ -n "$(git status --porcelain)" ]; then
-  warn "Working tree is not clean. Consider committing changes first."
+if [ -z "$(git status --porcelain)" ]; then
+  ok "Working tree is clean"
+elif [ -n "$DRY_RUN" ]; then
+  warn "Working tree is not clean (ignored for a dry run)"
+else
+  warn "Working tree is not clean:"
+  git status --short | sed 's/^/      /'
+  echo ""
+  echo -e "  ${BOLD}Publishing from a dirty tree means the published code may not"
+  echo -e "  match any commit.${NC}"
+  echo ""
+
+  if [ "$ASSUME_YES" = true ]; then
+    warn "Continuing anyway (--yes)"
+    PUBLISH_FLAGS="--no-git-checks"
+  elif [ ! -t 0 ]; then
+    err "Uncommitted changes, and no terminal to ask. Commit/stash first, or pass --yes."
+  else
+    printf "  Publish anyway? [y/N] "
+    read -r REPLY
+    case "$REPLY" in
+      [yY] | [yY][eE][sS])
+        PUBLISH_FLAGS="--no-git-checks"
+        warn "Continuing with uncommitted changes"
+        ;;
+      *)
+        echo -e "\n${YELLOW}Aborted — nothing was published. Commit or stash your changes first.${NC}"
+        exit 1
+        ;;
+    esac
+  fi
 fi
 
 # ---------- Determine steps ----------
@@ -73,7 +109,7 @@ build_main() {
   for pkg in "${MAIN_PKGS[@]}"; do
     step "$STEP" "Building packages/$pkg"
     STEP=$((STEP + 1))
-    if ! npm run build --workspace="packages/$pkg" 2>&1; then
+    if ! pnpm --filter "./packages/$pkg" build 2>&1; then
       err "Build failed for packages/$pkg"
     fi
     ok "packages/$pkg built"
@@ -83,7 +119,7 @@ build_main() {
 build_angular() {
   step "$STEP" "Building packages/angular"
   STEP=$((STEP + 1))
-  if ! npm run build --workspace="packages/angular" 2>&1; then
+  if ! pnpm --filter "./packages/angular" build 2>&1; then
     err "Build failed for packages/angular"
   fi
   cp "$ROOT/packages/angular/README.md" "$ROOT/packages/angular/LICENSE" "$ROOT/packages/angular/dist/" 2>/dev/null || true
@@ -107,7 +143,7 @@ publish_pkg() {
     return 0
   fi
 
-  if ! (cd "$dir" && npm publish --access public $DRY_RUN 2>&1); then
+  if ! (cd "$dir" && pnpm publish --access public $DRY_RUN $PUBLISH_FLAGS 2>&1); then
     err "Failed to publish $name"
   fi
   ok "$name@$version published"

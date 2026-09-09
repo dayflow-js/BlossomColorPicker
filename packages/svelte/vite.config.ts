@@ -22,7 +22,7 @@ export default defineConfig({
       formats: ['es', 'umd'],
       fileName: format => `index.${format === 'es' ? 'esm.js' : 'js'}`,
     },
-    rollupOptions: {
+    rolldownOptions: {
       external: ['svelte', /^@dayflow\/blossom-color-picker/],
       output: {
         exports: 'named',
