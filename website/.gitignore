@@ -4,6 +4,9 @@
 # generated content
 .source
 
+AGENTS.md
+CLAUDE.md
+
 # test & build
 /coverage
 /.next/

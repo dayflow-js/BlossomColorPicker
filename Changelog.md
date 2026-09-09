@@ -8,6 +8,12 @@
 - Preserve React 18 support in the React wrapper and use React 19 in the documentation site.
 - Add CSS import declarations for TypeScript 6 and include the ChromePicker declaration in the Svelte package.
 - Keep newly introduced React compiler lint diagnostics as warnings for follow-up review.
+- Bumped package versions for this release:
+  - `@dayflow/blossom-color-picker` -> `2.3.0`
+  - `@dayflow/blossom-color-picker-react` -> `1.3.0`
+  - `@dayflow/blossom-color-picker-vue` -> `1.3.0`
+  - `@dayflow/blossom-color-picker-svelte` -> `1.3.0`
+  - `@dayflow/blossom-color-picker-angular` -> `1.3.0`
 
 ## v2.2.0 (2026-03-31)
 
