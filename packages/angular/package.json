@@ -21,7 +21,8 @@
     "typecheck": "tsc -p tsconfig.lib.json --noEmit"
   },
   "dependencies": {
-    "@dayflow/blossom-color-picker": "^2.3.0"
+    "@dayflow/blossom-color-picker": "^2.3.0",
+    "tslib": "^2.8.1"
   },
   "devDependencies": {
     "@angular/common": "^22.1.5",
