@@ -351,6 +351,7 @@ export class ChromePicker {
     this.isInternalUpdate = true;
     this.picker.setValue(value);
     this.isInternalUpdate = false;
+    this.opts.onChange?.(this.picker.getValue());
   }
 
   public setValue(value: BlossomColorPickerValue): void {
