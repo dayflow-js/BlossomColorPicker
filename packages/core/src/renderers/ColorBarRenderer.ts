@@ -51,6 +51,8 @@ export class ColorBarRenderer {
       stroke: 'rgba(0,0,0,0.06)',
       'stroke-width': sw,
     });
+    // The style wins over the attribute, so themes can restyle the track.
+    this.bgCircle.style.stroke = 'var(--bcp-track, rgba(0, 0, 0, 0.06))';
 
     this.colorCircle = createSVGElement('circle', {
       cx,
@@ -59,6 +61,10 @@ export class ColorBarRenderer {
       fill: 'none',
       'stroke-width': sw,
     });
+
+    // Hover previews can change the color many times a second; easing it keeps
+    // quick sweeps across the petals from flickering.
+    this.colorCircle.style.transition = 'stroke 180ms ease';
 
     this.el.appendChild(this.bgCircle);
     this.el.appendChild(this.colorCircle);
@@ -73,6 +79,7 @@ export class ColorBarRenderer {
   ): void {
     const color = hslaToString(hue, saturation, lightness, alpha);
     this.colorCircle.setAttribute('stroke', color);
+    this.colorCircle.style.stroke = color;
 
     // The ring rides the container scale with its own jelly wobble and lets
     // its color settle in after the first petals; on close it fades out in

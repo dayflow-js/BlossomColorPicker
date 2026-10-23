@@ -1,0 +1,87 @@
+---
+title: 스타일
+description: 꽃잎 모양, 꽃잎 질감, 호버 미리보기, CSS 변수.
+---
+
+# 스타일
+
+이 페이지의 옵션은 모두 기본적으로 꺼져 있어 업그레이드해도 원래 모습이 유지됩니다. 아래에서 조합을 바꿔 보세요:
+
+<PetalStylePlayground />
+
+## 꽃잎 모양
+
+`petalShape`는 모든 꽃잎의 윤곽을 정합니다:
+
+| 값           | 모습                                               |
+| :----------- | :------------------------------------------------- |
+| `'circle'`   | 둥근 꽃잎, 원래 모습입니다(기본값).                |
+| `'sakura'`   | 끝에 작은 홈이 있는 넓은 꽃잎.                     |
+| `'lotus'`    | 둥근 밑동에서 끝이 뾰족해지는 연꽃 모양.           |
+| `'pinwheel'` | 끝이 한쪽으로 휘어 꽃 전체가 도는 것처럼 보입니다. |
+
+모양 있는 꽃잎은 끝이 바깥을 향하고, 밑동에서 끝까지 옅은 명암이 들어가며, 윤곽 안쪽만 포인터에 반응합니다.
+
+## 꽃잎 질감
+
+`petalStyle`은 모양 있는 꽃잎에 표면 디테일을 더합니다:
+
+| 값         | 모습                                            |
+| :--------- | :---------------------------------------------- |
+| `'flat'`   | 단색 꽃잎(기본값).                              |
+| `'veined'` | 꽃잎마다 가운데 잎맥과 두 쌍의 곁맥을 그립니다. |
+
+`petalShape`가 `'circle'`이면 `petalStyle`은 효과가 없습니다.
+
+```tsx
+<BlossomColorPicker petalShape='sakura' petalStyle='veined' />
+```
+
+## 호버 미리보기
+
+`hoverPreview`를 켜면 선택하기 전에 호버하거나 키보드로 포커스한 꽃잎의 색이 링, 배경, (`showCoreColor`가 켜져 있으면) 코어에 표시됩니다. `onHover`는 그 색을, 미리보기가 끝나면 `null`을 받습니다:
+
+```tsx
+<BlossomColorPicker
+  hoverPreview
+  showCoreColor
+  onHover={color => setPreview(color?.hex ?? null)}
+/>
+```
+
+## CSS 변수
+
+`.bcp-root` 또는 임의의 상위 요소에 설정합니다. 모두 기본 모습으로 대체되므로 설정하지 않으면 아무것도 바뀌지 않습니다.
+
+| 변수                           | 기본값                           | 대상                                             |
+| :----------------------------- | :------------------------------- | :----------------------------------------------- |
+| `--bcp-surface`                | `#FFFFFF`                        | 꽃잎 뒤의 배경 원판.                             |
+| `--bcp-surface-shadow`         | 부드러운 그림자                  | 배경 원판의 그림자.                              |
+| `--bcp-tint-opacity`           | `0.15`                           | 원판 위 선택 색상 틴트의 강도.                   |
+| `--bcp-track`                  | `rgba(0, 0, 0, 0.06)`            | 링과 명도 슬라이더의 채워지지 않은 트랙.         |
+| `--bcp-petal-shadow`           | `none`                           | 둥근 꽃잎의 그림자.                              |
+| `--bcp-petal-shadow-hover`     | `--bcp-petal-shadow`             | 호버한 둥근 꽃잎의 그림자.                       |
+| `--bcp-petal-hover-scale`      | `1.1`                            | 호버한 꽃잎의 확대 비율.                         |
+| `--bcp-petal-hover-brightness` | `1.1`                            | 호버한 꽃잎의 밝기.                              |
+| `--bcp-petal-vein-color`       | `#fff`                           | `petalStyle: 'veined'`의 잎맥 색.                |
+| `--bcp-petal-vein-opacity`     | `0.5`                            | 잎맥의 불투명도.                                 |
+| `--bcp-core-bg`                | `#FFFFFF`                        | `showCoreColor`가 꺼져 있을 때 펼쳐진 코어의 색. |
+| `--bcp-core-shadow`            | 얇은 링 + 그림자                 | 펼쳐진 코어의 그림자.                            |
+| `--bcp-trigger-shadow`         | `0 2px 8px rgba(0, 0, 0, 0.12)`  | 접힌 트리거의 그림자.                            |
+| `--bcp-trigger-shadow-hover`   | `0 4px 14px rgba(0, 0, 0, 0.18)` | 호버한 트리거의 그림자.                          |
+| `--bcp-handle-border`          | `white`                          | 명도 슬라이더 핸들의 테두리.                     |
+| `--bcp-focus-ring`             | `#3b82f6`                        | 키보드 포커스 윤곽선.                            |
+| `--bcp-focus-ring-gap`         | `white`                          | 코어와 포커스 윤곽선 사이 틈의 색.               |
+
+예를 들어 다크 테마:
+
+```css
+.dark .bcp-root {
+  --bcp-surface: #1e1b2e;
+  --bcp-core-bg: #1e1b2e;
+  --bcp-track: rgba(255, 255, 255, 0.12);
+  --bcp-handle-border: #1e1b2e;
+  --bcp-focus-ring-gap: #1e1b2e;
+  --bcp-petal-vein-opacity: 0.35;
+}
+```

@@ -1,6 +1,12 @@
 import type { Metadata } from 'next';
+import { Bricolage_Grotesque } from 'next/font/google';
 
-import { LiveDemo } from '@/components/showcase/LiveDemo';
+import { Landing } from '@/components/landing/Landing';
+
+const display = Bricolage_Grotesque({
+  subsets: ['latin'],
+  variable: '--font-display',
+});
 
 export const metadata: Metadata = {
   title: 'Blossom Color Picker - Blooming Animation Color Picker',
@@ -14,5 +20,9 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  return <LiveDemo />;
+  return (
+    <div className={display.variable}>
+      <Landing />
+    </div>
+  );
 }

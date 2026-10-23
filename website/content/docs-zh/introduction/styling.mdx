@@ -1,0 +1,87 @@
+---
+title: 样式
+description: 花瓣形状、花瓣质感、悬停预览与 CSS 变量。
+---
+
+# 样式
+
+本页所有选项默认都是关闭的，升级后外观保持不变。可以在下面试试不同的组合：
+
+<PetalStylePlayground />
+
+## 花瓣形状
+
+`petalShape` 设置每片花瓣的轮廓：
+
+| 取值         | 效果                                 |
+| :----------- | :----------------------------------- |
+| `'circle'`   | 圆形花瓣，即原来的样子（默认）。     |
+| `'sakura'`   | 宽花瓣，尖端有一个小缺口，像樱花。   |
+| `'lotus'`    | 圆形根部收成尖头，像莲花。           |
+| `'pinwheel'` | 尖端向一侧弯，整朵花看起来像在旋转。 |
+
+异形花瓣的尖端朝外，从根部到尖端带有淡淡的明暗渐变，并且只有轮廓内部会响应鼠标。
+
+## 花瓣质感
+
+`petalStyle` 为异形花瓣添加表面细节：
+
+| 取值       | 效果                             |
+| :--------- | :------------------------------- |
+| `'flat'`   | 纯色花瓣（默认）。               |
+| `'veined'` | 每片花瓣上有一条主脉和两对侧脉。 |
+
+当 `petalShape` 为 `'circle'` 时，`petalStyle` 不生效。
+
+```tsx
+<BlossomColorPicker petalShape='sakura' petalStyle='veined' />
+```
+
+## 悬停预览
+
+设置 `hoverPreview` 后，在选中之前，悬停或键盘聚焦的花瓣颜色会先显示在色环、背景以及（开启 `showCoreColor` 时的）花心上。`onHover` 会收到这个颜色，预览结束时收到 `null`：
+
+```tsx
+<BlossomColorPicker
+  hoverPreview
+  showCoreColor
+  onHover={color => setPreview(color?.hex ?? null)}
+/>
+```
+
+## CSS 变量
+
+在 `.bcp-root` 或任意祖先元素上设置。每个变量都有与默认外观一致的回退值，不设置就不会有任何变化。
+
+| 变量                           | 默认值                           | 作用                                      |
+| :----------------------------- | :------------------------------- | :---------------------------------------- |
+| `--bcp-surface`                | `#FFFFFF`                        | 花瓣后面的背景圆盘。                      |
+| `--bcp-surface-shadow`         | 柔和投影                         | 背景圆盘的阴影。                          |
+| `--bcp-tint-opacity`           | `0.15`                           | 圆盘上所选颜色色调的强度。                |
+| `--bcp-track`                  | `rgba(0, 0, 0, 0.06)`            | 色环和明暗滑块未填充的轨道。              |
+| `--bcp-petal-shadow`           | `none`                           | 圆形花瓣的阴影。                          |
+| `--bcp-petal-shadow-hover`     | `--bcp-petal-shadow`             | 悬停时圆形花瓣的阴影。                    |
+| `--bcp-petal-hover-scale`      | `1.1`                            | 悬停花瓣的放大比例。                      |
+| `--bcp-petal-hover-brightness` | `1.1`                            | 悬停花瓣的提亮程度。                      |
+| `--bcp-petal-vein-color`       | `#fff`                           | `petalStyle: 'veined'` 时叶脉的颜色。     |
+| `--bcp-petal-vein-opacity`     | `0.5`                            | 叶脉的不透明度。                          |
+| `--bcp-core-bg`                | `#FFFFFF`                        | 关闭 `showCoreColor` 时展开后花心的颜色。 |
+| `--bcp-core-shadow`            | 细边框 + 阴影                    | 展开后花心的阴影。                        |
+| `--bcp-trigger-shadow`         | `0 2px 8px rgba(0, 0, 0, 0.12)`  | 收起时触发按钮的阴影。                    |
+| `--bcp-trigger-shadow-hover`   | `0 4px 14px rgba(0, 0, 0, 0.18)` | 悬停时触发按钮的阴影。                    |
+| `--bcp-handle-border`          | `white`                          | 明暗滑块手柄的描边。                      |
+| `--bcp-focus-ring`             | `#3b82f6`                        | 键盘焦点轮廓。                            |
+| `--bcp-focus-ring-gap`         | `white`                          | 花心与焦点轮廓之间的间隙颜色。            |
+
+例如一个暗色主题：
+
+```css
+.dark .bcp-root {
+  --bcp-surface: #1e1b2e;
+  --bcp-core-bg: #1e1b2e;
+  --bcp-track: rgba(255, 255, 255, 0.12);
+  --bcp-handle-border: #1e1b2e;
+  --bcp-focus-ring-gap: #1e1b2e;
+  --bcp-petal-vein-opacity: 0.35;
+}
+```

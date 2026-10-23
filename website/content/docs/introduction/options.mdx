@@ -11,29 +11,37 @@ Blossom Color Picker exposes the same core option set across the standalone pack
 
 ## Configuration Reference
 
-| Option                | Type                                       | Default                                                   | Description                                                                                                            |
-| :-------------------- | :----------------------------------------- | :-------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------- |
-| `value`               | `BlossomColorPickerValue`                  | -                                                         | Controlled value for the picker.                                                                                       |
-| `defaultValue`        | `BlossomColorPickerValue`                  | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | Initial value used when the picker is uncontrolled.                                                                    |
-| `colors`              | `ColorInput[]`                             | `DEFAULT_COLORS`                                          | Custom color set. The core automatically organizes these colors into blossom layers.                                   |
-| `onChange`            | `(color: BlossomColorPickerColor) => void` | -                                                         | Called whenever the selected color changes.                                                                            |
-| `onCollapse`          | `(color: BlossomColorPickerColor) => void` | -                                                         | Called when the picker collapses.                                                                                      |
-| `disabled`            | `boolean`                                  | `false`                                                   | Disables user interaction.                                                                                             |
-| `openOnHover`         | `boolean`                                  | `false`                                                   | Expands the picker on hover.                                                                                           |
-| `initialExpanded`     | `boolean`                                  | `false`                                                   | Starts with the picker expanded.                                                                                       |
-| `animationDuration`   | `number`                                   | `280`                                                     | Base timing of the bloom animation in milliseconds. Every phase scales with it.                                        |
-| `showAlphaSlider`     | `boolean`                                  | `true`                                                    | Shows the outer arc slider around the petals.                                                                          |
-| `coreSize`            | `number`                                   | `32`                                                      | Diameter of the center core button in pixels.                                                                          |
-| `petalSize`           | `number`                                   | `32`                                                      | Diameter of each petal in pixels.                                                                                      |
-| `showCoreColor`       | `boolean`                                  | `false`                                                   | Shows the selected color when true; otherwise the expanded core is white.                                              |
-| `sliderPosition`      | `'top' \| 'bottom' \| 'left' \| 'right'`   | `undefined`                                               | Fixed position for the arc slider. If omitted, the picker starts from the right side and may reposition automatically. |
-| `adaptivePositioning` | `boolean`                                  | `true`                                                    | Automatically shifts the expanded picker and arc slider to keep them visible inside the viewport.                      |
-| `circularBarWidth`    | `number`                                   | `12`                                                      | Width of the circular hue bar in pixels.                                                                               |
-| `sliderWidth`         | `number`                                   | `12`                                                      | Width of the outer arc slider track and handle in pixels.                                                              |
-| `sliderOffset`        | `number`                                   | `30`                                                      | Space between the petals and the outer arc slider.                                                                     |
-| `collapsible`         | `boolean`                                  | `true`                                                    | Allows the picker to collapse.                                                                                         |
+| Option                | Type                                               | Default                                                    | Description                                                                                                            |
+| :-------------------- | :------------------------------------------------- | :--------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------- |
+| `value`               | `BlossomColorPickerValue`                          | -                                                          | Controlled value for the picker.                                                                                       |
+| `defaultValue`        | `BlossomColorPickerValue`                          | `{ hue: 330, saturation: 70, alpha: 100, layer: 'outer' }` | Initial value used when the picker is uncontrolled.                                                                    |
+| `colors`              | `ColorInput[]`                                     | `DEFAULT_COLORS`                                           | Custom color set. The core automatically organizes these colors into blossom layers.                                   |
+| `onChange`            | `(color: BlossomColorPickerColor) => void`         | -                                                          | Called whenever the selected color changes.                                                                            |
+| `onChangeComplete`    | `(color: BlossomColorPickerColor) => void`         | -                                                          | Called once when a petal is picked or a shade drag / key press ends. Useful for saving or undo history.                |
+| `onCollapse`          | `(color: BlossomColorPickerColor) => void`         | -                                                          | Called when the picker collapses.                                                                                      |
+| `onHover`             | `(color: BlossomColorPickerColor \| null) => void` | -                                                          | Called with the color a petal would select while it is hovered or keyboard-focused, and with `null` when that ends.    |
+| `disabled`            | `boolean`                                          | `false`                                                    | Disables user interaction.                                                                                             |
+| `openOnHover`         | `boolean`                                          | `false`                                                    | Expands the picker on hover.                                                                                           |
+| `initialExpanded`     | `boolean`                                          | `false`                                                    | Starts with the picker expanded.                                                                                       |
+| `animationDuration`   | `number`                                           | `280`                                                      | Base timing of the bloom animation in milliseconds. Every phase scales with it.                                        |
+| `showShadeSlider`     | `boolean`                                          | `true`                                                     | Shows the shade (brightness) arc slider around the petals.                                                             |
+| `showAlphaSlider`     | `boolean`                                          | `true`                                                     | Deprecated alias for `showShadeSlider`; it controls shade, not opacity. `showShadeSlider` wins when both are set.      |
+| `coreSize`            | `number`                                           | `32`                                                       | Diameter of the center core button in pixels.                                                                          |
+| `petalSize`           | `number`                                           | `32`                                                       | Diameter of each petal in pixels.                                                                                      |
+| `showCoreColor`       | `boolean`                                          | `false`                                                    | Shows the selected color when true; otherwise the expanded core is white.                                              |
+| `hoverPreview`        | `boolean`                                          | `false`                                                    | Shows the hovered or focused petal's color on the ring, background and core before it is picked.                       |
+| `petalShape`          | `'circle' \| 'sakura' \| 'lotus' \| 'pinwheel'`    | `'circle'`                                                 | Petal outline. See [Styling](/docs/introduction/styling).                                                              |
+| `petalStyle`          | `'flat' \| 'veined'`                               | `'flat'`                                                   | Surface detail on shaped petals. Ignored for `circle`.                                                                 |
+| `sliderPosition`      | `'top' \| 'bottom' \| 'left' \| 'right'`           | `undefined`                                                | Fixed position for the arc slider. If omitted, the picker starts from the right side and may reposition automatically. |
+| `adaptivePositioning` | `boolean`                                          | `true`                                                     | Automatically shifts the expanded picker and arc slider to keep them visible inside the viewport.                      |
+| `circularBarWidth`    | `number`                                           | `12`                                                       | Width of the circular hue bar in pixels.                                                                               |
+| `sliderWidth`         | `number`                                           | `12`                                                       | Width of the outer arc slider track and handle in pixels.                                                              |
+| `sliderOffset`        | `number`                                           | `30`                                                       | Space between the petals and the outer arc slider.                                                                     |
+| `collapsible`         | `boolean`                                          | `true`                                                     | Allows the picker to collapse.                                                                                         |
 
 `ChromePicker` uses the same options, but defaults to `collapsible: false`, `animationDuration: 300`, and `showCoreColor: true`.
+
+For petal shapes, petal styles, hover preview and CSS variables, see [Styling](/docs/introduction/styling).
 
 ## Animation Timing
 
@@ -43,10 +51,16 @@ When the user has `prefers-reduced-motion: reduce` enabled, the picker skips the
 
 ## Framework Event Names
 
-- **React**: `onChange` and `onCollapse`
-- **Vue**: `@change` and `@collapse`
-- **Svelte**: `onchange` and `oncollapse` callback props
-- **Angular**: `(colorChange)` and `(colorCollapse)`
+- **React**: `onChange`, `onChangeComplete`, `onHover` and `onCollapse`
+- **Vue**: `@change`, `@change-complete`, `@hover` and `@collapse`
+- **Svelte**: `onchange`, `onchangecomplete`, `onhover` and `oncollapse` callback props
+- **Angular**: `(colorChange)`, `(colorChangeComplete)`, `(colorHover)` and `(colorCollapse)`
+
+## Keyboard
+
+- **Enter** or **Space** on the trigger opens the picker; **Escape** closes it and returns focus to the trigger.
+- **Arrow Left / Right** move around a ring of petals; **Arrow Up / Down** move between the inner and outer rings. **Enter** or **Space** picks the focused petal.
+- The shade slider accepts the **arrow keys** (hold **Shift** for steps of 10), **Page Up / Page Down**, **Home** and **End**.
 
 ## Returned Color Object
 

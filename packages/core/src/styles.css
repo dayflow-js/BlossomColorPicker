@@ -22,9 +22,43 @@
   transform-origin: center center;
   will-change: transform, scale, opacity;
 }
-.bcp-petal-visible:focus-visible {
+.bcp-petal:focus-visible {
+  outline: 2px solid var(--bcp-focus-ring, #3b82f6);
+  outline-offset: 2px;
+}
+/* The handle is a circle, so its focus ring is drawn as its own stroke rather
+   than a square outline. Browsers may outline any focused SVG element, even
+   when focus came from a drag, so the outline is off for every focus state. */
+.bcp-slider-handle:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+}
+.bcp-petal:focus:not(:focus-visible) {
+  outline: none;
+}
+.bcp-slider-handle:focus-visible {
+  stroke: var(--bcp-focus-ring, #3b82f6);
+  stroke-width: 3px;
+}
+.bcp-slider-handle.bcp-pointer-focus:focus-visible {
+  stroke: var(--bcp-handle-border, white);
+  stroke-width: 2px;
+}
+.bcp-petal-shape {
+  display: block;
+  overflow: visible;
+}
+/* Shaped petals trace the focus ring along their outline instead of the box. */
+.bcp-petal-veins {
+  stroke: var(--bcp-petal-vein-color, #fff);
+  stroke-opacity: var(--bcp-petal-vein-opacity, 0.5);
+}
+.bcp-petal-shaped:focus-visible {
+  outline: none;
+}
+.bcp-petal-shaped:focus-visible .bcp-petal-shape path:first-of-type {
+  stroke: var(--bcp-focus-ring, #3b82f6);
+  stroke-width: 2px;
+  vector-effect: non-scaling-stroke;
 }
 .bcp-core {
   position: relative;
@@ -39,8 +73,8 @@
 .bcp-core:focus-visible {
   outline: none;
   box-shadow:
-    0 0 0 2px #3b82f6,
-    0 0 0 4px white;
+    0 0 0 2px var(--bcp-focus-ring, #3b82f6),
+    0 0 0 4px var(--bcp-focus-ring-gap, white);
 }
 .bcp-core:disabled {
   opacity: 0.5;
@@ -55,7 +89,7 @@
   border: none;
   padding: 0;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--bcp-trigger-shadow, 0 2px 8px rgba(0, 0, 0, 0.12));
   transition:
     transform 200ms cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 200ms ease,
@@ -64,7 +98,7 @@
 }
 .bcp-trigger-btn:hover {
   transform: scale(1.06);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  box-shadow: var(--bcp-trigger-shadow-hover, 0 4px 14px rgba(0, 0, 0, 0.18));
 }
 .bcp-trigger-btn:active {
   transform: scale(0.95);
@@ -72,9 +106,9 @@
 .bcp-trigger-btn:focus-visible {
   outline: none;
   box-shadow:
-    0 0 0 2px #3b82f6,
-    0 0 0 4px white,
-    0 4px 14px rgba(0, 0, 0, 0.18);
+    0 0 0 2px var(--bcp-focus-ring, #3b82f6),
+    0 0 0 4px var(--bcp-focus-ring-gap, white),
+    var(--bcp-trigger-shadow-hover, 0 4px 14px rgba(0, 0, 0, 0.18));
 }
 .bcp-trigger-btn:disabled {
   opacity: 0.5;
@@ -83,6 +117,7 @@
 }
 .bcp-svg {
   position: absolute;
+  overflow: visible;
   pointer-events: none;
 }
 .bcp-slider-track {
@@ -91,6 +126,7 @@
   touch-action: none;
 }
 .bcp-slider-handle {
+  stroke: var(--bcp-handle-border, white);
   pointer-events: auto;
   cursor: grab;
   touch-action: none;
@@ -173,6 +209,23 @@
   --bcp-chrome-slider-handle-bg: #f8fafc;
   --bcp-chrome-slider-handle-border: #64748b;
   --bcp-chrome-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+@media (prefers-color-scheme: dark) {
+  .bcp-chrome-container:not(.bcp-force-light) {
+    --bcp-chrome-container-bg: #0f172a;
+    --bcp-chrome-top-bg: #020617;
+    --bcp-chrome-bottom-bg: #0f172a;
+    --bcp-chrome-border: #334155;
+    --bcp-chrome-input-bg: #0b1220;
+    --bcp-chrome-input-border: #334155;
+    --bcp-chrome-input-text: #e5e7eb;
+    --bcp-chrome-label: #94a3b8;
+    --bcp-chrome-toggle-color: #e5e7eb;
+    --bcp-chrome-slider-handle-bg: #f8fafc;
+    --bcp-chrome-slider-handle-border: #64748b;
+    --bcp-chrome-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+  }
 }
 
 .bcp-chrome-container.bcp-force-light {

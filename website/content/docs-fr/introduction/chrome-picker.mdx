@@ -146,18 +146,18 @@ const picker = new ChromePicker(document.getElementById('picker'), {
 
 `ChromePicker` partage presque toutes les options du `BlossomColorPicker` standard.
 
-| Option            | Type                                       | Par défaut                                                | Description                                                                                |
-| :---------------- | :----------------------------------------- | :-------------------------------------------------------- | :----------------------------------------------------------------------------------------- |
-| `value`           | `BlossomColorPickerValue`                  | -                                                         | Valeur contrôlée actuelle.                                                                 |
-| `defaultValue`    | `BlossomColorPickerValue`                  | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | Valeur initiale en mode non contrôlé.                                                      |
-| `colors`          | `ColorInput[]`                             | `DEFAULT_COLORS`                                          | Couleurs affichées comme pétales dans la zone blossom.                                     |
-| `onChange`        | `(color: BlossomColorPickerColor) => void` | -                                                         | Appelé lors d'un changement de couleur.                                                    |
-| `onCollapse`      | `(color: BlossomColorPickerColor) => void` | -                                                         | Appelé lors du repli.                                                                      |
-| `disabled`        | `boolean`                                  | `false`                                                   | Désactive l'interaction.                                                                   |
-| `showAlphaSlider` | `boolean`                                  | `true`                                                    | Affiche la ligne du curseur alpha.                                                         |
-| `coreSize`        | `number`                                   | `32`                                                      | Taille du bouton cœur en pixels.                                                           |
-| `petalSize`       | `number`                                   | `32`                                                      | Taille des pétales en pixels.                                                              |
-| `collapsible`     | `boolean`                                  | `false`                                                   | Détermine si la zone blossom peut être repliée. `ChromePicker` utilise `false` par défaut. |
+| Option            | Type                                       | Par défaut                                                 | Description                                                                                |
+| :---------------- | :----------------------------------------- | :--------------------------------------------------------- | :----------------------------------------------------------------------------------------- |
+| `value`           | `BlossomColorPickerValue`                  | -                                                          | Valeur contrôlée actuelle.                                                                 |
+| `defaultValue`    | `BlossomColorPickerValue`                  | `{ hue: 330, saturation: 70, alpha: 100, layer: 'outer' }` | Valeur initiale en mode non contrôlé.                                                      |
+| `colors`          | `ColorInput[]`                             | `DEFAULT_COLORS`                                           | Couleurs affichées comme pétales dans la zone blossom.                                     |
+| `onChange`        | `(color: BlossomColorPickerColor) => void` | -                                                          | Appelé lors d'un changement de couleur.                                                    |
+| `onCollapse`      | `(color: BlossomColorPickerColor) => void` | -                                                          | Appelé lors du repli.                                                                      |
+| `disabled`        | `boolean`                                  | `false`                                                    | Désactive l'interaction.                                                                   |
+| `showAlphaSlider` | `boolean`                                  | `true`                                                     | Affiche la ligne du curseur alpha.                                                         |
+| `coreSize`        | `number`                                   | `32`                                                       | Taille du bouton cœur en pixels.                                                           |
+| `petalSize`       | `number`                                   | `32`                                                       | Taille des pétales en pixels.                                                              |
+| `collapsible`     | `boolean`                                  | `false`                                                    | Détermine si la zone blossom peut être repliée. `ChromePicker` utilise `false` par défaut. |
 
 `ChromePicker` utilise par défaut `animationDuration: 300` et `showCoreColor: true` ; son cœur déployé affiche donc la couleur sélectionnée.
 

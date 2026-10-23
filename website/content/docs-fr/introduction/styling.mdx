@@ -1,0 +1,87 @@
+---
+title: Style
+description: Formes et textures de pétales, aperçu au survol et variables CSS.
+---
+
+# Style
+
+Toutes les options de cette page sont désactivées par défaut : une mise à jour conserve l'apparence d'origine. Essayez les combinaisons ci-dessous :
+
+<PetalStylePlayground />
+
+## Formes de pétales
+
+`petalShape` définit le contour de chaque pétale :
+
+| Valeur       | Apparence                                             |
+| :----------- | :---------------------------------------------------- |
+| `'circle'`   | Pétales ronds, l'apparence d'origine (par défaut).    |
+| `'sakura'`   | Pétales larges avec une petite encoche à la pointe.   |
+| `'lotus'`    | Une base ronde qui s'effile en pointe.                |
+| `'pinwheel'` | La pointe part sur le côté : la fleur semble tourner. |
+
+Les pétales façonnés pointent vers l'extérieur, sont légèrement ombrés de la base à la pointe et ne réagissent au pointeur qu'à l'intérieur de leur contour.
+
+## Textures de pétales
+
+`petalStyle` ajoute un détail de surface aux pétales façonnés :
+
+| Valeur     | Apparence                                                                    |
+| :--------- | :--------------------------------------------------------------------------- |
+| `'flat'`   | Pétales unis (par défaut).                                                   |
+| `'veined'` | Une nervure centrale et deux paires de nervures latérales sur chaque pétale. |
+
+`petalStyle` n'a aucun effet quand `petalShape` vaut `'circle'`.
+
+```tsx
+<BlossomColorPicker petalShape='sakura' petalStyle='veined' />
+```
+
+## Aperçu au survol
+
+Avec `hoverPreview`, la couleur du pétale survolé ou focalisé au clavier s'affiche sur l'anneau, le fond et (avec `showCoreColor`) le cœur avant d'être choisie. `onHover` reçoit cette couleur, puis `null` à la fin de l'aperçu :
+
+```tsx
+<BlossomColorPicker
+  hoverPreview
+  showCoreColor
+  onHover={color => setPreview(color?.hex ?? null)}
+/>
+```
+
+## Variables CSS
+
+Définissez-les sur `.bcp-root` ou sur n'importe quel ancêtre. Chacune revient à l'apparence par défaut : sans elles, rien ne change.
+
+| Variable                       | Défaut                           | Rôle                                                        |
+| :----------------------------- | :------------------------------- | :---------------------------------------------------------- |
+| `--bcp-surface`                | `#FFFFFF`                        | Disque de fond derrière les pétales.                        |
+| `--bcp-surface-shadow`         | ombre portée douce               | Ombre du disque de fond.                                    |
+| `--bcp-tint-opacity`           | `0.15`                           | Intensité de la teinte de la couleur choisie sur le disque. |
+| `--bcp-track`                  | `rgba(0, 0, 0, 0.06)`            | Piste non remplie de l'anneau et du curseur de luminosité.  |
+| `--bcp-petal-shadow`           | `none`                           | Ombre sous chaque pétale rond.                              |
+| `--bcp-petal-shadow-hover`     | `--bcp-petal-shadow`             | Ombre sous un pétale rond survolé.                          |
+| `--bcp-petal-hover-scale`      | `1.1`                            | Agrandissement d'un pétale survolé.                         |
+| `--bcp-petal-hover-brightness` | `1.1`                            | Éclaircissement d'un pétale survolé.                        |
+| `--bcp-petal-vein-color`       | `#fff`                           | Couleur des nervures avec `petalStyle: 'veined'`.           |
+| `--bcp-petal-vein-opacity`     | `0.5`                            | Opacité des nervures.                                       |
+| `--bcp-core-bg`                | `#FFFFFF`                        | Couleur du cœur ouvert quand `showCoreColor` est désactivé. |
+| `--bcp-core-shadow`            | fin anneau + ombre               | Ombre du cœur ouvert.                                       |
+| `--bcp-trigger-shadow`         | `0 2px 8px rgba(0, 0, 0, 0.12)`  | Ombre du déclencheur fermé.                                 |
+| `--bcp-trigger-shadow-hover`   | `0 4px 14px rgba(0, 0, 0, 0.18)` | Ombre du déclencheur survolé.                               |
+| `--bcp-handle-border`          | `white`                          | Contour de la poignée du curseur.                           |
+| `--bcp-focus-ring`             | `#3b82f6`                        | Contour du focus clavier.                                   |
+| `--bcp-focus-ring-gap`         | `white`                          | Espace entre le cœur et le contour de focus.                |
+
+Par exemple, un thème sombre :
+
+```css
+.dark .bcp-root {
+  --bcp-surface: #1e1b2e;
+  --bcp-core-bg: #1e1b2e;
+  --bcp-track: rgba(255, 255, 255, 0.12);
+  --bcp-handle-border: #1e1b2e;
+  --bcp-focus-ring-gap: #1e1b2e;
+  --bcp-petal-vein-opacity: 0.35;
+}
+```

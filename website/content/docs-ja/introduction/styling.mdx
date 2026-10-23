@@ -1,0 +1,87 @@
+---
+title: スタイル
+description: 花びらの形と質感、ホバープレビュー、CSS 変数。
+---
+
+# スタイル
+
+このページのオプションはすべてデフォルトでオフなので、アップグレードしても見た目は変わりません。下で組み合わせを試せます：
+
+<PetalStylePlayground />
+
+## 花びらの形
+
+`petalShape` はすべての花びらの輪郭を設定します：
+
+| 値           | 見た目                                               |
+| :----------- | :--------------------------------------------------- |
+| `'circle'`   | 丸い花びら。従来の見た目です（デフォルト）。         |
+| `'sakura'`   | 先端に小さな切れ込みがある幅広の花びら。             |
+| `'lotus'`    | 丸い根元から先端がとがる、蓮のような花びら。         |
+| `'pinwheel'` | 先端が片側に流れ、花全体が回っているように見えます。 |
+
+形のある花びらは先端が外を向き、根元から先端へ淡いグラデーションがかかり、輪郭の内側だけがポインターに反応します。
+
+## 花びらの質感
+
+`petalStyle` は形のある花びらに表面の装飾を加えます：
+
+| 値         | 見た目                                        |
+| :--------- | :-------------------------------------------- |
+| `'flat'`   | 無地の花びら（デフォルト）。                  |
+| `'veined'` | 各花びらに中央の葉脈と 2 対の側脈を描きます。 |
+
+`petalShape` が `'circle'` のとき、`petalStyle` は効果がありません。
+
+```tsx
+<BlossomColorPicker petalShape='sakura' petalStyle='veined' />
+```
+
+## ホバープレビュー
+
+`hoverPreview` を設定すると、選ぶ前にホバーまたはキーボードフォーカス中の花びらの色がリング、背景、（`showCoreColor` 指定時は）コアに表示されます。`onHover` にはその色が、プレビュー終了時には `null` が渡されます：
+
+```tsx
+<BlossomColorPicker
+  hoverPreview
+  showCoreColor
+  onHover={color => setPreview(color?.hex ?? null)}
+/>
+```
+
+## CSS 変数
+
+`.bcp-root` または任意の祖先要素に設定します。どれもデフォルトの見た目にフォールバックするため、設定しなければ何も変わりません。
+
+| 変数                           | デフォルト                       | 対象                                             |
+| :----------------------------- | :------------------------------- | :----------------------------------------------- |
+| `--bcp-surface`                | `#FFFFFF`                        | 花びらの後ろの背景ディスク。                     |
+| `--bcp-surface-shadow`         | 柔らかいドロップシャドウ         | 背景ディスクの影。                               |
+| `--bcp-tint-opacity`           | `0.15`                           | ディスク上の選択色のティントの強さ。             |
+| `--bcp-track`                  | `rgba(0, 0, 0, 0.06)`            | リングと明度スライダーの未塗りのトラック。       |
+| `--bcp-petal-shadow`           | `none`                           | 丸い花びらの影。                                 |
+| `--bcp-petal-shadow-hover`     | `--bcp-petal-shadow`             | ホバー中の丸い花びらの影。                       |
+| `--bcp-petal-hover-scale`      | `1.1`                            | ホバー中の花びらの拡大率。                       |
+| `--bcp-petal-hover-brightness` | `1.1`                            | ホバー中の花びらの明るさ。                       |
+| `--bcp-petal-vein-color`       | `#fff`                           | `petalStyle: 'veined'` の葉脈の色。              |
+| `--bcp-petal-vein-opacity`     | `0.5`                            | 葉脈の不透明度。                                 |
+| `--bcp-core-bg`                | `#FFFFFF`                        | `showCoreColor` がオフのときの展開中のコアの色。 |
+| `--bcp-core-shadow`            | 細いリング + 影                  | 展開中のコアの影。                               |
+| `--bcp-trigger-shadow`         | `0 2px 8px rgba(0, 0, 0, 0.12)`  | 閉じているトリガーの影。                         |
+| `--bcp-trigger-shadow-hover`   | `0 4px 14px rgba(0, 0, 0, 0.18)` | ホバー中のトリガーの影。                         |
+| `--bcp-handle-border`          | `white`                          | 明度スライダーのハンドルの縁取り。               |
+| `--bcp-focus-ring`             | `#3b82f6`                        | キーボードフォーカスの輪郭。                     |
+| `--bcp-focus-ring-gap`         | `white`                          | コアとフォーカス輪郭のすき間の色。               |
+
+例えばダークテーマ：
+
+```css
+.dark .bcp-root {
+  --bcp-surface: #1e1b2e;
+  --bcp-core-bg: #1e1b2e;
+  --bcp-track: rgba(255, 255, 255, 0.12);
+  --bcp-handle-border: #1e1b2e;
+  --bcp-focus-ring-gap: #1e1b2e;
+  --bcp-petal-vein-opacity: 0.35;
+}
+```

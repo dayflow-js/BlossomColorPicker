@@ -1,6 +1,6 @@
 {
   "name": "@dayflow/blossom-color-picker",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "description": "A beautiful, blooming color picker — standalone vanilla JS",
   "keywords": [
     "animation",
@@ -39,9 +39,11 @@
   "scripts": {
     "build": "tsc && vite build",
     "dev": "vite build --watch",
+    "test": "pnpm build && node --test test/*.test.mjs",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
+    "happy-dom": "^21.0.4",
     "typescript": "^5.9.3",
     "vite": "^8.2.2",
     "vite-plugin-dts": "^5.1.0"

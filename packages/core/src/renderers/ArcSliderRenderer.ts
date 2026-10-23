@@ -44,9 +44,19 @@ export class ArcSliderRenderer {
   private currentBaseSaturation = 70;
   private animationDuration: number;
 
-  private boundMouseMove: (e: MouseEvent) => void;
-  private boundTouchMove: (e: TouchEvent) => void;
-  private boundEnd: () => void;
+  private pointerId: number | null = null;
+  private keyboardChanged = false;
+  private boundPointerMove = (e: PointerEvent) => {
+    if (e.pointerId === this.pointerId) this.calculateValueFromEvent(e);
+  };
+  private boundEnd = (e: PointerEvent) => {
+    if (e.pointerId === this.pointerId) this.endDrag();
+  };
+  // Backup for browsers that ignore `touch-action` on SVG: while a drag is
+  // running, a finger moving on the page must not scroll it.
+  private boundTouchMove = (e: TouchEvent) => {
+    if (this.pointerId !== null && e.cancelable) e.preventDefault();
+  };
 
   constructor(
     barRadius: number,
@@ -54,14 +64,16 @@ export class ArcSliderRenderer {
     sliderOffset: number,
     animationDuration: number,
     private onChange: (value: number) => void,
-    position: SliderPosition = 'right'
+    position: SliderPosition = 'right',
+    private onChangeComplete: () => void = () => {}
   ) {
     this.animationDuration = animationDuration;
     this.currentPosition = position;
     this.arcRadius = barRadius + sliderOffset;
     this.handleRadius = barWidth / 2;
-    this.svgSize =
-      (this.arcRadius + this.handleRadius + this.barWidth) * 2 + 20;
+    // Just wide enough for the arc and the handle's 2px outline in any
+    // position; anything larger would only add dead space around the bloom.
+    this.svgSize = (this.arcRadius + this.handleRadius + 2) * 2;
     this.center = this.svgSize / 2;
 
     this.gradientId = `bcp-arc-grad-${++arcIdCounter}`;
@@ -78,6 +90,10 @@ export class ArcSliderRenderer {
       marginTop: `${-this.svgSize / 2}px`,
       zIndex: '50',
       willChange: 'opacity',
+      // A touch that starts on the arc or handle drags the slider instead of
+      // scrolling the page. The SVG itself takes no pointer, so touches on its
+      // empty corners still scroll normally.
+      touchAction: 'none',
     });
 
     // Create defs + gradient
@@ -106,6 +122,7 @@ export class ArcSliderRenderer {
       'stroke-width': String(this.barWidth),
       'stroke-linecap': 'round',
     });
+    this.bgPath.style.stroke = 'var(--bcp-track, rgba(0, 0, 0, 0.06))';
     this.el.appendChild(this.bgPath);
 
     // Gradient overlay
@@ -116,9 +133,9 @@ export class ArcSliderRenderer {
       'stroke-linecap': 'round',
     });
     this.gradientPath.classList.add('bcp-slider-track');
-    this.gradientPath.addEventListener('click', e => {
-      this.handleTrackClick(e);
-    });
+    this.gradientPath.addEventListener('pointerdown', e =>
+      this.startDrag(e, true)
+    );
     this.el.appendChild(this.gradientPath);
 
     // Handle
@@ -129,57 +146,112 @@ export class ArcSliderRenderer {
       'stroke-width': '2',
     });
     this.handle.classList.add('bcp-slider-handle');
-    this.handle.addEventListener('mousedown', e => {
-      e.preventDefault();
-      this.startDrag();
+    setAttributes(this.handle, {
+      role: 'slider',
+      'aria-label': 'Shade',
+      'aria-valuemin': '0',
+      'aria-valuemax': '100',
+      tabindex: '-1',
     });
-    this.handle.addEventListener('touchstart', e => {
-      e.preventDefault();
-      this.startDrag();
+    this.handle.addEventListener('pointerdown', e => this.startDrag(e, false));
+    this.handle.addEventListener('keydown', e => this.handleKeyDown(e));
+    this.handle.addEventListener('keyup', e => {
+      if (
+        [
+          'ArrowLeft',
+          'ArrowRight',
+          'ArrowUp',
+          'ArrowDown',
+          'Home',
+          'End',
+          'PageUp',
+          'PageDown',
+        ].includes(e.key)
+      )
+        this.completeKeyboardChange();
+    });
+    this.handle.addEventListener('blur', () => {
+      this.handle.classList.remove('bcp-pointer-focus');
+      this.completeKeyboardChange();
     });
     this.el.appendChild(this.handle);
-
-    // Bind drag handlers
-    this.boundMouseMove = (e: MouseEvent) => this.calculateValueFromEvent(e);
-    this.boundTouchMove = (e: TouchEvent) => this.calculateValueFromEvent(e);
-    this.boundEnd = () => this.endDrag();
 
     this.updateGeometry();
   }
 
-  private startDrag(): void {
+  private startDrag(e: PointerEvent, jump: boolean): void {
+    if (e.button !== 0 || this.pointerId !== null) return;
+    e.preventDefault();
+    // Focus the handle so arrow keys work right after a drag, but mark it so
+    // the keyboard focus ring stays hidden until a key is actually pressed.
+    this.handle.classList.add('bcp-pointer-focus');
+    this.handle.focus();
+    this.pointerId = e.pointerId;
     this.isDragging = true;
-    window.addEventListener('mousemove', this.boundMouseMove);
-    window.addEventListener('mouseup', this.boundEnd);
+    this.updateHandleTransition();
+    window.addEventListener('pointermove', this.boundPointerMove);
+    window.addEventListener('pointerup', this.boundEnd);
+    window.addEventListener('pointercancel', this.boundEnd);
     window.addEventListener('touchmove', this.boundTouchMove, {
       passive: false,
     });
-    window.addEventListener('touchend', this.boundEnd);
+    // Capture keeps pen/touch input attached to the slider outside its SVG bounds.
+    this.el.setPointerCapture?.(e.pointerId);
+    if (jump) this.calculateValueFromEvent(e);
   }
 
-  private endDrag(): void {
+  private endDrag(complete = true): void {
+    const id = this.pointerId;
+    this.pointerId = null;
     this.isDragging = false;
-    window.removeEventListener('mousemove', this.boundMouseMove);
-    window.removeEventListener('mouseup', this.boundEnd);
+    window.removeEventListener('pointermove', this.boundPointerMove);
+    window.removeEventListener('pointerup', this.boundEnd);
+    window.removeEventListener('pointercancel', this.boundEnd);
     window.removeEventListener('touchmove', this.boundTouchMove);
-    window.removeEventListener('touchend', this.boundEnd);
-    this.updateHandleTransition();
+    if (id !== null && this.el.hasPointerCapture?.(id))
+      this.el.releasePointerCapture(id);
+    setStyles(this.handle, {
+      transition: `cx ${this.animationDuration / 3}ms ease, cy ${this.animationDuration / 3}ms ease`,
+    });
+    if (id !== null && complete) this.onChangeComplete();
   }
 
-  private handleTrackClick(e: MouseEvent): void {
-    this.calculateValueFromEvent(e);
+  private completeKeyboardChange(): void {
+    if (!this.keyboardChanged) return;
+    this.keyboardChanged = false;
+    this.onChangeComplete();
   }
 
-  private calculateValueFromEvent(e: MouseEvent | TouchEvent): void {
-    if ('touches' in e) {
-      e.preventDefault();
-    }
+  private handleKeyDown(e: KeyboardEvent): void {
+    this.handle.classList.remove('bcp-pointer-focus');
+    const step = e.shiftKey ? 10 : 1;
+    const changes: Record<string, number> = {
+      ArrowRight: step,
+      ArrowUp: step,
+      ArrowLeft: -step,
+      ArrowDown: -step,
+      PageUp: 10,
+      PageDown: -10,
+      Home: -this.currentValue,
+      End: 100 - this.currentValue,
+    };
+    if (!(e.key in changes)) return;
+    e.preventDefault();
+    const value = Math.max(
+      0,
+      Math.min(100, this.currentValue + changes[e.key])
+    );
+    if (value === this.currentValue) return;
+    this.keyboardChanged = true;
+    this.onChange(value);
+  }
+
+  private calculateValueFromEvent(e: PointerEvent): void {
     const rect = this.el.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
 
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    const { clientX, clientY } = e;
 
     const dx = clientX - centerX;
     const dy = clientY - centerY;
@@ -245,6 +317,15 @@ export class ArcSliderRenderer {
     position: SliderPosition
   ): void {
     this.currentValue = value;
+    setAttributes(this.handle, {
+      tabindex: isExpanded ? '0' : '-1',
+      'aria-valuenow': String(value),
+      'aria-valuetext': `${Math.round(value)}% shade`,
+      'aria-orientation':
+        position === 'left' || position === 'right' ? 'vertical' : 'horizontal',
+    });
+    this.el.setAttribute('aria-hidden', String(!isExpanded));
+    if (!isExpanded) this.endDrag();
     this.currentHue = hue;
     this.currentBaseSaturation = baseSaturation;
 
@@ -302,9 +383,13 @@ export class ArcSliderRenderer {
 
     setStyles(this.el, {
       opacity: isExpanded ? '1' : '0',
-      pointerEvents: isExpanded ? 'auto' : 'none',
       transition: `opacity ${duration}ms linear ${delay}ms`,
     });
+    // The square SVG never takes the pointer itself, only the arc and handle,
+    // so the empty corners around the bloom stay clickable.
+    const arcPointer = isExpanded ? 'visibleStroke' : 'none';
+    this.gradientPath.style.pointerEvents = arcPointer;
+    this.handle.style.pointerEvents = isExpanded ? 'visiblePainted' : 'none';
 
     setStyles(this.handle, {
       transition: this.isDragging
@@ -322,10 +407,7 @@ export class ArcSliderRenderer {
   }
 
   destroy(): void {
-    window.removeEventListener('mousemove', this.boundMouseMove);
-    window.removeEventListener('mouseup', this.boundEnd);
-    window.removeEventListener('touchmove', this.boundTouchMove);
-    window.removeEventListener('touchend', this.boundEnd);
+    this.endDrag(false);
     this.el.remove();
   }
 }

@@ -11,29 +11,37 @@ Blossom Color Picker의 독립 코어 패키지와 모든 프레임워크 래퍼
 
 ## 설정 참조
 
-| 옵션                  | 타입                                       | 기본값                                                    | 설명                                                                                   |
-| :-------------------- | :----------------------------------------- | :-------------------------------------------------------- | :------------------------------------------------------------------------------------- |
-| `value`               | `BlossomColorPickerValue`                  | -                                                         | 제어 모드의 현재 값입니다.                                                             |
-| `defaultValue`        | `BlossomColorPickerValue`                  | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | 비제어 모드의 초기값입니다.                                                            |
-| `colors`              | `ColorInput[]`                             | `DEFAULT_COLORS`                                          | 커스텀 색상 배열입니다. 코어가 이를 꽃잎 레이어로 자동 정렬합니다.                     |
-| `onChange`            | `(color: BlossomColorPickerColor) => void` | -                                                         | 색상이 바뀔 때 호출됩니다.                                                             |
-| `onCollapse`          | `(color: BlossomColorPickerColor) => void` | -                                                         | 피커가 접힐 때 호출됩니다.                                                             |
-| `disabled`            | `boolean`                                  | `false`                                                   | 상호작용을 비활성화합니다.                                                             |
-| `openOnHover`         | `boolean`                                  | `false`                                                   | 호버 시 펼칠지 여부입니다.                                                             |
-| `initialExpanded`     | `boolean`                                  | `false`                                                   | 초기 상태를 펼침으로 시작할지 여부입니다.                                              |
-| `animationDuration`   | `number`                                   | `280`                                                     | 블루밍 애니메이션의 기준 시간(ms)입니다. 모든 단계가 이 값에 비례합니다.               |
-| `showAlphaSlider`     | `boolean`                                  | `true`                                                    | 꽃잎 바깥의 아크 슬라이더를 표시할지 여부입니다.                                       |
-| `coreSize`            | `number`                                   | `32`                                                      | 중심 코어 버튼의 지름(px)입니다.                                                       |
-| `petalSize`           | `number`                                   | `32`                                                      | 각 꽃잎의 지름(px)입니다.                                                              |
-| `showCoreColor`       | `boolean`                                  | `false`                                                   | `true`이면 선택한 색상을 표시하고, `false`이면 펼쳐진 코어가 흰색입니다.               |
-| `sliderPosition`      | `'top' \| 'bottom' \| 'left' \| 'right'`   | `undefined`                                               | 아크 슬라이더의 고정 위치입니다. 생략하면 오른쪽에서 시작하고 자동 조정될 수 있습니다. |
-| `adaptivePositioning` | `boolean`                                  | `true`                                                    | 펼쳐진 피커와 아크 슬라이더가 뷰포트 안에 머물도록 자동 조정합니다.                    |
-| `circularBarWidth`    | `number`                                   | `12`                                                      | 원형 hue 바의 너비(px)입니다.                                                          |
-| `sliderWidth`         | `number`                                   | `12`                                                      | 바깥 아크 슬라이더 트랙과 핸들의 너비(px)입니다.                                       |
-| `sliderOffset`        | `number`                                   | `30`                                                      | 꽃잎과 바깥 아크 슬라이더 사이 거리입니다.                                             |
-| `collapsible`         | `boolean`                                  | `true`                                                    | 접기 기능 허용 여부입니다.                                                             |
+| 옵션                  | 타입                                               | 기본값                                                     | 설명                                                                                                                          |
+| :-------------------- | :------------------------------------------------- | :--------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------- |
+| `value`               | `BlossomColorPickerValue`                          | -                                                          | 제어 모드의 현재 값입니다.                                                                                                    |
+| `defaultValue`        | `BlossomColorPickerValue`                          | `{ hue: 330, saturation: 70, alpha: 100, layer: 'outer' }` | 비제어 모드의 초기값입니다.                                                                                                   |
+| `colors`              | `ColorInput[]`                                     | `DEFAULT_COLORS`                                           | 커스텀 색상 배열입니다. 코어가 이를 꽃잎 레이어로 자동 정렬합니다.                                                            |
+| `onChange`            | `(color: BlossomColorPickerColor) => void`         | -                                                          | 색상이 바뀔 때 호출됩니다.                                                                                                    |
+| `onChangeComplete`    | `(color: BlossomColorPickerColor) => void`         | -                                                          | 꽃잎을 선택하거나 명도 드래그/키 입력이 끝났을 때 한 번 호출됩니다. 저장이나 실행 취소 기록에 유용합니다.                     |
+| `onCollapse`          | `(color: BlossomColorPickerColor) => void`         | -                                                          | 피커가 접힐 때 호출됩니다.                                                                                                    |
+| `onHover`             | `(color: BlossomColorPickerColor \| null) => void` | -                                                          | 꽃잎에 호버하거나 키보드 포커스가 있을 때 그 꽃잎이 선택할 색으로 호출되고, 끝나면 `null`로 호출됩니다.                       |
+| `disabled`            | `boolean`                                          | `false`                                                    | 상호작용을 비활성화합니다.                                                                                                    |
+| `openOnHover`         | `boolean`                                          | `false`                                                    | 호버 시 펼칠지 여부입니다.                                                                                                    |
+| `initialExpanded`     | `boolean`                                          | `false`                                                    | 초기 상태를 펼침으로 시작할지 여부입니다.                                                                                     |
+| `animationDuration`   | `number`                                           | `280`                                                      | 블루밍 애니메이션의 기준 시간(ms)입니다. 모든 단계가 이 값에 비례합니다.                                                      |
+| `showShadeSlider`     | `boolean`                                          | `true`                                                     | 꽃잎 바깥쪽에 명도(셰이드) 원호 슬라이더를 표시합니다.                                                                        |
+| `showAlphaSlider`     | `boolean`                                          | `true`                                                     | `showShadeSlider`의 지원 중단된 별칭입니다. 투명도가 아니라 명도를 제어합니다. 둘 다 지정하면 `showShadeSlider`가 우선합니다. |
+| `coreSize`            | `number`                                           | `32`                                                       | 중심 코어 버튼의 지름(px)입니다.                                                                                              |
+| `petalSize`           | `number`                                           | `32`                                                       | 각 꽃잎의 지름(px)입니다.                                                                                                     |
+| `showCoreColor`       | `boolean`                                          | `false`                                                    | `true`이면 선택한 색상을 표시하고, `false`이면 펼쳐진 코어가 흰색입니다.                                                      |
+| `hoverPreview`        | `boolean`                                          | `false`                                                    | 선택하기 전에 호버하거나 포커스한 꽃잎의 색을 링, 배경, 코어에 미리 보여 줍니다.                                              |
+| `petalShape`          | `'circle' \| 'sakura' \| 'lotus' \| 'pinwheel'`    | `'circle'`                                                 | 꽃잎 윤곽입니다. [스타일](/docs-ko/introduction/styling)을 참고하세요.                                                        |
+| `petalStyle`          | `'flat' \| 'veined'`                               | `'flat'`                                                   | 모양 있는 꽃잎의 표면 디테일입니다. `circle`에서는 무시됩니다.                                                                |
+| `sliderPosition`      | `'top' \| 'bottom' \| 'left' \| 'right'`           | `undefined`                                                | 아크 슬라이더의 고정 위치입니다. 생략하면 오른쪽에서 시작하고 자동 조정될 수 있습니다.                                        |
+| `adaptivePositioning` | `boolean`                                          | `true`                                                     | 펼쳐진 피커와 아크 슬라이더가 뷰포트 안에 머물도록 자동 조정합니다.                                                           |
+| `circularBarWidth`    | `number`                                           | `12`                                                       | 원형 hue 바의 너비(px)입니다.                                                                                                 |
+| `sliderWidth`         | `number`                                           | `12`                                                       | 바깥 아크 슬라이더 트랙과 핸들의 너비(px)입니다.                                                                              |
+| `sliderOffset`        | `number`                                           | `30`                                                       | 꽃잎과 바깥 아크 슬라이더 사이 거리입니다.                                                                                    |
+| `collapsible`         | `boolean`                                          | `true`                                                     | 접기 기능 허용 여부입니다.                                                                                                    |
 
 `ChromePicker`도 동일한 옵션을 사용하지만 기본값은 `collapsible: false`, `animationDuration: 300`, `showCoreColor: true`입니다.
+
+꽃잎 모양, 꽃잎 질감, 호버 미리보기, CSS 변수는 [스타일](/docs-ko/introduction/styling)을 참고하세요.
 
 ## 애니메이션 타이밍
 
@@ -43,10 +51,16 @@ Blossom Color Picker의 독립 코어 패키지와 모든 프레임워크 래퍼
 
 ## 프레임워크별 이벤트 이름
 
-- **React**: `onChange`, `onCollapse`
-- **Vue**: `@change`, `@collapse`
-- **Svelte**: `onchange`, `oncollapse` 콜백 props
-- **Angular**: `(colorChange)`, `(colorCollapse)`
+- **React**: `onChange`, `onChangeComplete`, `onHover`, `onCollapse`
+- **Vue**: `@change`, `@change-complete`, `@hover`, `@collapse`
+- **Svelte**: `onchange`, `onchangecomplete`, `onhover`, `oncollapse` 콜백 props
+- **Angular**: `(colorChange)`, `(colorChangeComplete)`, `(colorHover)`, `(colorCollapse)`
+
+## 키보드
+
+- 트리거에서 **Enter** 또는 **Space**를 누르면 열리고, **Escape**를 누르면 닫히며 포커스가 트리거로 돌아갑니다.
+- **← / →**는 같은 링의 꽃잎 사이를, **↑ / ↓**는 안쪽과 바깥쪽 링 사이를 이동합니다. **Enter** 또는 **Space**로 포커스된 꽃잎을 선택합니다.
+- 명도 슬라이더는 **방향키**(**Shift**를 누르면 10씩), **Page Up / Page Down**, **Home**, **End**를 지원합니다.
 
 ## 콜백에서 받는 색상 객체
 

@@ -11,34 +11,36 @@ description: 値オブジェクト、コールバックの戻り値、対応す�
 
 制御された `value` や `defaultValue` で使うオブジェクトです。
 
-| フィールド           | 型                   | 説明                                    |
-| :------------------- | :------------------- | :-------------------------------------- |
-| `hue`                | `number`             | `0` から `360` の色相角。               |
-| `saturation`         | `number`             | `0` から `100` のアークスライダー位置。 |
-| `lightness`          | `number?`            | 任意の HSL 明度上書き値。               |
-| `originalSaturation` | `number?`            | 選択中の花びらが持つ元の彩度。          |
-| `alpha`              | `number`             | `0` から `100` の透明度。               |
-| `layer`              | `'inner' \| 'outer'` | 選択された花びらのレイヤー。            |
+| フィールド           | 型                   | 説明                                                                                   |
+| :------------------- | :------------------- | :------------------------------------------------------------------------------------- |
+| `hue`                | `number`             | `0` から `360` の色相角。                                                              |
+| `saturation`         | `number`             | 明度スライダーの位置（`0`〜`100`）。                                                   |
+| `lightness`          | `number?`            | 任意の HSL 明度上書き値。                                                              |
+| `originalSaturation` | `number?`            | 選択中の花びらが持つ元の彩度。                                                         |
+| `alpha`              | `number`             | `0` から `100` の透明度。                                                              |
+| `layer`              | `'inner' \| 'outer'` | 選択された花びらのレイヤー。                                                           |
+| `colorIndex`         | `number?`            | 選んだ色の `colors` 内のインデックス。同じ色相の色が複数あっても花びらを特定できます。 |
 
 ## `BlossomColorPickerColor`
 
 `onChange`、`onCollapse`、`getValue()` が返すオブジェクトです。
 
-| フィールド   | 型                   | 説明                                    |
-| :----------- | :------------------- | :-------------------------------------- |
-| `hex`        | `string`             | 16 進カラー文字列。                     |
-| `hsl`        | `string`             | HSL 文字列。                            |
-| `hsla`       | `string`             | HSLA 文字列。                           |
-| `rgb`        | `string`             | RGB 文字列。                            |
-| `rgba`       | `string`             | RGBA 文字列。                           |
-| `r`          | `number`             | 赤チャンネル値。                        |
-| `g`          | `number`             | 緑チャンネル値。                        |
-| `b`          | `number`             | 青チャンネル値。                        |
-| `hue`        | `number`             | `0` から `360` の色相角。               |
-| `saturation` | `number`             | `0` から `100` のアークスライダー位置。 |
-| `lightness`  | `number`             | 計算済みの明度。                        |
-| `alpha`      | `number`             | `0` から `100` の透明度。               |
-| `layer`      | `'inner' \| 'outer'` | 選択中のレイヤー。                      |
+| フィールド   | 型                   | 説明                                                       |
+| :----------- | :------------------- | :--------------------------------------------------------- |
+| `hex`        | `string`             | 16 進カラー文字列。                                        |
+| `hsl`        | `string`             | HSL 文字列。                                               |
+| `hsla`       | `string`             | HSLA 文字列。                                              |
+| `rgb`        | `string`             | RGB 文字列。                                               |
+| `rgba`       | `string`             | RGBA 文字列。                                              |
+| `r`          | `number`             | 赤チャンネル値。                                           |
+| `g`          | `number`             | 緑チャンネル値。                                           |
+| `b`          | `number`             | 青チャンネル値。                                           |
+| `hue`        | `number`             | `0` から `360` の色相角。                                  |
+| `saturation` | `number`             | 明度スライダーの位置（`0`〜`100`）。                       |
+| `lightness`  | `number`             | 計算済みの明度。                                           |
+| `alpha`      | `number`             | `0` から `100` の透明度。                                  |
+| `layer`      | `'inner' \| 'outer'` | 選択中のレイヤー。                                         |
+| `colorIndex` | `number?`            | 花びらから選んだ場合、その色の `colors` 内のインデックス。 |
 
 ## Alpha のスケール
 

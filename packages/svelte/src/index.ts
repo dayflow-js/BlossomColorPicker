@@ -6,6 +6,8 @@ export type {
   BlossomColorPickerColor,
   ColorInput,
   SliderPosition,
+  PetalShape,
+  PetalStyle,
   BlossomColorPickerOptions,
   ChromePickerThemeColors,
 } from '@dayflow/blossom-color-picker';

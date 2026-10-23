@@ -18,6 +18,8 @@ import {
   type BlossomColorPickerColor,
   type ColorInput,
   type SliderPosition,
+  type PetalShape,
+  type PetalStyle,
 } from '@dayflow/blossom-color-picker';
 
 @Component({
@@ -39,6 +41,10 @@ export class BlossomColorPickerComponent
   @Input() initialExpanded = false;
   @Input() animationDuration = 280;
   @Input() showAlphaSlider = true;
+  @Input() showShadeSlider?: boolean;
+  @Input() petalShape?: PetalShape;
+  @Input() petalStyle?: PetalStyle;
+  @Input() hoverPreview?: boolean;
   @Input() coreSize = 32;
   @Input() petalSize = 32;
   @Input() showCoreColor = false;
@@ -50,6 +56,8 @@ export class BlossomColorPickerComponent
   @Input() collapsible = true;
 
   @Output() colorChange = new EventEmitter<BlossomColorPickerColor>();
+  @Output() colorChangeComplete = new EventEmitter<BlossomColorPickerColor>();
+  @Output() colorHover = new EventEmitter<BlossomColorPickerColor | null>();
   @Output() colorCollapse = new EventEmitter<BlossomColorPickerColor>();
 
   private picker: CorePicker | null = null;
@@ -74,6 +82,8 @@ export class BlossomColorPickerComponent
       this.picker.setOptions({
         value: this.value,
         onChange: color => this.colorChange.emit(color),
+        onChangeComplete: color => this.colorChangeComplete.emit(color),
+        onHover: color => this.colorHover.emit(color),
         onCollapse: color => this.colorCollapse.emit(color),
       });
       return;
@@ -92,6 +102,10 @@ export class BlossomColorPickerComponent
       initialExpanded: this.initialExpanded,
       animationDuration: this.animationDuration,
       showAlphaSlider: this.showAlphaSlider,
+      showShadeSlider: this.showShadeSlider,
+      petalShape: this.petalShape,
+      petalStyle: this.petalStyle,
+      hoverPreview: this.hoverPreview,
       coreSize: this.coreSize,
       petalSize: this.petalSize,
       showCoreColor: this.showCoreColor,
@@ -102,6 +116,8 @@ export class BlossomColorPickerComponent
       sliderOffset: this.sliderOffset,
       collapsible: this.collapsible,
       onChange: color => this.colorChange.emit(color),
+      onChangeComplete: color => this.colorChangeComplete.emit(color),
+      onHover: color => this.colorHover.emit(color),
       onCollapse: color => this.colorCollapse.emit(color),
     };
   }

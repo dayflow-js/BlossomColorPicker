@@ -16,6 +16,8 @@ export type {
   BlossomColorPickerColor,
   ColorInput,
   SliderPosition,
+  PetalShape,
+  PetalStyle,
 } from './types';
 
 // Utilities (for advanced users)

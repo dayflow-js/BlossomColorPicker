@@ -17,7 +17,7 @@
   "scripts": {
     "build": "pnpm -r build",
     "build:demo": "vite build --config vite.config.demo.ts",
-    "bump:all": "./scripts/bump_all.sh",
+    "bump:all": "./scripts/update-versions.sh",
     "dev": "pnpm --filter website dev --port 5177",
     "dev:demo": "vite --host --port 5177",
     "dev:packages": "pnpm --filter './packages/**' --parallel dev",
@@ -31,6 +31,9 @@
     "publish:angular": "./scripts/publish.sh angular",
     "publish:dry": "./scripts/publish.sh all --dry-run",
     "publish:main": "./scripts/publish.sh main",
+    "release:check": "node ./scripts/check-release.mjs",
+    "tag": "./scripts/git-tag.sh",
+    "test": "pnpm --filter @dayflow/blossom-color-picker test",
     "typecheck": "pnpm -r typecheck"
   },
   "devDependencies": {

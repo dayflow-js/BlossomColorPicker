@@ -1,6 +1,9 @@
 export interface BlossomColorPickerValue {
   hue: number;
-  saturation: number; // Slider position (0-100)
+  /** Legacy shade position (0-100), not HSL saturation. */
+  saturation: number;
+  /** Index in the input palette, stable across layout sorting. */
+  colorIndex?: number;
   lightness?: number;
   originalSaturation?: number; // Actual saturation from selected petal
   alpha: number;
@@ -22,3 +25,9 @@ export interface BlossomColorPickerColor extends BlossomColorPickerValue {
 export type ColorInput = string | { h: number; s: number; l: number };
 
 export type SliderPosition = 'top' | 'bottom' | 'left' | 'right';
+
+/** Petal outline. Every shape except `circle` points its tip away from the core. */
+export type PetalShape = 'circle' | 'sakura' | 'lotus' | 'pinwheel';
+
+/** Surface detail drawn on shaped petals; `circle` petals stay flat. */
+export type PetalStyle = 'flat' | 'veined';

@@ -11,29 +11,37 @@ Blossom Color Picker の単体コアパッケージと各フレームワーク�
 
 ## 設定リファレンス
 
-| オプション            | 型                                         | デフォルト                                                | 説明                                                                                     |
-| :-------------------- | :----------------------------------------- | :-------------------------------------------------------- | :--------------------------------------------------------------------------------------- |
-| `value`               | `BlossomColorPickerValue`                  | -                                                         | 制御された現在値。                                                                       |
-| `defaultValue`        | `BlossomColorPickerValue`                  | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | 非制御時の初期値。                                                                       |
-| `colors`              | `ColorInput[]`                             | `DEFAULT_COLORS`                                          | カスタムカラー配列。コアが自動で花びらレイヤーに整理します。                             |
-| `onChange`            | `(color: BlossomColorPickerColor) => void` | -                                                         | 色が変わるたびに呼び出されます。                                                         |
-| `onCollapse`          | `(color: BlossomColorPickerColor) => void` | -                                                         | ピッカーが閉じたときに呼び出されます。                                                   |
-| `disabled`            | `boolean`                                  | `false`                                                   | 操作を無効化します。                                                                     |
-| `openOnHover`         | `boolean`                                  | `false`                                                   | ホバーで展開するかどうか。                                                               |
-| `initialExpanded`     | `boolean`                                  | `false`                                                   | 初期状態で展開するかどうか。                                                             |
-| `animationDuration`   | `number`                                   | `280`                                                     | ブルームアニメーションの基準時間（ms）。各フェーズはこの値に比例します。                 |
-| `showAlphaSlider`     | `boolean`                                  | `true`                                                    | 花びらの外側にあるアークスライダーを表示するかどうか。                                   |
-| `coreSize`            | `number`                                   | `32`                                                      | 中心コアボタンの直径（px）。                                                             |
-| `petalSize`           | `number`                                   | `32`                                                      | 各花びらの直径（px）。                                                                   |
-| `showCoreColor`       | `boolean`                                  | `false`                                                   | `true` なら選択中の色を表示し、`false` なら展開中のコアは白になります。                  |
-| `sliderPosition`      | `'top' \| 'bottom' \| 'left' \| 'right'`   | `undefined`                                               | アークスライダーの固定位置。未指定の場合は右側から始まり、自動調整される場合があります。 |
-| `adaptivePositioning` | `boolean`                                  | `true`                                                    | 展開後のピッカーとアークスライダーを表示領域内に収めるよう自動調整します。               |
-| `circularBarWidth`    | `number`                                   | `12`                                                      | 円形の色相バーの幅（px）。                                                               |
-| `sliderWidth`         | `number`                                   | `12`                                                      | 外側アークスライダーのトラックとハンドルの幅（px）。                                     |
-| `sliderOffset`        | `number`                                   | `30`                                                      | 花びらと外側アークスライダーの距離。                                                     |
-| `collapsible`         | `boolean`                                  | `true`                                                    | 折りたたみを許可するかどうか。                                                           |
+| オプション            | 型                                                 | デフォルト                                                 | 説明                                                                                                                                |
+| :-------------------- | :------------------------------------------------- | :--------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------- |
+| `value`               | `BlossomColorPickerValue`                          | -                                                          | 制御された現在値。                                                                                                                  |
+| `defaultValue`        | `BlossomColorPickerValue`                          | `{ hue: 330, saturation: 70, alpha: 100, layer: 'outer' }` | 非制御時の初期値。                                                                                                                  |
+| `colors`              | `ColorInput[]`                                     | `DEFAULT_COLORS`                                           | カスタムカラー配列。コアが自動で花びらレイヤーに整理します。                                                                        |
+| `onChange`            | `(color: BlossomColorPickerColor) => void`         | -                                                          | 色が変わるたびに呼び出されます。                                                                                                    |
+| `onChangeComplete`    | `(color: BlossomColorPickerColor) => void`         | -                                                          | 花びらを選んだとき、または明度のドラッグ／キー操作が終わったときに 1 回だけ呼び出されます。保存や元に戻す履歴に便利です。           |
+| `onCollapse`          | `(color: BlossomColorPickerColor) => void`         | -                                                          | ピッカーが閉じたときに呼び出されます。                                                                                              |
+| `onHover`             | `(color: BlossomColorPickerColor \| null) => void` | -                                                          | 花びらにホバーまたはキーボードフォーカスしている間、その花びらで選ばれる色を渡して呼び出されます。終了時は `null` です。            |
+| `disabled`            | `boolean`                                          | `false`                                                    | 操作を無効化します。                                                                                                                |
+| `openOnHover`         | `boolean`                                          | `false`                                                    | ホバーで展開するかどうか。                                                                                                          |
+| `initialExpanded`     | `boolean`                                          | `false`                                                    | 初期状態で展開するかどうか。                                                                                                        |
+| `animationDuration`   | `number`                                           | `280`                                                      | ブルームアニメーションの基準時間（ms）。各フェーズはこの値に比例します。                                                            |
+| `showShadeSlider`     | `boolean`                                          | `true`                                                     | 花びらの外側に明度（シェード）の円弧スライダーを表示します。                                                                        |
+| `showAlphaSlider`     | `boolean`                                          | `true`                                                     | `showShadeSlider` の非推奨エイリアスです。制御するのは透明度ではなく明度です。両方指定した場合は `showShadeSlider` が優先されます。 |
+| `coreSize`            | `number`                                           | `32`                                                       | 中心コアボタンの直径（px）。                                                                                                        |
+| `petalSize`           | `number`                                           | `32`                                                       | 各花びらの直径（px）。                                                                                                              |
+| `showCoreColor`       | `boolean`                                          | `false`                                                    | `true` なら選択中の色を表示し、`false` なら展開中のコアは白になります。                                                             |
+| `hoverPreview`        | `boolean`                                          | `false`                                                    | 選ぶ前に、ホバーまたはフォーカス中の花びらの色をリング・背景・コアに表示します。                                                    |
+| `petalShape`          | `'circle' \| 'sakura' \| 'lotus' \| 'pinwheel'`    | `'circle'`                                                 | 花びらの形。[スタイル](/docs-ja/introduction/styling) を参照してください。                                                          |
+| `petalStyle`          | `'flat' \| 'veined'`                               | `'flat'`                                                   | 形のある花びらの表面の装飾。`circle` では無視されます。                                                                             |
+| `sliderPosition`      | `'top' \| 'bottom' \| 'left' \| 'right'`           | `undefined`                                                | アークスライダーの固定位置。未指定の場合は右側から始まり、自動調整される場合があります。                                            |
+| `adaptivePositioning` | `boolean`                                          | `true`                                                     | 展開後のピッカーとアークスライダーを表示領域内に収めるよう自動調整します。                                                          |
+| `circularBarWidth`    | `number`                                           | `12`                                                       | 円形の色相バーの幅（px）。                                                                                                          |
+| `sliderWidth`         | `number`                                           | `12`                                                       | 外側アークスライダーのトラックとハンドルの幅（px）。                                                                                |
+| `sliderOffset`        | `number`                                           | `30`                                                       | 花びらと外側アークスライダーの距離。                                                                                                |
+| `collapsible`         | `boolean`                                          | `true`                                                     | 折りたたみを許可するかどうか。                                                                                                      |
 
 `ChromePicker` も同じオプションを使いますが、`collapsible: false`、`animationDuration: 300`、`showCoreColor: true` がデフォルトです。
+
+花びらの形・質感、ホバープレビュー、CSS 変数については [スタイル](/docs-ja/introduction/styling) を参照してください。
 
 ## アニメーションのタイミング
 
@@ -43,10 +51,16 @@ Blossom Color Picker の単体コアパッケージと各フレームワーク�
 
 ## フレームワークごとのイベント名
 
-- **React**: `onChange`、`onCollapse`
-- **Vue**: `@change`、`@collapse`
-- **Svelte**: `onchange`、`oncollapse` コールバック props
-- **Angular**: `(colorChange)`、`(colorCollapse)`
+- **React**: `onChange`、`onChangeComplete`、`onHover`、`onCollapse`
+- **Vue**: `@change`、`@change-complete`、`@hover`、`@collapse`
+- **Svelte**: `onchange`、`onchangecomplete`、`onhover`、`oncollapse` コールバック props
+- **Angular**: `(colorChange)`、`(colorChangeComplete)`、`(colorHover)`、`(colorCollapse)`
+
+## キーボード操作
+
+- トリガーで **Enter** または **Space** を押すと開き、**Escape** で閉じてフォーカスがトリガーに戻ります。
+- **← / →** で同じリングの花びらを移動し、**↑ / ↓** で内側と外側のリングを行き来します。**Enter** または **Space** でフォーカス中の花びらを選びます。
+- 明度スライダーは **矢印キー**（**Shift** を押しながらで 10 刻み）、**Page Up / Page Down**、**Home**、**End** に対応しています。
 
 ## コールバックで受け取る色オブジェクト
 

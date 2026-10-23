@@ -1,0 +1,87 @@
+---
+title: Styling
+description: Blütenblattformen, Oberflächen, Hover-Vorschau und CSS-Variablen.
+---
+
+# Styling
+
+Alle Optionen auf dieser Seite sind standardmäßig aus, ein Update ändert also nichts am Aussehen. Probiere die Kombinationen hier aus:
+
+<PetalStylePlayground />
+
+## Blütenblattformen
+
+`petalShape` legt den Umriss jedes Blütenblatts fest:
+
+| Wert         | Aussehen                                                                |
+| :----------- | :---------------------------------------------------------------------- |
+| `'circle'`   | Runde Blütenblätter, das ursprüngliche Aussehen (Standard).             |
+| `'sakura'`   | Breite Blütenblätter mit einer kleinen Kerbe an der Spitze.             |
+| `'lotus'`    | Eine runde Basis, die in eine Spitze ausläuft.                          |
+| `'pinwheel'` | Die Spitze schwingt zur Seite, sodass die Blüte sich zu drehen scheint. |
+
+Geformte Blütenblätter zeigen mit der Spitze vom Kern weg, sind von der Basis zur Spitze leicht schattiert und reagieren nur innerhalb ihres Umrisses auf den Zeiger.
+
+## Blütenblatt-Oberflächen
+
+`petalStyle` fügt geformten Blütenblättern ein Oberflächendetail hinzu:
+
+| Wert       | Aussehen                                                          |
+| :--------- | :---------------------------------------------------------------- |
+| `'flat'`   | Einfarbige Blütenblätter (Standard).                              |
+| `'veined'` | Eine Mittelrippe und zwei Paar Seitenadern auf jedem Blütenblatt. |
+
+Ist `petalShape` gleich `'circle'`, hat `petalStyle` keine Wirkung.
+
+```tsx
+<BlossomColorPicker petalShape='sakura' petalStyle='veined' />
+```
+
+## Hover-Vorschau
+
+Mit `hoverPreview` erscheint die Farbe des gehoverten oder per Tastatur fokussierten Blütenblatts schon vor der Auswahl auf Ring, Hintergrund und (mit `showCoreColor`) Kern. `onHover` erhält diese Farbe und `null`, wenn die Vorschau endet:
+
+```tsx
+<BlossomColorPicker
+  hoverPreview
+  showCoreColor
+  onHover={color => setPreview(color?.hex ?? null)}
+/>
+```
+
+## CSS-Variablen
+
+Setze sie auf `.bcp-root` oder einem beliebigen Vorfahren. Jede fällt auf das Standardaussehen zurück, ohne sie ändert sich also nichts.
+
+| Variable                       | Standard                         | Gestaltet                                                      |
+| :----------------------------- | :------------------------------- | :------------------------------------------------------------- |
+| `--bcp-surface`                | `#FFFFFF`                        | Hintergrundscheibe hinter den Blütenblättern.                  |
+| `--bcp-surface-shadow`         | weicher Schlagschatten           | Schatten der Hintergrundscheibe.                               |
+| `--bcp-tint-opacity`           | `0.15`                           | Stärke der Farbtönung der gewählten Farbe auf der Scheibe.     |
+| `--bcp-track`                  | `rgba(0, 0, 0, 0.06)`            | Ungefüllte Spur von Ring und Helligkeitsregler.                |
+| `--bcp-petal-shadow`           | `none`                           | Schatten unter runden Blütenblättern.                          |
+| `--bcp-petal-shadow-hover`     | `--bcp-petal-shadow`             | Schatten unter einem gehoverten runden Blütenblatt.            |
+| `--bcp-petal-hover-scale`      | `1.1`                            | Wie stark ein gehovertes Blütenblatt wächst.                   |
+| `--bcp-petal-hover-brightness` | `1.1`                            | Wie stark ein gehovertes Blütenblatt aufhellt.                 |
+| `--bcp-petal-vein-color`       | `#fff`                           | Farbe der Adern bei `petalStyle: 'veined'`.                    |
+| `--bcp-petal-vein-opacity`     | `0.5`                            | Deckkraft der Adern.                                           |
+| `--bcp-core-bg`                | `#FFFFFF`                        | Kernfarbe im geöffneten Zustand, wenn `showCoreColor` aus ist. |
+| `--bcp-core-shadow`            | feiner Ring + Schatten           | Schatten des geöffneten Kerns.                                 |
+| `--bcp-trigger-shadow`         | `0 2px 8px rgba(0, 0, 0, 0.12)`  | Schatten des geschlossenen Auslösers.                          |
+| `--bcp-trigger-shadow-hover`   | `0 4px 14px rgba(0, 0, 0, 0.18)` | Schatten des gehoverten Auslösers.                             |
+| `--bcp-handle-border`          | `white`                          | Umrandung des Reglergriffs.                                    |
+| `--bcp-focus-ring`             | `#3b82f6`                        | Tastatur-Fokusrahmen.                                          |
+| `--bcp-focus-ring-gap`         | `white`                          | Lücke zwischen Kern und Fokusrahmen.                           |
+
+Zum Beispiel ein dunkles Theme:
+
+```css
+.dark .bcp-root {
+  --bcp-surface: #1e1b2e;
+  --bcp-core-bg: #1e1b2e;
+  --bcp-track: rgba(255, 255, 255, 0.12);
+  --bcp-handle-border: #1e1b2e;
+  --bcp-focus-ring-gap: #1e1b2e;
+  --bcp-petal-vein-opacity: 0.35;
+}
+```
