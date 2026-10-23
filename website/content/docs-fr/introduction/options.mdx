@@ -11,29 +11,37 @@ Le paquet cœur autonome et tous les wrappers de framework de Blossom Color Pick
 
 ## Référence de configuration
 
-| Option                | Type                                       | Par défaut                                                | Description                                                                                                   |
-| :-------------------- | :----------------------------------------- | :-------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------ |
-| `value`               | `BlossomColorPickerValue`                  | -                                                         | Valeur contrôlée actuelle.                                                                                    |
-| `defaultValue`        | `BlossomColorPickerValue`                  | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | Valeur initiale en mode non contrôlé.                                                                         |
-| `colors`              | `ColorInput[]`                             | `DEFAULT_COLORS`                                          | Tableau de couleurs personnalisé. Le cœur les organise automatiquement en couches florales.                   |
-| `onChange`            | `(color: BlossomColorPickerColor) => void` | -                                                         | Appelé à chaque changement de couleur.                                                                        |
-| `onCollapse`          | `(color: BlossomColorPickerColor) => void` | -                                                         | Appelé lorsque le sélecteur se replie.                                                                        |
-| `disabled`            | `boolean`                                  | `false`                                                   | Désactive l'interaction.                                                                                      |
-| `openOnHover`         | `boolean`                                  | `false`                                                   | Ouvre le sélecteur au survol.                                                                                 |
-| `initialExpanded`     | `boolean`                                  | `false`                                                   | Ouvre le sélecteur dès l'initialisation.                                                                      |
-| `animationDuration`   | `number`                                   | `280`                                                     | Durée de référence de l'animation de floraison en millisecondes. Chaque phase s'y adapte proportionnellement. |
-| `showAlphaSlider`     | `boolean`                                  | `true`                                                    | Affiche le curseur en arc externe.                                                                            |
-| `coreSize`            | `number`                                   | `32`                                                      | Diamètre du bouton central en pixels.                                                                         |
-| `petalSize`           | `number`                                   | `32`                                                      | Diamètre de chaque pétale en pixels.                                                                          |
-| `showCoreColor`       | `boolean`                                  | `false`                                                   | Affiche la couleur sélectionnée si activé ; sinon, le cœur déployé est blanc.                                 |
-| `sliderPosition`      | `'top' \| 'bottom' \| 'left' \| 'right'`   | `undefined`                                               | Position fixe du curseur en arc. Sans valeur, il démarre à droite et peut se repositionner automatiquement.   |
-| `adaptivePositioning` | `boolean`                                  | `true`                                                    | Repositionne automatiquement le sélecteur ouvert et le curseur en arc pour rester visibles.                   |
-| `circularBarWidth`    | `number`                                   | `12`                                                      | Largeur de la barre circulaire de teinte en pixels.                                                           |
-| `sliderWidth`         | `number`                                   | `12`                                                      | Largeur de la piste et de la poignée du curseur en arc en pixels.                                             |
-| `sliderOffset`        | `number`                                   | `30`                                                      | Distance entre les pétales et le curseur en arc externe.                                                      |
-| `collapsible`         | `boolean`                                  | `true`                                                    | Autorise le repli du sélecteur.                                                                               |
+| Option                | Type                                               | Par défaut                                                 | Description                                                                                                                                                                      |
+| :-------------------- | :------------------------------------------------- | :--------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`               | `BlossomColorPickerValue`                          | -                                                          | Valeur contrôlée actuelle.                                                                                                                                                       |
+| `defaultValue`        | `BlossomColorPickerValue`                          | `{ hue: 330, saturation: 70, alpha: 100, layer: 'outer' }` | Valeur initiale en mode non contrôlé.                                                                                                                                            |
+| `colors`              | `ColorInput[]`                                     | `DEFAULT_COLORS`                                           | Tableau de couleurs personnalisé. Le cœur les organise automatiquement en couches florales.                                                                                      |
+| `onChange`            | `(color: BlossomColorPickerColor) => void`         | -                                                          | Appelé à chaque changement de couleur.                                                                                                                                           |
+| `onChangeComplete`    | `(color: BlossomColorPickerColor) => void`         | -                                                          | Appelé une seule fois quand un pétale est choisi ou quand un glissement / appui de touche sur la teinte se termine. Pratique pour enregistrer ou pour l'historique d'annulation. |
+| `onCollapse`          | `(color: BlossomColorPickerColor) => void`         | -                                                          | Appelé lorsque le sélecteur se replie.                                                                                                                                           |
+| `onHover`             | `(color: BlossomColorPickerColor \| null) => void` | -                                                          | Appelé avec la couleur qu'un pétale sélectionnerait pendant qu'il est survolé ou qu'il a le focus clavier, puis avec `null` à la fin.                                            |
+| `disabled`            | `boolean`                                          | `false`                                                    | Désactive l'interaction.                                                                                                                                                         |
+| `openOnHover`         | `boolean`                                          | `false`                                                    | Ouvre le sélecteur au survol.                                                                                                                                                    |
+| `initialExpanded`     | `boolean`                                          | `false`                                                    | Ouvre le sélecteur dès l'initialisation.                                                                                                                                         |
+| `animationDuration`   | `number`                                           | `280`                                                      | Durée de référence de l'animation de floraison en millisecondes. Chaque phase s'y adapte proportionnellement.                                                                    |
+| `showShadeSlider`     | `boolean`                                          | `true`                                                     | Affiche le curseur en arc de luminosité autour des pétales.                                                                                                                      |
+| `showAlphaSlider`     | `boolean`                                          | `true`                                                     | Alias obsolète de `showShadeSlider` ; il règle la luminosité, pas l'opacité. Si les deux sont fournis, `showShadeSlider` l'emporte.                                              |
+| `coreSize`            | `number`                                           | `32`                                                       | Diamètre du bouton central en pixels.                                                                                                                                            |
+| `petalSize`           | `number`                                           | `32`                                                       | Diamètre de chaque pétale en pixels.                                                                                                                                             |
+| `showCoreColor`       | `boolean`                                          | `false`                                                    | Affiche la couleur sélectionnée si activé ; sinon, le cœur déployé est blanc.                                                                                                    |
+| `hoverPreview`        | `boolean`                                          | `false`                                                    | Affiche la couleur du pétale survolé ou focalisé sur l'anneau, le fond et le cœur avant qu'il ne soit choisi.                                                                    |
+| `petalShape`          | `'circle' \| 'sakura' \| 'lotus' \| 'pinwheel'`    | `'circle'`                                                 | Contour des pétales. Voir [Style](/docs-fr/introduction/styling).                                                                                                                |
+| `petalStyle`          | `'flat' \| 'veined'`                               | `'flat'`                                                   | Détail de surface sur les pétales façonnés. Ignoré pour `circle`.                                                                                                                |
+| `sliderPosition`      | `'top' \| 'bottom' \| 'left' \| 'right'`           | `undefined`                                                | Position fixe du curseur en arc. Sans valeur, il démarre à droite et peut se repositionner automatiquement.                                                                      |
+| `adaptivePositioning` | `boolean`                                          | `true`                                                     | Repositionne automatiquement le sélecteur ouvert et le curseur en arc pour rester visibles.                                                                                      |
+| `circularBarWidth`    | `number`                                           | `12`                                                       | Largeur de la barre circulaire de teinte en pixels.                                                                                                                              |
+| `sliderWidth`         | `number`                                           | `12`                                                       | Largeur de la piste et de la poignée du curseur en arc en pixels.                                                                                                                |
+| `sliderOffset`        | `number`                                           | `30`                                                       | Distance entre les pétales et le curseur en arc externe.                                                                                                                         |
+| `collapsible`         | `boolean`                                          | `true`                                                     | Autorise le repli du sélecteur.                                                                                                                                                  |
 
 `ChromePicker` utilise les mêmes options, mais avec `collapsible: false`, `animationDuration: 300` et `showCoreColor: true` par défaut.
+
+Pour les formes et textures de pétales, l'aperçu au survol et les variables CSS, voir [Style](/docs-fr/introduction/styling).
 
 ## Durée de l'animation
 
@@ -43,10 +51,16 @@ Lorsque l'utilisateur a activé `prefers-reduced-motion: reduce`, le sélecteur 
 
 ## Noms des événements selon le framework
 
-- **React** : `onChange`, `onCollapse`
-- **Vue** : `@change`, `@collapse`
-- **Svelte** : props de rappel `onchange` et `oncollapse`
-- **Angular** : `(colorChange)` et `(colorCollapse)`
+- **React** : `onChange`, `onChangeComplete`, `onHover` et `onCollapse`
+- **Vue** : `@change`, `@change-complete`, `@hover` et `@collapse`
+- **Svelte** : props de rappel `onchange`, `onchangecomplete`, `onhover` et `oncollapse`
+- **Angular** : `(colorChange)`, `(colorChangeComplete)`, `(colorHover)` et `(colorCollapse)`
+
+## Clavier
+
+- **Entrée** ou **Espace** sur le déclencheur ouvre le sélecteur ; **Échap** le ferme et rend le focus au déclencheur.
+- **Flèche gauche / droite** parcourent un anneau de pétales ; **flèche haut / bas** passent de l'anneau intérieur à l'anneau extérieur. **Entrée** ou **Espace** choisit le pétale focalisé.
+- Le curseur de luminosité accepte les **flèches** (avec **Maj** par pas de 10), **Page préc. / Page suiv.**, **Début** et **Fin**.
 
 ## Objet couleur renvoyé dans les callbacks
 

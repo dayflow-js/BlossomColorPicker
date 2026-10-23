@@ -3,6 +3,7 @@ import type { MDXComponents } from 'mdx/types';
 
 import { FrameworkInstall, PackageTabs } from '@/components/FrameworkInstall';
 import { FrameworkTabs, Tab } from '@/components/FrameworkTabs';
+import { PetalStylePlayground } from '@/components/showcase/PetalStyleControls';
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
@@ -34,6 +35,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     PackageTabs,
     Tab,
     DocImg,
+    PetalStylePlayground,
     ...components,
   };
 }

@@ -1,0 +1,87 @@
+---
+title: Styling
+description: Petal shapes, petal styles, hover preview and CSS variables.
+---
+
+# Styling
+
+Every option on this page is off by default, so upgrading keeps the original look. Try the combinations below:
+
+<PetalStylePlayground />
+
+## Petal Shapes
+
+`petalShape` sets the outline of every petal:
+
+| Value        | Look                                                               |
+| :----------- | :----------------------------------------------------------------- |
+| `'circle'`   | Round petals, the original look (default).                         |
+| `'sakura'`   | Broad petals with a small notch at the tip.                        |
+| `'lotus'`    | A round base drawn up into a pointed tip.                          |
+| `'pinwheel'` | The tip sweeps to one side, so the bloom looks like it is turning. |
+
+Shaped petals point their tip away from the core, are shaded lightly from base to tip, and only respond to the pointer inside their outline.
+
+## Petal Styles
+
+`petalStyle` adds surface detail to shaped petals:
+
+| Value      | Look                                                |
+| :--------- | :-------------------------------------------------- |
+| `'flat'`   | Plain petals (default).                             |
+| `'veined'` | A midrib and two pairs of side veins on each petal. |
+
+`petalStyle` has no effect when `petalShape` is `'circle'`.
+
+```tsx
+<BlossomColorPicker petalShape='sakura' petalStyle='veined' />
+```
+
+## Hover Preview
+
+Set `hoverPreview` to show the hovered or keyboard-focused petal's color on the ring, the background and (with `showCoreColor`) the core before it is picked. `onHover` receives that color, and `null` when the preview ends:
+
+```tsx
+<BlossomColorPicker
+  hoverPreview
+  showCoreColor
+  onHover={color => setPreview(color?.hex ?? null)}
+/>
+```
+
+## CSS Variables
+
+Set these on `.bcp-root` or any ancestor. Each one falls back to the default look, so leaving them unset changes nothing.
+
+| Variable                       | Default                          | Styles                                                  |
+| :----------------------------- | :------------------------------- | :------------------------------------------------------ |
+| `--bcp-surface`                | `#FFFFFF`                        | Background disc behind the petals.                      |
+| `--bcp-surface-shadow`         | soft drop shadow                 | Shadow of the background disc.                          |
+| `--bcp-tint-opacity`           | `0.15`                           | Strength of the selected-color tint on the disc.        |
+| `--bcp-track`                  | `rgba(0, 0, 0, 0.06)`            | Unfilled track of the ring and the shade slider.        |
+| `--bcp-petal-shadow`           | `none`                           | Shadow under each round petal.                          |
+| `--bcp-petal-shadow-hover`     | `--bcp-petal-shadow`             | Shadow under a hovered round petal.                     |
+| `--bcp-petal-hover-scale`      | `1.1`                            | How much a hovered petal grows.                         |
+| `--bcp-petal-hover-brightness` | `1.1`                            | How much a hovered petal brightens.                     |
+| `--bcp-petal-vein-color`       | `#fff`                           | Color of the vein lines with `petalStyle: 'veined'`.    |
+| `--bcp-petal-vein-opacity`     | `0.5`                            | Opacity of the vein lines.                              |
+| `--bcp-core-bg`                | `#FFFFFF`                        | Core color while expanded, when `showCoreColor` is off. |
+| `--bcp-core-shadow`            | subtle ring + shadow             | Shadow of the expanded core.                            |
+| `--bcp-trigger-shadow`         | `0 2px 8px rgba(0, 0, 0, 0.12)`  | Shadow of the collapsed trigger.                        |
+| `--bcp-trigger-shadow-hover`   | `0 4px 14px rgba(0, 0, 0, 0.18)` | Shadow of the hovered trigger.                          |
+| `--bcp-handle-border`          | `white`                          | Outline of the shade slider handle.                     |
+| `--bcp-focus-ring`             | `#3b82f6`                        | Keyboard focus outline.                                 |
+| `--bcp-focus-ring-gap`         | `white`                          | Gap between the core and its focus outline.             |
+
+For example, a dark theme:
+
+```css
+.dark .bcp-root {
+  --bcp-surface: #1e1b2e;
+  --bcp-core-bg: #1e1b2e;
+  --bcp-track: rgba(255, 255, 255, 0.12);
+  --bcp-handle-border: #1e1b2e;
+  --bcp-focus-ring-gap: #1e1b2e;
+  --bcp-petal-vein-opacity: 0.35;
+}
+```

@@ -146,18 +146,18 @@ const picker = new ChromePicker(document.getElementById('picker'), {
 
 `ChromePicker` は標準の `BlossomColorPicker` とほぼ同じオプションを共有します。
 
-| オプション        | 型                                         | デフォルト                                                | 説明                                                                               |
-| :---------------- | :----------------------------------------- | :-------------------------------------------------------- | :--------------------------------------------------------------------------------- |
-| `value`           | `BlossomColorPickerValue`                  | -                                                         | 制御された現在値。                                                                 |
-| `defaultValue`    | `BlossomColorPickerValue`                  | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | 非制御時の初期値。                                                                 |
-| `colors`          | `ColorInput[]`                             | `DEFAULT_COLORS`                                          | blossom セクションに表示する花びらカラー。                                         |
-| `onChange`        | `(color: BlossomColorPickerColor) => void` | -                                                         | 色変更時に呼び出されます。                                                         |
-| `onCollapse`      | `(color: BlossomColorPickerColor) => void` | -                                                         | ピッカーが閉じたときに呼び出されます。                                             |
-| `disabled`        | `boolean`                                  | `false`                                                   | 操作を無効化します。                                                               |
-| `showAlphaSlider` | `boolean`                                  | `true`                                                    | 透明度スライダー行を表示します。                                                   |
-| `coreSize`        | `number`                                   | `32`                                                      | blossom コアボタンのサイズ（px）。                                                 |
-| `petalSize`       | `number`                                   | `32`                                                      | blossom 花びらのサイズ（px）。                                                     |
-| `collapsible`     | `boolean`                                  | `false`                                                   | blossom セクションを折りたためるかどうか。`ChromePicker` では `false` が既定です。 |
+| オプション        | 型                                         | デフォルト                                                 | 説明                                                                               |
+| :---------------- | :----------------------------------------- | :--------------------------------------------------------- | :--------------------------------------------------------------------------------- |
+| `value`           | `BlossomColorPickerValue`                  | -                                                          | 制御された現在値。                                                                 |
+| `defaultValue`    | `BlossomColorPickerValue`                  | `{ hue: 330, saturation: 70, alpha: 100, layer: 'outer' }` | 非制御時の初期値。                                                                 |
+| `colors`          | `ColorInput[]`                             | `DEFAULT_COLORS`                                           | blossom セクションに表示する花びらカラー。                                         |
+| `onChange`        | `(color: BlossomColorPickerColor) => void` | -                                                          | 色変更時に呼び出されます。                                                         |
+| `onCollapse`      | `(color: BlossomColorPickerColor) => void` | -                                                          | ピッカーが閉じたときに呼び出されます。                                             |
+| `disabled`        | `boolean`                                  | `false`                                                    | 操作を無効化します。                                                               |
+| `showAlphaSlider` | `boolean`                                  | `true`                                                     | 透明度スライダー行を表示します。                                                   |
+| `coreSize`        | `number`                                   | `32`                                                       | blossom コアボタンのサイズ（px）。                                                 |
+| `petalSize`       | `number`                                   | `32`                                                       | blossom 花びらのサイズ（px）。                                                     |
+| `collapsible`     | `boolean`                                  | `false`                                                    | blossom セクションを折りたためるかどうか。`ChromePicker` では `false` が既定です。 |
 
 `ChromePicker` のデフォルトは `animationDuration: 300` と `showCoreColor: true` で、展開中のコアには選択中の色が表示されます。
 

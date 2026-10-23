@@ -146,18 +146,18 @@ const picker = new ChromePicker(document.getElementById('picker'), {
 
 `ChromePicker` teilt fast alle Optionen mit dem normalen `BlossomColorPicker`.
 
-| Option            | Typ                                        | Standard                                                  | Beschreibung                                                                                       |
-| :---------------- | :----------------------------------------- | :-------------------------------------------------------- | :------------------------------------------------------------------------------------------------- |
-| `value`           | `BlossomColorPickerValue`                  | -                                                         | Kontrollierter aktueller Wert.                                                                     |
-| `defaultValue`    | `BlossomColorPickerValue`                  | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | Startwert im unkontrollierten Modus.                                                               |
-| `colors`          | `ColorInput[]`                             | `DEFAULT_COLORS`                                          | Farben der Blütenblätter im Blossom-Bereich.                                                       |
-| `onChange`        | `(color: BlossomColorPickerColor) => void` | -                                                         | Wird bei Farbänderungen aufgerufen.                                                                |
-| `onCollapse`      | `(color: BlossomColorPickerColor) => void` | -                                                         | Wird beim Einklappen aufgerufen.                                                                   |
-| `disabled`        | `boolean`                                  | `false`                                                   | Deaktiviert die Interaktion.                                                                       |
-| `showAlphaSlider` | `boolean`                                  | `true`                                                    | Zeigt die Alpha-Slider-Zeile an.                                                                   |
-| `coreSize`        | `number`                                   | `32`                                                      | Größe des Core-Buttons in Pixeln.                                                                  |
-| `petalSize`       | `number`                                   | `32`                                                      | Größe der Blütenblätter in Pixeln.                                                                 |
-| `collapsible`     | `boolean`                                  | `false`                                                   | Legt fest, ob der Blossom-Bereich einklappbar ist. `ChromePicker` verwendet standardmäßig `false`. |
+| Option            | Typ                                        | Standard                                                   | Beschreibung                                                                                       |
+| :---------------- | :----------------------------------------- | :--------------------------------------------------------- | :------------------------------------------------------------------------------------------------- |
+| `value`           | `BlossomColorPickerValue`                  | -                                                          | Kontrollierter aktueller Wert.                                                                     |
+| `defaultValue`    | `BlossomColorPickerValue`                  | `{ hue: 330, saturation: 70, alpha: 100, layer: 'outer' }` | Startwert im unkontrollierten Modus.                                                               |
+| `colors`          | `ColorInput[]`                             | `DEFAULT_COLORS`                                           | Farben der Blütenblätter im Blossom-Bereich.                                                       |
+| `onChange`        | `(color: BlossomColorPickerColor) => void` | -                                                          | Wird bei Farbänderungen aufgerufen.                                                                |
+| `onCollapse`      | `(color: BlossomColorPickerColor) => void` | -                                                          | Wird beim Einklappen aufgerufen.                                                                   |
+| `disabled`        | `boolean`                                  | `false`                                                    | Deaktiviert die Interaktion.                                                                       |
+| `showAlphaSlider` | `boolean`                                  | `true`                                                     | Zeigt die Alpha-Slider-Zeile an.                                                                   |
+| `coreSize`        | `number`                                   | `32`                                                       | Größe des Core-Buttons in Pixeln.                                                                  |
+| `petalSize`       | `number`                                   | `32`                                                       | Größe der Blütenblätter in Pixeln.                                                                 |
+| `collapsible`     | `boolean`                                  | `false`                                                    | Legt fest, ob der Blossom-Bereich einklappbar ist. `ChromePicker` verwendet standardmäßig `false`. |
 
 `ChromePicker` verwendet standardmäßig `animationDuration: 300` und `showCoreColor: true`; der geöffnete Kern zeigt daher die gewählte Farbe.
 

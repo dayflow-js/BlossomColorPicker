@@ -11,29 +11,37 @@ Blossom Color Picker 的独立核心包和所有框架封装都共享同一套�
 
 ## 配置参考
 
-| 选项                  | 类型                                       | 默认值                                                    | 描述                                                         |
-| :-------------------- | :----------------------------------------- | :-------------------------------------------------------- | :----------------------------------------------------------- |
-| `value`               | `BlossomColorPickerValue`                  | -                                                         | 受控模式下的当前值。                                         |
-| `defaultValue`        | `BlossomColorPickerValue`                  | `{ hue: 330, saturation: 70, alpha: 50, layer: 'outer' }` | 非受控模式下的初始值。                                       |
-| `colors`              | `ColorInput[]`                             | `DEFAULT_COLORS`                                          | 自定义颜色集合。核心会自动将这些颜色整理成花瓣层级。         |
-| `onChange`            | `(color: BlossomColorPickerColor) => void` | -                                                         | 颜色变化时触发。                                             |
-| `onCollapse`          | `(color: BlossomColorPickerColor) => void` | -                                                         | 选择器折叠时触发。                                           |
-| `disabled`            | `boolean`                                  | `false`                                                   | 是否禁用交互。                                               |
-| `openOnHover`         | `boolean`                                  | `false`                                                   | 是否在悬停时展开。                                           |
-| `initialExpanded`     | `boolean`                                  | `false`                                                   | 初始是否展开。                                               |
-| `animationDuration`   | `number`                                   | `280`                                                     | 绽放动画的基准时长（毫秒），各阶段按此值等比缩放。           |
-| `showAlphaSlider`     | `boolean`                                  | `true`                                                    | 是否显示花瓣外侧的弧形滑块。                                 |
-| `coreSize`            | `number`                                   | `32`                                                      | 中心核心按钮直径，单位为像素。                               |
-| `petalSize`           | `number`                                   | `32`                                                      | 单个花瓣直径，单位为像素。                                   |
-| `showCoreColor`       | `boolean`                                  | `false`                                                   | 为 `true` 时显示选中颜色；为 `false` 时展开的花心为白色。    |
-| `sliderPosition`      | `'top' \| 'bottom' \| 'left' \| 'right'`   | `undefined`                                               | 固定弧形滑块位置。若不传，则初始从右侧开始，并可自动调整。   |
-| `adaptivePositioning` | `boolean`                                  | `true`                                                    | 自动调整展开后的选择器和弧形滑块位置，使其尽量保持在视口内。 |
-| `circularBarWidth`    | `number`                                   | `12`                                                      | 圆形色相条宽度，单位为像素。                                 |
-| `sliderWidth`         | `number`                                   | `12`                                                      | 外侧弧形滑块轨道和手柄宽度，单位为像素。                     |
-| `sliderOffset`        | `number`                                   | `30`                                                      | 花瓣与外侧弧形滑块之间的距离。                               |
-| `collapsible`         | `boolean`                                  | `true`                                                    | 是否允许折叠。                                               |
+| 选项                  | 类型                                               | 默认值                                                     | 描述                                                                                                  |
+| :-------------------- | :------------------------------------------------- | :--------------------------------------------------------- | :---------------------------------------------------------------------------------------------------- |
+| `value`               | `BlossomColorPickerValue`                          | -                                                          | 受控模式下的当前值。                                                                                  |
+| `defaultValue`        | `BlossomColorPickerValue`                          | `{ hue: 330, saturation: 70, alpha: 100, layer: 'outer' }` | 非受控模式下的初始值。                                                                                |
+| `colors`              | `ColorInput[]`                                     | `DEFAULT_COLORS`                                           | 自定义颜色集合。核心会自动将这些颜色整理成花瓣层级。                                                  |
+| `onChange`            | `(color: BlossomColorPickerColor) => void`         | -                                                          | 颜色变化时触发。                                                                                      |
+| `onChangeComplete`    | `(color: BlossomColorPickerColor) => void`         | -                                                          | 选中花瓣、或拖动/按键调整明暗结束时触发一次。适合用来保存或记录撤销历史。                             |
+| `onCollapse`          | `(color: BlossomColorPickerColor) => void`         | -                                                          | 选择器折叠时触发。                                                                                    |
+| `onHover`             | `(color: BlossomColorPickerColor \| null) => void` | -                                                          | 悬停或用键盘聚焦某片花瓣时，以该花瓣对应的颜色触发；预览结束时传入 `null`。                           |
+| `disabled`            | `boolean`                                          | `false`                                                    | 是否禁用交互。                                                                                        |
+| `openOnHover`         | `boolean`                                          | `false`                                                    | 是否在悬停时展开。                                                                                    |
+| `initialExpanded`     | `boolean`                                          | `false`                                                    | 初始是否展开。                                                                                        |
+| `animationDuration`   | `number`                                           | `280`                                                      | 绽放动画的基准时长（毫秒），各阶段按此值等比缩放。                                                    |
+| `showShadeSlider`     | `boolean`                                          | `true`                                                     | 是否显示花瓣外侧的明暗（亮度）弧形滑块。                                                              |
+| `showAlphaSlider`     | `boolean`                                          | `true`                                                     | `showShadeSlider` 的已弃用别名，它控制的是明暗而不是透明度。两者同时设置时以 `showShadeSlider` 为准。 |
+| `coreSize`            | `number`                                           | `32`                                                       | 中心核心按钮直径，单位为像素。                                                                        |
+| `petalSize`           | `number`                                           | `32`                                                       | 单个花瓣直径，单位为像素。                                                                            |
+| `showCoreColor`       | `boolean`                                          | `false`                                                    | 为 `true` 时显示选中颜色；为 `false` 时展开的花心为白色。                                             |
+| `hoverPreview`        | `boolean`                                          | `false`                                                    | 在选中之前，先把悬停或聚焦花瓣的颜色显示在色环、背景和花心上。                                        |
+| `petalShape`          | `'circle' \| 'sakura' \| 'lotus' \| 'pinwheel'`    | `'circle'`                                                 | 花瓣轮廓。参见 [样式](/docs-zh/introduction/styling)。                                                |
+| `petalStyle`          | `'flat' \| 'veined'`                               | `'flat'`                                                   | 异形花瓣上的表面细节。`circle` 时无效。                                                               |
+| `sliderPosition`      | `'top' \| 'bottom' \| 'left' \| 'right'`           | `undefined`                                                | 固定弧形滑块位置。若不传，则初始从右侧开始，并可自动调整。                                            |
+| `adaptivePositioning` | `boolean`                                          | `true`                                                     | 自动调整展开后的选择器和弧形滑块位置，使其尽量保持在视口内。                                          |
+| `circularBarWidth`    | `number`                                           | `12`                                                       | 圆形色相条宽度，单位为像素。                                                                          |
+| `sliderWidth`         | `number`                                           | `12`                                                       | 外侧弧形滑块轨道和手柄宽度，单位为像素。                                                              |
+| `sliderOffset`        | `number`                                           | `30`                                                       | 花瓣与外侧弧形滑块之间的距离。                                                                        |
+| `collapsible`         | `boolean`                                          | `true`                                                     | 是否允许折叠。                                                                                        |
 
 `ChromePicker` 使用相同的选项，但默认值为 `collapsible: false`、`animationDuration: 300` 和 `showCoreColor: true`。
+
+花瓣形状、花瓣质感、悬停预览和 CSS 变量请参见 [样式](/docs-zh/introduction/styling)。
 
 ## 动画时长
 
@@ -43,10 +51,16 @@ Blossom Color Picker 的独立核心包和所有框架封装都共享同一套�
 
 ## 各框架事件名称
 
-- **React**：`onChange`、`onCollapse`
-- **Vue**：`@change`、`@collapse`
-- **Svelte**：`onchange`、`oncollapse` 回调属性
-- **Angular**：`(colorChange)`、`(colorCollapse)`
+- **React**：`onChange`、`onChangeComplete`、`onHover`、`onCollapse`
+- **Vue**：`@change`、`@change-complete`、`@hover`、`@collapse`
+- **Svelte**：`onchange`、`onchangecomplete`、`onhover`、`oncollapse` 回调属性
+- **Angular**：`(colorChange)`、`(colorChangeComplete)`、`(colorHover)`、`(colorCollapse)`
+
+## 键盘操作
+
+- 在触发按钮上按 **Enter** 或 **Space** 展开选择器；按 **Escape** 收起，焦点回到触发按钮。
+- **← / →** 在同一圈花瓣间移动；**↑ / ↓** 在内外圈之间切换。按 **Enter** 或 **Space** 选中当前花瓣。
+- 明暗滑块支持**方向键**（按住 **Shift** 每次 10）、**Page Up / Page Down**、**Home** 和 **End**。
 
 ## 回调返回的颜色对象
 
