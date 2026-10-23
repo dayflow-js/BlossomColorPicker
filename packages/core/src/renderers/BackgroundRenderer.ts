@@ -10,7 +10,6 @@ import {
   bloomTime,
 } from '../constants';
 import { createElement, setStyles } from '../dom-helpers';
-import { hslaToString } from '../utils';
 
 export class BackgroundRenderer {
   public el: HTMLDivElement;
@@ -42,10 +41,10 @@ export class BackgroundRenderer {
     setStyles(this.solidBg, {
       position: 'absolute',
       inset: '0',
-      backgroundColor: '#FFFFFF',
+      backgroundColor: 'var(--bcp-surface, #FFFFFF)',
       borderRadius: '50%',
       boxShadow:
-        '0 12px 32px -4px rgba(0, 0, 0, 0.12), 0 4px 12px -2px rgba(0, 0, 0, 0.06)',
+        'var(--bcp-surface-shadow, 0 12px 32px -4px rgba(0, 0, 0, 0.12), 0 4px 12px -2px rgba(0, 0, 0, 0.06))',
       opacity: '0',
       willChange: 'transform, opacity',
     });
@@ -72,6 +71,8 @@ export class BackgroundRenderer {
     // edge never peeks out from under it.
     const t = (ms: number) => bloomTime(ms, this.animationDuration);
     setStyles(this.solidBg, {
+      // Clicks between petals land on the disc, so they stay inside the picker.
+      pointerEvents: isExpanded ? 'auto' : 'none',
       opacity: isExpanded ? '1' : '0',
       transform: isExpanded ? 'scale(1)' : `scale(${RING_COLLAPSED_SCALE})`,
       transition: isExpanded
@@ -80,7 +81,7 @@ export class BackgroundRenderer {
     });
 
     setStyles(this.tintEl, {
-      backgroundColor: hslaToString(hue, saturation, lightness, 15),
+      backgroundColor: `hsl(${Math.round(hue)} ${Math.round(saturation)}% ${Math.round(lightness)}% / var(--bcp-tint-opacity, 0.15))`,
     });
   }
 

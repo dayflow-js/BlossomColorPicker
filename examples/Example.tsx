@@ -147,6 +147,9 @@ const Example = () => {
                 sliderWidth={24}
                 adaptivePositioning={false}
                 showCoreColor
+                // export type PetalShape = 'circle' | 'sakura' | 'lotus';
+                petalShape={'sakura'}
+                petalStyle={'veined'}
               />
             </div>
           </div>
@@ -178,6 +181,8 @@ const Example = () => {
                   petalSize={32}
                   sliderWidth={18}
                   showCoreColor
+                  petalShape={'sakura'}
+
                   onCollapse={() => setIsPickerExpanded(false)}
                 />
               </div>

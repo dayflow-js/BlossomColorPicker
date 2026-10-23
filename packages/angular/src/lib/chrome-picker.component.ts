@@ -18,6 +18,8 @@ import {
   type BlossomColorPickerColor,
   type ColorInput,
   type SliderPosition,
+  type PetalShape,
+  type PetalStyle,
   type ChromePickerThemeColors,
 } from '@dayflow/blossom-color-picker';
 
@@ -40,6 +42,10 @@ export class ChromePickerComponent
   @Input() initialExpanded = false;
   @Input() animationDuration = 300;
   @Input() showAlphaSlider = true;
+  @Input() showShadeSlider?: boolean;
+  @Input() petalShape?: PetalShape;
+  @Input() petalStyle?: PetalStyle;
+  @Input() hoverPreview?: boolean;
   @Input() coreSize = 32;
   @Input() petalSize = 32;
   @Input() showCoreColor = true;
@@ -53,6 +59,8 @@ export class ChromePickerComponent
   @Input() darkModeColors?: Partial<ChromePickerThemeColors>;
 
   @Output() colorChange = new EventEmitter<BlossomColorPickerColor>();
+  @Output() colorChangeComplete = new EventEmitter<BlossomColorPickerColor>();
+  @Output() colorHover = new EventEmitter<BlossomColorPickerColor | null>();
   @Output() colorCollapse = new EventEmitter<BlossomColorPickerColor>();
 
   private picker: CorePicker | null = null;
@@ -77,6 +85,8 @@ export class ChromePickerComponent
       this.picker.setOptions({
         value: this.value,
         onChange: color => this.colorChange.emit(color),
+        onChangeComplete: color => this.colorChangeComplete.emit(color),
+        onHover: color => this.colorHover.emit(color),
         onCollapse: color => this.colorCollapse.emit(color),
       });
       return;
@@ -95,6 +105,10 @@ export class ChromePickerComponent
       initialExpanded: this.initialExpanded,
       animationDuration: this.animationDuration,
       showAlphaSlider: this.showAlphaSlider,
+      showShadeSlider: this.showShadeSlider,
+      petalShape: this.petalShape,
+      petalStyle: this.petalStyle,
+      hoverPreview: this.hoverPreview,
       coreSize: this.coreSize,
       petalSize: this.petalSize,
       showCoreColor: this.showCoreColor,
@@ -107,6 +121,8 @@ export class ChromePickerComponent
       darkMode: this.darkMode,
       darkModeColors: this.darkModeColors,
       onChange: color => this.colorChange.emit(color),
+      onChangeComplete: color => this.colorChangeComplete.emit(color),
+      onHover: color => this.colorHover.emit(color),
       onCollapse: color => this.colorCollapse.emit(color),
     };
   }

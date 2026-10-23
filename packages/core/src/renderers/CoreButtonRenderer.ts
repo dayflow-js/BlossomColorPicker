@@ -55,9 +55,9 @@ export class CoreButtonRenderer {
           ? 'scale(1.05)'
           : 'scale(1)',
       boxShadow: isExpanded
-        ? '0 0 0 2px rgba(0,0,0,0.08), 0 3px 8px rgba(0,0,0,0.12)'
-        : '0 2px 8px rgba(0,0,0,0.12)',
-      transition: `transform 200ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms ease, opacity ${fade}ms ease ${isExpanded ? 0 : handoff}ms`,
+        ? 'var(--bcp-core-shadow, 0 0 0 2px rgba(0,0,0,0.08), 0 3px 8px rgba(0,0,0,0.12))'
+        : 'var(--bcp-trigger-shadow, 0 2px 8px rgba(0,0,0,0.12))',
+      transition: `transform 200ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms ease, background-color 180ms ease, opacity ${fade}ms ease ${isExpanded ? 0 : handoff}ms`,
     });
   }
 

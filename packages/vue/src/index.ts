@@ -6,6 +6,8 @@ import {
   type BlossomColorPickerColor,
   type ColorInput,
   type SliderPosition,
+  type PetalShape,
+  type PetalStyle,
   type ChromePickerThemeColors,
 } from '@dayflow/blossom-color-picker';
 import {
@@ -24,6 +26,8 @@ export type {
   BlossomColorPickerColor,
   ColorInput,
   SliderPosition,
+  PetalShape,
+  PetalStyle,
   ChromePickerThemeColors,
 } from '@dayflow/blossom-color-picker';
 
@@ -66,6 +70,10 @@ const commonProps = {
     type: Number,
     default: 300,
   },
+  showShadeSlider: {
+    type: Boolean,
+    default: undefined,
+  },
   showAlphaSlider: {
     type: Boolean,
     default: true,
@@ -84,6 +92,18 @@ const commonProps = {
   },
   sliderPosition: {
     type: String as PropType<SliderPosition>,
+    default: undefined,
+  },
+  petalShape: {
+    type: String as PropType<PetalShape>,
+    default: undefined,
+  },
+  petalStyle: {
+    type: String as PropType<PetalStyle>,
+    default: undefined,
+  },
+  hoverPreview: {
+    type: Boolean,
     default: undefined,
   },
   adaptivePositioning: {
@@ -108,7 +128,13 @@ const commonProps = {
   },
 };
 
-function getCommonOptions(props: any, onChange: any, onCollapse: any) {
+function getCommonOptions(
+  props: any,
+  onChange: any,
+  onCollapse: any,
+  onChangeComplete: any,
+  onHover: any
+) {
   return {
     value: props.value,
     defaultValue: props.defaultValue,
@@ -118,6 +144,7 @@ function getCommonOptions(props: any, onChange: any, onCollapse: any) {
     initialExpanded: props.initialExpanded,
     animationDuration: props.animationDuration,
     showAlphaSlider: props.showAlphaSlider,
+    showShadeSlider: props.showShadeSlider,
     coreSize: props.coreSize,
     petalSize: props.petalSize,
     showCoreColor: props.showCoreColor,
@@ -127,14 +154,25 @@ function getCommonOptions(props: any, onChange: any, onCollapse: any) {
     sliderWidth: props.sliderWidth,
     sliderOffset: props.sliderOffset,
     collapsible: props.collapsible,
+    petalShape: props.petalShape,
+    petalStyle: props.petalStyle,
+    hoverPreview: props.hoverPreview,
     onChange,
+    onChangeComplete,
     onCollapse,
+    onHover,
   };
 }
 
-function getChromeOptions(props: any, onChange: any, onCollapse: any) {
+function getChromeOptions(
+  props: any,
+  onChange: any,
+  onCollapse: any,
+  onChangeComplete: any,
+  onHover: any
+) {
   return {
-    ...getCommonOptions(props, onChange, onCollapse),
+    ...getCommonOptions(props, onChange, onCollapse, onChangeComplete, onHover),
     darkMode: props.darkMode,
     darkModeColors: props.darkModeColors,
   };
@@ -147,27 +185,36 @@ export const BlossomColorPicker = defineComponent({
     animationDuration: { type: Number, default: 280 },
     showCoreColor: { type: Boolean, default: false },
   },
-  emits: ['change', 'collapse'],
+  emits: ['change', 'changeComplete', 'collapse', 'hover'],
   setup(props, { emit }) {
     const containerRef = ref<HTMLElement | null>(null);
     let picker: CorePicker | null = null;
 
     const onChange = (color: BlossomColorPickerColor) => emit('change', color);
+    const onChangeComplete = (color: BlossomColorPickerColor) =>
+      emit('changeComplete', color);
     const onCollapse = (color: BlossomColorPickerColor) =>
       emit('collapse', color);
+    const onHover = (color: BlossomColorPickerColor | null) =>
+      emit('hover', color);
 
     onMounted(() => {
       if (!containerRef.value) return;
       picker = new CorePicker(
         containerRef.value,
-        getCommonOptions(props, onChange, onCollapse)
+        getCommonOptions(props, onChange, onCollapse, onChangeComplete, onHover)
       );
     });
 
     watch(
       () => props.value,
       val => {
-        picker?.setOptions({ value: val, onChange, onCollapse });
+        picker?.setOptions({
+          value: val,
+          onChange,
+          onCollapse,
+          onChangeComplete,
+        });
       },
       { deep: true }
     );
@@ -180,6 +227,10 @@ export const BlossomColorPicker = defineComponent({
         props.initialExpanded,
         props.animationDuration,
         props.showAlphaSlider,
+        props.showShadeSlider,
+        props.petalShape,
+        props.petalStyle,
+        props.hoverPreview,
         props.coreSize,
         props.petalSize,
         props.showCoreColor,
@@ -191,7 +242,15 @@ export const BlossomColorPicker = defineComponent({
         props.collapsible,
       ],
       () => {
-        picker?.setOptions(getCommonOptions(props, onChange, onCollapse));
+        picker?.setOptions(
+          getCommonOptions(
+            props,
+            onChange,
+            onCollapse,
+            onChangeComplete,
+            onHover
+          )
+        );
       }
     );
 
@@ -221,27 +280,36 @@ export const ChromePicker = defineComponent({
       default: false,
     },
   },
-  emits: ['change', 'collapse'],
+  emits: ['change', 'changeComplete', 'collapse', 'hover'],
   setup(props, { emit }) {
     const containerRef = ref<HTMLElement | null>(null);
     let picker: CoreChromePicker | null = null;
 
     const onChange = (color: BlossomColorPickerColor) => emit('change', color);
+    const onChangeComplete = (color: BlossomColorPickerColor) =>
+      emit('changeComplete', color);
     const onCollapse = (color: BlossomColorPickerColor) =>
       emit('collapse', color);
+    const onHover = (color: BlossomColorPickerColor | null) =>
+      emit('hover', color);
 
     onMounted(() => {
       if (!containerRef.value) return;
       picker = new CoreChromePicker(
         containerRef.value,
-        getChromeOptions(props, onChange, onCollapse)
+        getChromeOptions(props, onChange, onCollapse, onChangeComplete, onHover)
       );
     });
 
     watch(
       () => props.value,
       val => {
-        picker?.setOptions({ value: val, onChange, onCollapse });
+        picker?.setOptions({
+          value: val,
+          onChange,
+          onCollapse,
+          onChangeComplete,
+        });
       },
       { deep: true }
     );
@@ -254,6 +322,10 @@ export const ChromePicker = defineComponent({
         props.initialExpanded,
         props.animationDuration,
         props.showAlphaSlider,
+        props.showShadeSlider,
+        props.petalShape,
+        props.petalStyle,
+        props.hoverPreview,
         props.coreSize,
         props.petalSize,
         props.showCoreColor,
@@ -267,7 +339,15 @@ export const ChromePicker = defineComponent({
         props.darkModeColors,
       ],
       () => {
-        picker?.setOptions(getChromeOptions(props, onChange, onCollapse));
+        picker?.setOptions(
+          getChromeOptions(
+            props,
+            onChange,
+            onCollapse,
+            onChangeComplete,
+            onHover
+          )
+        );
       }
     );
 

@@ -17,13 +17,21 @@ function propsToOptions(
   if (props.defaultValue !== undefined) opts.defaultValue = props.defaultValue;
   if (props.colors !== undefined) opts.colors = props.colors;
   if (props.onChange !== undefined) opts.onChange = props.onChange;
+  if (props.onChangeComplete !== undefined)
+    opts.onChangeComplete = props.onChangeComplete;
   if (props.onCollapse !== undefined) opts.onCollapse = props.onCollapse;
+  if (props.onHover !== undefined) opts.onHover = props.onHover;
+  if (props.hoverPreview !== undefined) opts.hoverPreview = props.hoverPreview;
+  if (props.petalShape !== undefined) opts.petalShape = props.petalShape;
+  if (props.petalStyle !== undefined) opts.petalStyle = props.petalStyle;
   if (props.disabled !== undefined) opts.disabled = props.disabled;
   if (props.openOnHover !== undefined) opts.openOnHover = props.openOnHover;
   if (props.initialExpanded !== undefined)
     opts.initialExpanded = props.initialExpanded;
   if (props.animationDuration !== undefined)
     opts.animationDuration = props.animationDuration;
+  if (props.showShadeSlider !== undefined)
+    opts.showShadeSlider = props.showShadeSlider;
   if (props.showAlphaSlider !== undefined)
     opts.showAlphaSlider = props.showAlphaSlider;
   if (props.coreSize !== undefined) opts.coreSize = props.coreSize;
@@ -71,8 +79,16 @@ export const ChromePicker = forwardRef(function ChromePicker(
       value: props.value,
       onChange: props.onChange,
       onCollapse: props.onCollapse,
+      onChangeComplete: props.onChangeComplete,
+      onHover: props.onHover,
     });
-  }, [props.value, props.onChange, props.onCollapse]);
+  }, [
+    props.value,
+    props.onChange,
+    props.onCollapse,
+    props.onChangeComplete,
+    props.onHover,
+  ]);
 
   useEffect(() => {
     pickerRef.current?.setOptions(propsToOptions(props));
@@ -83,6 +99,10 @@ export const ChromePicker = forwardRef(function ChromePicker(
     props.initialExpanded,
     props.animationDuration,
     props.showAlphaSlider,
+    props.showShadeSlider,
+    props.hoverPreview,
+    props.petalShape,
+    props.petalStyle,
     props.coreSize,
     props.petalSize,
     props.showCoreColor,
