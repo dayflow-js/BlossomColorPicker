@@ -117,4 +117,9 @@ pkgs.forEach(p => {
 });
 ' "$BUMP_TYPE" $PACKAGE_FILES
 
-echo "All packages and dependencies updated successfully."
+# Ranges like Angular's core dependency live in pnpm-lock.yaml too; CI installs
+# with --frozen-lockfile and fails if the lockfile still has the old range.
+echo "Updating pnpm-lock.yaml..."
+pnpm install --lockfile-only
+
+echo "All packages, dependencies and the lockfile updated successfully."

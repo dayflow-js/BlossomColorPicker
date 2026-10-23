@@ -104,6 +104,22 @@ if (!shipping.length) {
   error(`Unknown mode "${MODE}". Use all, main or angular.`);
 }
 
+// CI installs with --frozen-lockfile, so a version bump that changed a range
+// without updating pnpm-lock.yaml breaks the build after the release commit.
+if (!CHECK_DIST) {
+  try {
+    execFileSync('pnpm', ['install', '--frozen-lockfile', '--lockfile-only'], {
+      cwd: ROOT,
+      stdio: 'ignore',
+    });
+  } catch {
+    error(
+      'pnpm-lock.yaml is out of date with the package manifests. ' +
+        'Run `pnpm install` and commit the lockfile.'
+    );
+  }
+}
+
 for (const pkg of shipping) {
   const { name, version } = pkg.manifest;
 

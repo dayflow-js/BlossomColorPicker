@@ -57,7 +57,7 @@ importers:
   packages/angular:
     dependencies:
       '@dayflow/blossom-color-picker':
-        specifier: ^2.4.0
+        specifier: ^2.5.0
         version: link:../core
       tslib:
         specifier: ^2.8.1
