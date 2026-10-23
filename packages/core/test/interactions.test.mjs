@@ -557,3 +557,49 @@ test('an always-open bloom moves its arc when sliderPosition changes', () => {
   picker.setOptions({ sliderPosition: 'right' });
   assert.equal(orientation(), 'vertical');
 });
+
+test('ChromePicker inputs and alpha slider complete once per committed edit', () => {
+  const changes = [],
+    completed = [];
+  const { host } = setup(
+    {
+      onChange: c => changes.push(c),
+      onChangeComplete: c => completed.push(c),
+    },
+    ChromePicker
+  );
+  const fire = (el, type, extra = {}) =>
+    el.dispatchEvent(
+      new window.Event(type, { bubbles: true, cancelable: true, ...extra })
+    );
+
+  // Dragging the alpha slider reports every step, then completes on release.
+  const alpha = host.querySelector('.bcp-chrome-native-slider');
+  alpha.value = '40';
+  fire(alpha, 'input');
+  alpha.value = '30';
+  fire(alpha, 'input');
+  assert.equal(changes.length, 2);
+  assert.equal(completed.length, 0);
+  fire(alpha, 'change');
+  assert.equal(completed.length, 1);
+  assert.equal(completed[0].alpha, 30);
+  fire(alpha, 'change');
+  assert.equal(completed.length, 1);
+
+  // Typing completes on Enter; the change event that follows does not repeat it.
+  host.querySelector('.bcp-chrome-toggle').click(); // HSLA -> HEX
+  const hex = host.querySelector('.bcp-chrome-input');
+  hex.value = '#12';
+  fire(hex, 'input');
+  fire(hex, 'change');
+  assert.equal(completed.length, 1, 'an invalid value does not complete');
+  hex.value = '#1E90FF';
+  fire(hex, 'input');
+  hex.dispatchEvent(
+    new window.KeyboardEvent('keydown', { key: 'Enter', bubbles: true })
+  );
+  fire(hex, 'change');
+  assert.equal(completed.length, 2);
+  assert.deepEqual(completed[1], changes.at(-1));
+});

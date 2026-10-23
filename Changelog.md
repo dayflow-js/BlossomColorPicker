@@ -1,5 +1,41 @@
 # Changelog
 
+## v2.5.0 (2026-10-24)
+
+### New Features
+
+- `petalShape`: `circle` (default), `sakura`, `lotus` or `pinwheel`.
+- `petalStyle: 'veined'` draws veins on shaped petals.
+- `hoverPreview` and `onHover`: preview a petal's color on the ring and core before it is picked.
+- `onChangeComplete`: fires once per pick or finished slider drag.
+- CSS variables for theming (`--bcp-surface`, `--bcp-track`, `--bcp-focus-ring`, ...). Unset, the picker looks the same as before.
+- Keyboard support: arrow keys move between petals, Escape closes, and the shade slider works with the arrow keys.
+
+### Changes
+
+- **Default `alpha` is now `100`** (was `50`), so pickers without a `defaultValue` start opaque.
+- `showAlphaSlider` is renamed to `showShadeSlider`; the old name still works.
+
+### Fixes
+
+- Palettes with repeated hues now select the right petal.
+- Touch-dragging the slider no longer scrolls the page.
+- Empty space around the bloom no longer blocks clicks on the page.
+- `sliderPosition` changes now apply to always-open pickers.
+- `openOnHover` pickers close after a click once the pointer leaves.
+- ChromePicker calls onChange when the alpha slider or color inputs change (#13, thanks @dajiaohuang)
+
+### Website & Release
+
+- New landing page with a petal style switcher, and a Styling page in all docs locales.
+- `publish.sh` now runs a version-sync check and the core tests before publishing; `pnpm tag` tags the release.
+- Bumped package versions for this release:
+  - `@dayflow/blossom-color-picker` -> `2.5.0`
+  - `@dayflow/blossom-color-picker-react` -> `1.5.0`
+  - `@dayflow/blossom-color-picker-vue` -> `1.5.0`
+  - `@dayflow/blossom-color-picker-svelte` -> `1.5.0`
+  - `@dayflow/blossom-color-picker-angular` -> `1.5.0`
+
 ## v2.4.0 (2026-10-13)
 
 ### Animation

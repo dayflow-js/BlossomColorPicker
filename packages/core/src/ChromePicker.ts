@@ -51,6 +51,9 @@ export class ChromePicker {
 
   // Track if we are currently updating from inputs to avoid feedback loops
   private isInternalUpdate = false;
+  // Set when an input or the alpha slider changes the color; cleared once the
+  // edit is committed and `onChangeComplete` has fired for it.
+  private hasUncommittedEdit = false;
 
   constructor(container: HTMLElement, options?: Partial<ChromePickerOptions>) {
     this.container = container;
@@ -125,6 +128,8 @@ export class ChromePicker {
       const alpha = parseInt(this.alphaSliderInput.value);
       this.syncAlpha(alpha);
     });
+    // A range input fires `change` when the drag is released (or after a key step).
+    this.alphaSliderInput.addEventListener('change', () => this.commitEdit());
 
     alphaContainer.appendChild(this.alphaSliderTrack);
     alphaContainer.appendChild(this.alphaSliderHandle);
@@ -338,6 +343,11 @@ export class ChromePicker {
     ) as HTMLInputElement;
     input.value = value;
     input.addEventListener('input', () => onChange(input.value));
+    // A typed value is final once the field loses focus or Enter is pressed.
+    input.addEventListener('change', () => this.commitEdit());
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') this.commitEdit();
+    });
 
     const labelEl = createElement('span', {}, { class: 'bcp-chrome-label' });
     labelEl.textContent = label;
@@ -351,7 +361,15 @@ export class ChromePicker {
     this.isInternalUpdate = true;
     this.picker.setValue(value);
     this.isInternalUpdate = false;
+    this.hasUncommittedEdit = true;
     this.opts.onChange?.(this.picker.getValue());
+  }
+
+  /** Fires `onChangeComplete` once for an input or alpha edit that changed the color. */
+  private commitEdit(): void {
+    if (!this.hasUncommittedEdit) return;
+    this.hasUncommittedEdit = false;
+    this.opts.onChangeComplete?.(this.picker.getValue());
   }
 
   public setValue(value: BlossomColorPickerValue): void {

@@ -31,6 +31,9 @@
     "publish:angular": "./scripts/publish.sh angular",
     "publish:dry": "./scripts/publish.sh all --dry-run",
     "publish:main": "./scripts/publish.sh main",
+    "release:check": "node ./scripts/check-release.mjs",
+    "tag": "./scripts/git-tag.sh",
+    "test": "pnpm --filter @dayflow/blossom-color-picker test",
     "typecheck": "pnpm -r typecheck"
   },
   "devDependencies": {
