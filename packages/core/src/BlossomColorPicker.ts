@@ -71,37 +71,132 @@ import {
 } from './utils.js';
 
 export interface BlossomColorPickerOptions {
+  /**
+   * Controlled value. When set, the picker always shows this value; update it
+   * from `onChange` to reflect user picks.
+   */
   value?: BlossomColorPickerValue;
+  /**
+   * Initial value when the picker is uncontrolled (no `value`).
+   * @default { hue: 330, saturation: 70, alpha: 100, layer: 'outer' }
+   */
   defaultValue?: BlossomColorPickerValue;
+  /**
+   * Petal colors as hex, `rgb()`/`rgba()`, `hsl()`/`hsla()` strings or
+   * `{ h, s, l }` objects. They are sorted into inner and outer layers
+   * automatically. An empty array uses the default palette.
+   * @default DEFAULT_COLORS
+   */
   colors?: ColorInput[];
+  /** Called whenever the selected color changes, including during a shade drag. */
   onChange?: (color: BlossomColorPickerColor) => void;
+  /**
+   * Called once when a petal is picked or a shade drag or key press ends.
+   * Use it for saving or undo history.
+   */
   onChangeComplete?: (color: BlossomColorPickerColor) => void;
+  /** Called with the current color when the picker collapses. */
   onCollapse?: (color: BlossomColorPickerColor) => void;
   /**
    * Called when a petal is hovered or receives keyboard focus, with the color
    * it would select, and with `null` when the preview ends.
    */
   onHover?: (color: BlossomColorPickerColor | null) => void;
-  /** Show the hovered or focused petal's color on the ring and core before it is picked. */
+  /**
+   * Show the hovered or focused petal's color on the ring, background and core
+   * before it is picked.
+   * @default false
+   */
   hoverPreview?: boolean;
+  /**
+   * Petal outline. Every shape except `circle` points its tip away from the core.
+   * @default 'circle'
+   */
   petalShape?: PetalShape;
-  /** Surface detail on shaped petals. Ignored for `circle`. */
+  /**
+   * Surface detail on shaped petals. Ignored for `circle`.
+   * @default 'flat'
+   */
   petalStyle?: PetalStyle;
+  /**
+   * Disable all user interaction.
+   * @default false
+   */
   disabled?: boolean;
+  /**
+   * Expand the picker when the pointer hovers over it.
+   * @default false
+   */
   openOnHover?: boolean;
+  /**
+   * Start with the picker expanded.
+   * @default false
+   */
   initialExpanded?: boolean;
+  /**
+   * Base timing of the bloom animation in milliseconds. Every phase scales
+   * with it, so the full open takes about twice this value.
+   * @default 280 (`ChromePicker`: 300)
+   */
   animationDuration?: number;
-  /** @deprecated Use showShadeSlider. This controls shade, not opacity. */
+  /**
+   * @deprecated Use `showShadeSlider`. This controls shade, not opacity.
+   * `showShadeSlider` wins when both are set.
+   * @default true
+   */
   showAlphaSlider?: boolean;
+  /**
+   * Show the shade (brightness) arc slider around the petals.
+   * @default true
+   */
   showShadeSlider?: boolean;
+  /**
+   * Diameter of the center core button in pixels.
+   * @default 32
+   */
   coreSize?: number;
+  /**
+   * Diameter of each petal in pixels.
+   * @default 32
+   */
   petalSize?: number;
+  /**
+   * Show the selected color in the expanded core. When `false`, the expanded
+   * core is white.
+   * @default false (`ChromePicker`: true)
+   */
   showCoreColor?: boolean;
+  /**
+   * Fixed side for the arc slider. When omitted, the slider starts on the
+   * right and may move to stay inside the viewport.
+   * @default undefined
+   */
   sliderPosition?: SliderPosition;
+  /**
+   * Shift the expanded picker and arc slider so they stay inside the viewport.
+   * @default true
+   */
   adaptivePositioning?: boolean;
+  /**
+   * Width of the circular hue bar in pixels.
+   * @default 12
+   */
   circularBarWidth?: number;
+  /**
+   * Width of the arc slider track and handle in pixels.
+   * @default 12
+   */
   sliderWidth?: number;
+  /**
+   * Gap between the petals and the arc slider in pixels.
+   * @default 30
+   */
   sliderOffset?: number;
+  /**
+   * Allow the picker to collapse back to the core button. When `false`, it
+   * stays expanded.
+   * @default true (`ChromePicker`: false)
+   */
   collapsible?: boolean;
 }
 
