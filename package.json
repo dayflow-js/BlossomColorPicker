@@ -33,7 +33,7 @@
     "publish:main": "./scripts/publish.sh main",
     "release:check": "node ./scripts/check-release.mjs",
     "tag": "./scripts/git-tag.sh",
-    "test": "pnpm --filter @dayflow/blossom-color-picker-react... test",
+    "test": "pnpm --filter @dayflow/blossom-color-picker-react... --filter @dayflow/blossom-color-picker-svelte test",
     "typecheck": "pnpm -r typecheck"
   },
   "devDependencies": {
