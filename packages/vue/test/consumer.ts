@@ -16,8 +16,8 @@ export const props: PickerProps = {
 };
 // @ts-expect-error coreSize must be a number.
 export const invalidProps: PickerProps = { coreSize: '32' };
-// @ts-expect-error change listeners receive a color object.
 export const invalidListener: PickerProps = {
+  // @ts-expect-error change listeners receive a color object.
   onChange: (color: string) => color,
 };
 
