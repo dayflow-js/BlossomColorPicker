@@ -4,6 +4,8 @@ import { fileURLToPath } from 'url';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 
+import { dualDtsOptions, libFileName } from '../../scripts/dual-dts';
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
@@ -12,15 +14,16 @@ export default defineConfig({
       copyDtsFiles: true,
       insertTypesEntry: true,
       include: ['src'],
+      ...dualDtsOptions,
     }),
   ],
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'BlossomColorPicker',
-      formats: ['es', 'umd'],
+      formats: ['es', 'cjs', 'umd'],
       cssFileName: 'styles',
-      fileName: format => `index.${format === 'es' ? 'esm.js' : 'js'}`,
+      fileName: libFileName,
     },
     rolldownOptions: {
       output: {
