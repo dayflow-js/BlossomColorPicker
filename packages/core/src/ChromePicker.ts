@@ -1,13 +1,13 @@
 import {
   BlossomColorPicker,
   type BlossomColorPickerOptions,
-} from './BlossomColorPicker';
-import { createElement } from './dom-helpers';
+} from './BlossomColorPicker.js';
+import { createElement } from './dom-helpers.js';
 import {
   type BlossomColorPickerColor,
   type BlossomColorPickerValue,
-} from './types';
-import { hexToHsl, rgbToHsl, lightnessToSliderValue } from './utils';
+} from './types.js';
+import { hexToHsl, rgbToHsl, lightnessToSliderValue } from './utils.js';
 
 export interface ChromePickerThemeColors {
   containerBackground?: string;
@@ -25,7 +25,14 @@ export interface ChromePickerThemeColors {
 }
 
 export interface ChromePickerOptions extends BlossomColorPickerOptions {
+  /**
+   * Force dark (`true`) or light (`false`) theme. When omitted, the picker
+   * follows a `.dark` class on an ancestor or `<html>`, then the system
+   * `prefers-color-scheme`.
+   * @default undefined
+   */
   darkMode?: boolean;
+  /** Theme color overrides applied only while the dark theme is active. */
   darkModeColors?: Partial<ChromePickerThemeColors>;
 }
 

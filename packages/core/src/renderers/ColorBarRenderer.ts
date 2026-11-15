@@ -9,9 +9,9 @@ import {
   RING_SPRING_DURATION,
   RING_SPRING_EASING,
   bloomTime,
-} from '../constants';
-import { createSVGElement, setStyles } from '../dom-helpers';
-import { hslaToString } from '../utils';
+} from '../constants.js';
+import { createSVGElement, setStyles } from '../dom-helpers.js';
+import { hslaToString } from '../utils.js';
 
 export class ColorBarRenderer {
   public el: SVGSVGElement;

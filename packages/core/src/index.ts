@@ -1,14 +1,14 @@
 import './styles.css';
 
 // Main class
-export { BlossomColorPicker } from './BlossomColorPicker';
-export type { BlossomColorPickerOptions } from './BlossomColorPicker';
+export { BlossomColorPicker } from './BlossomColorPicker.js';
+export type { BlossomColorPickerOptions } from './BlossomColorPicker.js';
 
-export { ChromePicker } from './ChromePicker';
+export { ChromePicker } from './ChromePicker.js';
 export type {
   ChromePickerOptions,
   ChromePickerThemeColors,
-} from './ChromePicker';
+} from './ChromePicker.js';
 
 // Types
 export type {
@@ -18,7 +18,7 @@ export type {
   SliderPosition,
   PetalShape,
   PetalStyle,
-} from './types';
+} from './types.js';
 
 // Utilities (for advanced users)
 export {
@@ -35,9 +35,9 @@ export {
   createColorOutput,
   getVisualSaturation,
   organizeColorsIntoLayers,
-} from './utils';
+} from './utils.js';
 
-export { DEFAULT_COLORS, OUTER_COLORS, INNER_COLORS } from './constants';
+export { DEFAULT_COLORS, OUTER_COLORS, INNER_COLORS } from './constants.js';
 
 export {
   calculateLayerRadii,
@@ -45,4 +45,4 @@ export {
   calculateBarRadius,
   calculateContainerSize,
   getPetalZIndex,
-} from './layout';
+} from './layout.js';

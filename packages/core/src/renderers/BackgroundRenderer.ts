@@ -8,8 +8,8 @@ import {
   RING_SPRING_DURATION,
   RING_SPRING_EASING,
   bloomTime,
-} from '../constants';
-import { createElement, setStyles } from '../dom-helpers';
+} from '../constants.js';
+import { createElement, setStyles } from '../dom-helpers.js';
 
 export class BackgroundRenderer {
   public el: HTMLDivElement;

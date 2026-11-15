@@ -2,8 +2,8 @@ import {
   TRIGGER_FADE_DURATION,
   TRIGGER_POP_DELAY,
   bloomTime,
-} from '../constants';
-import { createElement, setStyles } from '../dom-helpers';
+} from '../constants.js';
+import { createElement, setStyles } from '../dom-helpers.js';
 
 export class CoreButtonRenderer {
   public el: HTMLButtonElement;

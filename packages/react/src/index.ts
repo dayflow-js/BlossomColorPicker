@@ -159,7 +159,7 @@ export const BlossomColorPicker = forwardRef(function BlossomColorPicker(
   });
 });
 
-export { ChromePicker } from './ChromePicker';
-export type { ChromePickerProps } from './ChromePicker';
+export { ChromePicker } from './ChromePicker.js';
+export type { ChromePickerProps } from './ChromePicker.js';
 
 export default BlossomColorPicker;
