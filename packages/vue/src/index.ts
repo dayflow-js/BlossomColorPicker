@@ -19,6 +19,8 @@ import {
   h,
   type ComponentOptionsMixin,
   type DefineComponent,
+  type ExtractPropTypes,
+  type PublicProps,
   type PropType,
 } from 'vue';
 
@@ -271,7 +273,45 @@ function getChromeOptions(
   };
 }
 
-type PickerEvent = 'change' | 'changeComplete' | 'collapse' | 'hover';
+// Object form so each event carries JSDoc and a typed payload. The
+// validators only document the payload; they always pass.
+const pickerEmits = {
+  /** Emitted whenever the selected color changes, including during a shade drag. */
+  change: (color: BlossomColorPickerColor) => color !== undefined,
+  /**
+   * Emitted once when a petal is picked or a shade drag or key press ends.
+   * Use it for saving or undo history.
+   */
+  changeComplete: (color: BlossomColorPickerColor) => color !== undefined,
+  /** Emitted with the current color when the picker collapses. */
+  collapse: (color: BlossomColorPickerColor) => color !== undefined,
+  /**
+   * Emitted with the color a hovered or keyboard-focused petal would select,
+   * and with `null` when the preview ends.
+   */
+  hover: (color: BlossomColorPickerColor | null) => color !== undefined,
+};
+
+// Vue derives `onChange` etc. from `emits` but drops their JSDoc, so the
+// listener props are declared here (types only) in place of the derived ones
+// to keep the event docs on hover.
+interface PickerListenerProps {
+  /** Emitted whenever the selected color changes, including during a shade drag. */
+  onChange?: (color: BlossomColorPickerColor) => any;
+  /**
+   * Emitted once when a petal is picked or a shade drag or key press ends.
+   * Use it for saving or undo history.
+   */
+  onChangeComplete?: (color: BlossomColorPickerColor) => any;
+  /** Emitted with the current color when the picker collapses. */
+  onCollapse?: (color: BlossomColorPickerColor) => any;
+  /**
+   * Emitted with the color a hovered or keyboard-focused petal would select,
+   * and with `null` when the preview ends.
+   */
+  onHover?: (color: BlossomColorPickerColor | null) => any;
+}
+
 type PickerComponent<Props> = DefineComponent<
   Props,
   {},
@@ -280,8 +320,10 @@ type PickerComponent<Props> = DefineComponent<
   {},
   ComponentOptionsMixin,
   ComponentOptionsMixin,
-  PickerEvent[],
-  PickerEvent
+  typeof pickerEmits,
+  keyof typeof pickerEmits,
+  PublicProps,
+  Readonly<ExtractPropTypes<Props>> & Readonly<PickerListenerProps>
 >;
 
 const blossomProps = {
@@ -300,29 +342,69 @@ const blossomProps = {
   showCoreColor: { type: Boolean, default: false },
 };
 
-// Annotated so the published types keep each prop's JSDoc on hover.
-export const BlossomColorPicker: PickerComponent<typeof blossomProps> =
-  defineComponent({
-    name: 'BlossomColorPicker',
-    props: blossomProps,
-    emits: ['change', 'changeComplete', 'collapse', 'hover'],
-    setup(props, { emit }) {
-      const containerRef = ref<HTMLElement | null>(null);
-      let picker: CorePicker | null = null;
+// Asserted to DefineComponent<typeof props> so the published types keep each
+// prop's JSDoc on hover; the inferred type inlines defaulted props without it.
+export const BlossomColorPicker = defineComponent({
+  name: 'BlossomColorPicker',
+  props: blossomProps,
+  emits: pickerEmits,
+  setup(props, { emit }) {
+    const containerRef = ref<HTMLElement | null>(null);
+    let picker: CorePicker | null = null;
 
-      const onChange = (color: BlossomColorPickerColor) =>
-        emit('change', color);
-      const onChangeComplete = (color: BlossomColorPickerColor) =>
-        emit('changeComplete', color);
-      const onCollapse = (color: BlossomColorPickerColor) =>
-        emit('collapse', color);
-      const onHover = (color: BlossomColorPickerColor | null) =>
-        emit('hover', color);
+    const onChange = (color: BlossomColorPickerColor) => emit('change', color);
+    const onChangeComplete = (color: BlossomColorPickerColor) =>
+      emit('changeComplete', color);
+    const onCollapse = (color: BlossomColorPickerColor) =>
+      emit('collapse', color);
+    const onHover = (color: BlossomColorPickerColor | null) =>
+      emit('hover', color);
 
-      onMounted(() => {
-        if (!containerRef.value) return;
-        picker = new CorePicker(
-          containerRef.value,
+    onMounted(() => {
+      if (!containerRef.value) return;
+      picker = new CorePicker(
+        containerRef.value,
+        getCommonOptions(props, onChange, onCollapse, onChangeComplete, onHover)
+      );
+    });
+
+    watch(
+      () => props.value,
+      val => {
+        picker?.setOptions({
+          value: val,
+          onChange,
+          onCollapse,
+          onChangeComplete,
+        });
+      },
+      { deep: true }
+    );
+
+    watch(
+      () => [
+        props.colors,
+        props.disabled,
+        props.openOnHover,
+        props.initialExpanded,
+        props.animationDuration,
+        props.showAlphaSlider,
+        props.showShadeSlider,
+        props.petalShape,
+        props.petalStyle,
+        props.hoverPreview,
+        props.coreSize,
+        props.petalSize,
+        props.showCoreColor,
+        props.sliderPosition,
+        props.adaptivePositioning,
+        props.circularBarWidth,
+        props.sliderWidth,
+        props.sliderOffset,
+        props.collapsible,
+      ],
+      () => {
+        picker?.setOptions(
           getCommonOptions(
             props,
             onChange,
@@ -331,64 +413,17 @@ export const BlossomColorPicker: PickerComponent<typeof blossomProps> =
             onHover
           )
         );
-      });
+      }
+    );
 
-      watch(
-        () => props.value,
-        val => {
-          picker?.setOptions({
-            value: val,
-            onChange,
-            onCollapse,
-            onChangeComplete,
-          });
-        },
-        { deep: true }
-      );
+    onBeforeUnmount(() => {
+      picker?.destroy();
+      picker = null;
+    });
 
-      watch(
-        () => [
-          props.colors,
-          props.disabled,
-          props.openOnHover,
-          props.initialExpanded,
-          props.animationDuration,
-          props.showAlphaSlider,
-          props.showShadeSlider,
-          props.petalShape,
-          props.petalStyle,
-          props.hoverPreview,
-          props.coreSize,
-          props.petalSize,
-          props.showCoreColor,
-          props.sliderPosition,
-          props.adaptivePositioning,
-          props.circularBarWidth,
-          props.sliderWidth,
-          props.sliderOffset,
-          props.collapsible,
-        ],
-        () => {
-          picker?.setOptions(
-            getCommonOptions(
-              props,
-              onChange,
-              onCollapse,
-              onChangeComplete,
-              onHover
-            )
-          );
-        }
-      );
-
-      onBeforeUnmount(() => {
-        picker?.destroy();
-        picker = null;
-      });
-
-      return () => h('div', { ref: containerRef });
-    },
-  });
+    return () => h('div', { ref: containerRef });
+  },
+}) as PickerComponent<typeof blossomProps>;
 
 const chromeProps = {
   ...commonProps,
@@ -418,29 +453,71 @@ const chromeProps = {
   },
 };
 
-// Annotated so the published types keep each prop's JSDoc on hover.
-export const ChromePicker: PickerComponent<typeof chromeProps> =
-  defineComponent({
-    name: 'ChromePicker',
-    props: chromeProps,
-    emits: ['change', 'changeComplete', 'collapse', 'hover'],
-    setup(props, { emit }) {
-      const containerRef = ref<HTMLElement | null>(null);
-      let picker: CoreChromePicker | null = null;
+// Asserted to DefineComponent<typeof props> so the published types keep each
+// prop's JSDoc on hover; the inferred type inlines defaulted props without it.
+export const ChromePicker = defineComponent({
+  name: 'ChromePicker',
+  props: chromeProps,
+  emits: pickerEmits,
+  setup(props, { emit }) {
+    const containerRef = ref<HTMLElement | null>(null);
+    let picker: CoreChromePicker | null = null;
 
-      const onChange = (color: BlossomColorPickerColor) =>
-        emit('change', color);
-      const onChangeComplete = (color: BlossomColorPickerColor) =>
-        emit('changeComplete', color);
-      const onCollapse = (color: BlossomColorPickerColor) =>
-        emit('collapse', color);
-      const onHover = (color: BlossomColorPickerColor | null) =>
-        emit('hover', color);
+    const onChange = (color: BlossomColorPickerColor) => emit('change', color);
+    const onChangeComplete = (color: BlossomColorPickerColor) =>
+      emit('changeComplete', color);
+    const onCollapse = (color: BlossomColorPickerColor) =>
+      emit('collapse', color);
+    const onHover = (color: BlossomColorPickerColor | null) =>
+      emit('hover', color);
 
-      onMounted(() => {
-        if (!containerRef.value) return;
-        picker = new CoreChromePicker(
-          containerRef.value,
+    onMounted(() => {
+      if (!containerRef.value) return;
+      picker = new CoreChromePicker(
+        containerRef.value,
+        getChromeOptions(props, onChange, onCollapse, onChangeComplete, onHover)
+      );
+    });
+
+    watch(
+      () => props.value,
+      val => {
+        picker?.setOptions({
+          value: val,
+          onChange,
+          onCollapse,
+          onChangeComplete,
+        });
+      },
+      { deep: true }
+    );
+
+    watch(
+      () => [
+        props.colors,
+        props.disabled,
+        props.openOnHover,
+        props.initialExpanded,
+        props.animationDuration,
+        props.showAlphaSlider,
+        props.showShadeSlider,
+        props.petalShape,
+        props.petalStyle,
+        props.hoverPreview,
+        props.coreSize,
+        props.petalSize,
+        props.showCoreColor,
+        props.sliderPosition,
+        props.adaptivePositioning,
+        props.circularBarWidth,
+        props.sliderWidth,
+        props.sliderOffset,
+        props.collapsible,
+        props.darkMode,
+        props.darkModeColors,
+      ],
+      () => {
+        picker?.setOptions(
           getChromeOptions(
             props,
             onChange,
@@ -449,65 +526,16 @@ export const ChromePicker: PickerComponent<typeof chromeProps> =
             onHover
           )
         );
-      });
+      }
+    );
 
-      watch(
-        () => props.value,
-        val => {
-          picker?.setOptions({
-            value: val,
-            onChange,
-            onCollapse,
-            onChangeComplete,
-          });
-        },
-        { deep: true }
-      );
+    onBeforeUnmount(() => {
+      picker?.destroy();
+      picker = null;
+    });
 
-      watch(
-        () => [
-          props.colors,
-          props.disabled,
-          props.openOnHover,
-          props.initialExpanded,
-          props.animationDuration,
-          props.showAlphaSlider,
-          props.showShadeSlider,
-          props.petalShape,
-          props.petalStyle,
-          props.hoverPreview,
-          props.coreSize,
-          props.petalSize,
-          props.showCoreColor,
-          props.sliderPosition,
-          props.adaptivePositioning,
-          props.circularBarWidth,
-          props.sliderWidth,
-          props.sliderOffset,
-          props.collapsible,
-          props.darkMode,
-          props.darkModeColors,
-        ],
-        () => {
-          picker?.setOptions(
-            getChromeOptions(
-              props,
-              onChange,
-              onCollapse,
-              onChangeComplete,
-              onHover
-            )
-          );
-        }
-      );
-
-      onBeforeUnmount(() => {
-        picker?.destroy();
-        picker = null;
-      });
-
-      return () => h('div', { ref: containerRef });
-    },
-  });
+    return () => h('div', { ref: containerRef });
+  },
+}) as PickerComponent<typeof chromeProps>;
 
 export default BlossomColorPicker;
