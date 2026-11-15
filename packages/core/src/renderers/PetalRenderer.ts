@@ -10,10 +10,10 @@ import {
   PETAL_START_RADIUS,
   PETAL_TRAVEL_DURATION,
   bloomTime,
-} from '../constants';
-import { createElement, createSVGElement, setStyles } from '../dom-helpers';
-import type { PetalShape, PetalStyle } from '../types';
-import { hslToString, hslaToString } from '../utils';
+} from '../constants.js';
+import { createElement, createSVGElement, setStyles } from '../dom-helpers.js';
+import type { PetalShape, PetalStyle } from '../types.js';
+import { hslToString, hslaToString } from '../utils.js';
 
 // Petal outlines in a 100x100 box, tip at the top (pointing away from the
 // core) and base at the bottom. `circle` keeps the original round petals.

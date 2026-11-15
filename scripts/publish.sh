@@ -26,7 +26,7 @@ usage() {
   echo "Options:"
   echo "  --dry-run    Run pnpm publish with --dry-run (no actual publish)"
   echo "  --skip-build Skip the build step"
-  echo "  --skip-tests Skip the core test suite (not recommended)"
+  echo "  --skip-tests Skip the test suite (not recommended)"
   echo "  --skip-checks Skip the release preflight (not recommended)"
   echo "  -y, --yes    Don't prompt about uncommitted changes — publish anyway"
   exit 0
@@ -120,17 +120,19 @@ else
   warn "Skipping release preflight (--skip-checks)"
 fi
 
-# Core tests. Every wrapper ships core's behaviour, so a failure here stops
-# the whole release. The test script builds core itself.
+# Tests. Every wrapper ships core's behaviour, so a failure here stops the
+# whole release. `pnpm test` runs core's interaction tests, then builds react
+# and type-checks its consumer test under NodeNext, which catches published
+# .d.ts files that node16/nodenext projects cannot resolve.
 if [ "$MODE" != "angular" ]; then
   if [ "$SKIP_TESTS" = false ]; then
-    echo -e "\n${CYAN}${BOLD}Running core tests${NC}"
-    if ! pnpm --filter "./packages/core" test 2>&1; then
-      err "Core tests failed. Nothing was published."
+    echo -e "\n${CYAN}${BOLD}Running tests${NC}"
+    if ! (cd "$ROOT" && pnpm test) 2>&1; then
+      err "Tests failed. Nothing was published."
     fi
-    ok "Core tests passed"
+    ok "Tests passed"
   else
-    warn "Skipping core tests (--skip-tests)"
+    warn "Skipping tests (--skip-tests)"
   fi
 fi
 

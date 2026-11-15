@@ -5,7 +5,7 @@ import type {
   PetalShape,
   PetalStyle,
   SliderPosition,
-} from './types';
+} from './types.js';
 
 function colorsEqual(a: ColorInput[], b: ColorInput[]): boolean {
   if (a === b) return true;
@@ -20,7 +20,7 @@ function clockwiseHueOrder(hue: number): number {
   return (50 - hue + 360) % 360;
 }
 
-import { computeAdaptivePosition } from './adaptive';
+import { computeAdaptivePosition } from './adaptive.js';
 import {
   DEFAULT_COLORS,
   DEFAULT_ANIMATION_DURATION,
@@ -46,20 +46,20 @@ import {
   BAR_GAP,
   BAR_WIDTH,
   SLIDER_OFFSET,
-} from './constants';
-import { createElement, setStyles } from './dom-helpers';
+} from './constants.js';
+import { createElement, setStyles } from './dom-helpers.js';
 import {
   calculateLayerRadii,
   calculateLayerRotations,
   calculateBarRadius,
   calculateContainerSize,
   getPetalZIndex,
-} from './layout';
-import { ArcSliderRenderer } from './renderers/ArcSliderRenderer';
-import { BackgroundRenderer } from './renderers/BackgroundRenderer';
-import { ColorBarRenderer } from './renderers/ColorBarRenderer';
-import { CoreButtonRenderer } from './renderers/CoreButtonRenderer';
-import { PetalRenderer } from './renderers/PetalRenderer';
+} from './layout.js';
+import { ArcSliderRenderer } from './renderers/ArcSliderRenderer.js';
+import { BackgroundRenderer } from './renderers/BackgroundRenderer.js';
+import { ColorBarRenderer } from './renderers/ColorBarRenderer.js';
+import { CoreButtonRenderer } from './renderers/CoreButtonRenderer.js';
+import { PetalRenderer } from './renderers/PetalRenderer.js';
 import {
   lightnessToSliderValue,
   sliderValueToLightness,
@@ -68,7 +68,7 @@ import {
   organizeColorsIntoLayers,
   getVisualSaturation,
   parseColor,
-} from './utils';
+} from './utils.js';
 
 export interface BlossomColorPickerOptions {
   value?: BlossomColorPickerValue;

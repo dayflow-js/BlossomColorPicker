@@ -1,13 +1,13 @@
 import {
   BlossomColorPicker,
   type BlossomColorPickerOptions,
-} from './BlossomColorPicker';
-import { createElement } from './dom-helpers';
+} from './BlossomColorPicker.js';
+import { createElement } from './dom-helpers.js';
 import {
   type BlossomColorPickerColor,
   type BlossomColorPickerValue,
-} from './types';
-import { hexToHsl, rgbToHsl, lightnessToSliderValue } from './utils';
+} from './types.js';
+import { hexToHsl, rgbToHsl, lightnessToSliderValue } from './utils.js';
 
 export interface ChromePickerThemeColors {
   containerBackground?: string;

@@ -35,6 +35,7 @@
   "scripts": {
     "build": "tsc && vite build",
     "dev": "vite build --watch",
+    "test": "pnpm build && tsc --noEmit --strict --module NodeNext --jsx react-jsx test/consumer.tsx",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

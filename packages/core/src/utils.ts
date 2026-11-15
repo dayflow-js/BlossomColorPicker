@@ -1,4 +1,4 @@
-import { BlossomColorPickerColor, ColorInput } from './types';
+import { BlossomColorPickerColor, ColorInput } from './types.js';
 
 // Convert lightness to slider value (0-100)
 // Slider: 0=white/bright (l=100), 100=dark (l~20)

@@ -1,4 +1,4 @@
-import type { SliderPosition } from './types';
+import type { SliderPosition } from './types.js';
 
 export function polarToCartesian(
   cx: number,

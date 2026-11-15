@@ -42,6 +42,9 @@ jobs:
           pnpm typecheck
           pnpm lint
 
+      - name: Run tests
+        run: pnpm test
+
       - name: Build website
         run: pnpm --filter website build
         env:

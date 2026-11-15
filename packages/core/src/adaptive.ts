@@ -1,4 +1,4 @@
-import type { SliderPosition } from './types';
+import type { SliderPosition } from './types.js';
 
 export interface ComputeAdaptivePositionInput {
   elementRect: { left: number; top: number; width: number; height: number };

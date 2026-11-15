@@ -4,21 +4,21 @@ import {
   getCenterAngle,
   calculateSliderValueFromPoint,
   calculateArcGradientColors,
-} from '../arc-geometry';
+} from '../arc-geometry.js';
 import {
   SLIDER_CLOSE_DURATION,
   SLIDER_FADE_DELAY,
   SLIDER_FADE_DURATION,
   ARC_GRADIENT_STEPS,
   bloomTime,
-} from '../constants';
-import { createSVGElement, setStyles, setAttributes } from '../dom-helpers';
-import type { SliderPosition } from '../types';
+} from '../constants.js';
+import { createSVGElement, setStyles, setAttributes } from '../dom-helpers.js';
+import type { SliderPosition } from '../types.js';
 import {
   sliderValueToLightness,
   hslToString,
   getVisualSaturation,
-} from '../utils';
+} from '../utils.js';
 
 let arcIdCounter = 0;
 
