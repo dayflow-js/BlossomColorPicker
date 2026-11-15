@@ -25,7 +25,14 @@ export interface ChromePickerThemeColors {
 }
 
 export interface ChromePickerOptions extends BlossomColorPickerOptions {
+  /**
+   * Force dark (`true`) or light (`false`) theme. When omitted, the picker
+   * follows a `.dark` class on an ancestor or `<html>`, then the system
+   * `prefers-color-scheme`.
+   * @default undefined
+   */
   darkMode?: boolean;
+  /** Theme color overrides applied only while the dark theme is active. */
   darkModeColors?: Partial<ChromePickerThemeColors>;
 }
 
