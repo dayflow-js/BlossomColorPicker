@@ -1,5 +1,29 @@
 # Changelog
 
+## v2.5.1 (2026-11-16)
+
+### Fixes
+
+- TypeScript projects using `moduleResolution: node16` or `nodenext` now get the real types. Before, `BlossomColorPicker` resolved to `any` and the React wrapper rejected valid props such as `defaultValue` (#15).
+- `require()` works for core, React and Vue. It used to return an empty object for core and throw for the wrappers; each package now ships `dist/index.cjs` with matching `.d.cts` types.
+- The Svelte wrapper publishes real prop types, so Svelte projects get prop completion and type errors for wrong values.
+
+### Types & Editor Hints
+
+- Every option in core, React, Vue, Svelte and Angular now shows a description and its default on hover.
+- Vue `change`, `changeComplete`, `collapse` and `hover` listeners receive a typed `BlossomColorPickerColor` instead of `any[]`. Listeners written with the wrong parameter type now fail type checking; runtime behaviour is unchanged.
+
+### Website & Release
+
+- The UMD build stays at `dist/index.js`, and the `unpkg` / `jsdelivr` fields point to it, so CDN links keep working.
+- `pnpm test` adds type tests for the React, Vue and Svelte entry points. `publish.sh` and the deploy workflow now run the full `pnpm test`.
+- Bumped package versions for this release:
+  - `@dayflow/blossom-color-picker` -> `2.5.1`
+  - `@dayflow/blossom-color-picker-react` -> `1.5.1`
+  - `@dayflow/blossom-color-picker-vue` -> `1.5.1`
+  - `@dayflow/blossom-color-picker-svelte` -> `1.5.1`
+  - `@dayflow/blossom-color-picker-angular` -> `1.5.1`
+
 ## v2.5.0 (2026-10-24)
 
 ### New Features
