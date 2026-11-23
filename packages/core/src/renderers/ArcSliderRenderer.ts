@@ -57,6 +57,14 @@ export class ArcSliderRenderer {
   private boundTouchMove = (e: TouchEvent) => {
     if (this.pointerId !== null && e.cancelable) e.preventDefault();
   };
+  // iOS Safari decides whether a touch scrolls the page when the touch
+  // begins, from the listeners already on the touched element; it neither
+  // honours `touch-action` on SVG shapes reliably nor a `touchmove` listener
+  // added once the drag has started. Cancelling the touch on the arc and the
+  // handle themselves stops the scroll there. Pointer events still fire.
+  private cancelTouch = (e: TouchEvent) => {
+    if (e.cancelable) e.preventDefault();
+  };
 
   constructor(
     barRadius: number,
@@ -133,6 +141,10 @@ export class ArcSliderRenderer {
       'stroke-linecap': 'round',
     });
     this.gradientPath.classList.add('bcp-slider-track');
+    for (const type of ['touchstart', 'touchmove'] as const)
+      this.gradientPath.addEventListener(type, this.cancelTouch, {
+        passive: false,
+      });
     this.gradientPath.addEventListener('pointerdown', e =>
       this.startDrag(e, true)
     );
@@ -153,6 +165,8 @@ export class ArcSliderRenderer {
       'aria-valuemax': '100',
       tabindex: '-1',
     });
+    for (const type of ['touchstart', 'touchmove'] as const)
+      this.handle.addEventListener(type, this.cancelTouch, { passive: false });
     this.handle.addEventListener('pointerdown', e => this.startDrag(e, false));
     this.handle.addEventListener('keydown', e => this.handleKeyDown(e));
     this.handle.addEventListener('keyup', e => {
