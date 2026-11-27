@@ -542,6 +542,14 @@ test('a touch drag on the slider does not scroll the page', () => {
   assert.equal(touchmove(), true);
   pointer(window, 'pointerup', { pointerType: 'touch' });
   assert.equal(touchmove(), false);
+  // iOS only honours listeners already on the touched shape when it starts.
+  for (const el of [handle, host.querySelector('.bcp-slider-track')]) {
+    for (const type of ['touchstart', 'touchmove']) {
+      const e = new window.Event(type, { bubbles: true, cancelable: true });
+      el.dispatchEvent(e);
+      assert.equal(e.defaultPrevented, true, type);
+    }
+  }
 });
 
 test('an always-open bloom moves its arc when sliderPosition changes', () => {
