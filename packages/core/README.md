@@ -12,11 +12,11 @@ https://github.com/user-attachments/assets/553ee0ff-1f52-497f-bc8f-cee9a7b91d66
 
 | Package                                 | Description                         | Version |
 | :-------------------------------------- | :---------------------------------- | :------ |
-| `@dayflow/blossom-color-picker`         | Vanilla JS core (zero dependencies) | 2.0.0   |
-| `@dayflow/blossom-color-picker-react`   | React wrapper                       | 1.0.0   |
-| `@dayflow/blossom-color-picker-vue`     | Vue 3 wrapper                       | 1.0.0   |
-| `@dayflow/blossom-color-picker-svelte`  | Svelte wrapper                      | 1.0.0   |
-| `@dayflow/blossom-color-picker-angular` | Angular wrapper                     | 1.0.0   |
+| `@dayflow/blossom-color-picker`         | Vanilla JS core (zero dependencies) | 2.4.0   |
+| `@dayflow/blossom-color-picker-react`   | React wrapper                       | 1.4.0   |
+| `@dayflow/blossom-color-picker-vue`     | Vue 3 wrapper                       | 1.4.0   |
+| `@dayflow/blossom-color-picker-svelte`  | Svelte wrapper                      | 1.4.0   |
+| `@dayflow/blossom-color-picker-angular` | Angular wrapper                     | 1.4.0   |
 
 ## Installation
 
